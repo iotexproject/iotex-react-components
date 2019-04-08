@@ -1,11 +1,5 @@
 // @ts-ignore
 import { styled } from "onefx/lib/styletron-react";
-import React from "react";
+import { BpTable } from "./bp-table";
 
-const StyledDiv = styled("div", {
-  color: "red"
-});
-
-export default function HelloWorld(): JSX.Element {
-  return <StyledDiv>hello world!</StyledDiv>;
-}
+export default BpTable;

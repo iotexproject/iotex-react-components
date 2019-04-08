@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es2018",
     "outDir": "lib/",
-    "rootDir": "./",
+    "rootDir": "./src/",
     "moduleResolution": "node",
     "module": "commonjs",
     "jsx": "react",
@@ -33,7 +33,7 @@
     "types": ["node"],
     "typeRoots": ["node_modules/@types", "src/types"]
   },
-  "include": [".dev", "src/**/*.ts", "src/**/*.tsx"],
+  "include": ["src/.dev", "src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["node_modules/**"],
   "compileOnSave": false
 }

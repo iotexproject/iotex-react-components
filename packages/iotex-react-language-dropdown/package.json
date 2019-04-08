@@ -1,7 +1,7 @@
 {
   "name": "typescript-react-lib-starter",
   "license": "MIT",
-  "version": "1.2.1",
+  "version": "0.0.1",
   "description": "field_description",
   "main": "./lib/index.js",
   "files": [

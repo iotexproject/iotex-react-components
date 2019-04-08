@@ -1,13 +1,26 @@
-[![CircleCI](https://circleci.com/gh/puncsky/typescript-react-lib-starter.svg?style=svg)](https://circleci.com/gh/puncsky/typescript-react-lib-starter)
+# iotex-react-block-producers
 
-# typescript-react-lib-starter
+## Usage
 
-A simplistic typescript lib boilerplate using React, babel, tslint, ava, and CircleCI.
+```jsx
+```
+
+## Develop with dev server
 
 ```bash
-nvm use 10.15.1
-npm install
+npm run dev
+```
 
+## Develop with your website
+
+```bash
+npm run build
+
+# in your website
+ln -s /Users/tp/projects/iotex-react-components/packages/iotex-react-block-producers ./node_modules/iotex-react-block-producers
+```
+
+```bash
 # test
 # run all tests
 npm run test
