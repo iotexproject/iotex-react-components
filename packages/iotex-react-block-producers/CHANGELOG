@@ -1,0 +1,30 @@
+2019-04-03 - 1.2.1 (0f5dc2a)
+0f5dc2a (HEAD -> master, origin/master, origin/HEAD) mark as public
+6939926 adjust typescript-react-lib-starter
+50fb4f8 Update README.md
+2023c8e add initial react lib
+bcaea75 update styles fix dpes
+636f2f1 add build:types
+42eb199 add prettier & clean up
+cf18021 Update dependency tslint to v5.14.0 (#13)
+dc48f40 Pin dependencies (#1)
+026a686 Update Node.js (#3)
+50c6739 Update babel monorepo to v7.3.4 (#4)
+154a42a Update dependency ava to v1.3.1 (#5)
+b94b97e Update dependency babel-plugin-module-resolver to v3.2.0 (#6)
+cfa2384 Update dependency babel-plugin-react-require to v3.1.1 (#7)
+2364009 Update dependency nyc to v13.3.0 (#8)
+73c3404 Update dependency tslint to v5.13.1 (#9)
+98df3a7 Update npm to v6.9.0 (#10)
+76fd221 Update dependency tslint-microsoft-contrib to v6.1.0 (#12)
+267c579 update readme
+061090c update to typescript-starter
+2831280 clean up
+5b7b058 update readme
+5a84cd2 de-dup babel-register
+48aa449 Update Node.js to v10.15.0 (#1)
+90378a6 Update dependency flow-typed to v2.5.1 (#2)
+5e4bdfe add flowtype-boilerplate
+f942ba4 first commit
+
+
