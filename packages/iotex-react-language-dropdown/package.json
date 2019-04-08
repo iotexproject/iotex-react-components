@@ -1,5 +1,5 @@
 {
-  "name": "typescript-react-lib-starter",
+  "name": "iotex-react-language-dropdown",
   "license": "MIT",
   "version": "0.0.1",
   "description": "field_description",
@@ -110,5 +110,6 @@
   "engines": {
     "node": "10.15.3",
     "npm": "6.9.0"
-  }
+  },
+  "private": true
 }
