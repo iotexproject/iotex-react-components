@@ -1,33 +1,14 @@
 import notification from "antd/lib/notification";
 import Table from "antd/lib/table";
-import { InMemoryCache } from "apollo-cache-inmemory";
-import { ApolloClient } from "apollo-client";
-import { HttpLink } from "apollo-link-http";
 import gql from "graphql-tag";
-import isBrowser from "is-browser";
-import fetch from "isomorphic-unfetch";
 // @ts-ignore
 import { t } from "onefx/lib/iso-i18n";
 import React from "react";
 import { Query, QueryResult } from "react-apollo";
-// @ts-ignore
-import JsonGlobal from "safe-json-globals/get";
+import { webBpApolloClient } from "./apollo-client";
 import { renderDelegateName, renderLiveVotes, renderStatus } from "./bp-render";
 import { SpinPreloader } from "./spin-preloader";
 import { TBpCandidate } from "./types";
-
-const state = isBrowser && JsonGlobal("state");
-
-const webBpApolloClient = new ApolloClient({
-  ssrMode: !isBrowser,
-  link: new HttpLink({
-    uri: "https://member.iotex.io/api-gateway/",
-    fetch
-  }),
-  cache: isBrowser
-    ? new InMemoryCache().restore(state.webBpApolloState)
-    : new InMemoryCache()
-});
 
 export const GET_BP_CANDIDATES = gql`
   query bpCandidates {
@@ -46,7 +27,7 @@ export const GET_BP_CANDIDATES = gql`
   }
 `;
 
-export function BpTable(): JSX.Element {
+export function BlockProducers(): JSX.Element {
   const columns = [
     {
       title: "#",

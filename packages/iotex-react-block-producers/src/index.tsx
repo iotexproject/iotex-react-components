@@ -1,5 +1,7 @@
 // @ts-ignore
 import { styled } from "onefx/lib/styletron-react";
-import { BpTable } from "./bp-table";
+import { webBpApolloClient } from "./apollo-client";
+import { BlockProducers } from "./block-producers";
 
-export default BpTable;
+export default BlockProducers;
+export { webBpApolloClient };
