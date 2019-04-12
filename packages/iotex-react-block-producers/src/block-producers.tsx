@@ -1,14 +1,21 @@
+import Avatar from "antd/lib/avatar";
 import notification from "antd/lib/notification";
 import Table from "antd/lib/table";
 import gql from "graphql-tag";
 // @ts-ignore
+import { assetURL } from "onefx/lib/asset-url";
+// @ts-ignore
 import { t } from "onefx/lib/iso-i18n";
-import React from "react";
+import React, { Component } from "react";
 import { Query, QueryResult } from "react-apollo";
 import { webBpApolloClient } from "./apollo-client";
+import { BlockProducersList } from "./block-producers-list";
 import { renderDelegateName, renderLiveVotes, renderStatus } from "./bp-render";
+import { getClassifyDelegate } from "./partition-help";
 import { SpinPreloader } from "./spin-preloader";
 import { TBpCandidate } from "./types";
+
+export const PALM_WIDTH = 575;
 
 export const GET_BP_CANDIDATES = gql`
   query bpCandidates {
@@ -27,19 +34,75 @@ export const GET_BP_CANDIDATES = gql`
   }
 `;
 
-export function BlockProducers(): JSX.Element {
-  const columns = [
+const renderHook = (render: Function, customRender: Function) => (
+  text: string,
+  record: TBpCandidate & { custom: boolean },
+  index: number
+) => {
+  if (record.custom) {
+    if (customRender) {
+      return customRender(text, record, index);
+    }
+    return {
+      rowSpan: 0
+    };
+  }
+  return render(text, record, index);
+};
+
+type Props = {};
+
+type State = {
+  displayMobileList: boolean;
+};
+
+export class BlockProducers extends Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      displayMobileList: false
+    };
+  }
+
+  public async componentDidMount(): Promise<void> {
+    if (
+      document.documentElement &&
+      document.documentElement.clientWidth <= PALM_WIDTH
+    ) {
+      this.setState({ displayMobileList: true });
+    }
+    window.addEventListener("resize", () => {
+      if (
+        document.documentElement &&
+        document.documentElement.clientWidth > PALM_WIDTH
+      ) {
+        this.setState({ displayMobileList: false });
+      } else {
+        this.setState({ displayMobileList: true });
+      }
+    });
+  }
+
+  public columns: Array<object> = [
     {
       title: "#",
       key: "index",
       dataIndex: "rank",
-      render: (text: number) => text
+      render: (text: number) => text,
+      customRender: (text: string) => (
+        <Avatar
+          shape="square"
+          size={14}
+          src={assetURL(`https://member.iotex.io/bpStatus/${text}.png`)}
+        />
+      )
     },
     {
       title: t("candidate.delegate_name"),
       dataIndex: "name",
       key: "name",
-      render: renderDelegateName
+      render: renderDelegateName,
+      customRender: (text: string) => <b>{text}</b>
     },
     {
       title: t("candidate.status"),
@@ -58,40 +121,65 @@ export function BlockProducers(): JSX.Element {
       key: "percent",
       render: (text: number) => `${Math.abs(text)}%`
     }
-  ];
+  ].map(i => {
+    // @ts-ignore
+    i.render = renderHook(i.render, i.customRender);
+    return i;
+  });
 
-  return (
-    <Query client={webBpApolloClient} query={GET_BP_CANDIDATES}>
-      {({
-        loading,
-        error,
-        data
-      }: QueryResult<{ bpCandidates: Array<TBpCandidate> }>) => {
-        if (!loading && error) {
-          notification.error({
-            message: "Error",
-            description: `failed to get block producers: ${error.message}`,
-            duration: 3
-          });
-          return null;
-        }
+  public render(): JSX.Element {
+    const { displayMobileList } = this.state;
 
-        const bpCandidates = data && data.bpCandidates;
+    return (
+      <Query client={webBpApolloClient} query={GET_BP_CANDIDATES}>
+        {({
+          loading,
+          error,
+          data
+        }: QueryResult<{ bpCandidates: Array<TBpCandidate> }>) => {
+          if (!loading && error) {
+            notification.error({
+              message: "Error",
+              description: `failed to get block producers: ${error.message}`,
+              duration: 3
+            });
+            return null;
+          }
 
-        return (
-          <div className={"table-list"}>
-            <SpinPreloader spinning={loading}>
-              <Table
-                pagination={{ pageSize: 50 }}
-                dataSource={bpCandidates}
-                columns={columns}
-                scroll={{ x: true }}
-                rowKey={"id"}
-              />
-            </SpinPreloader>
-          </div>
-        );
-      }}
-    </Query>
-  );
+          const dataSource = getClassifyDelegate(
+            (data && data.bpCandidates) || []
+          );
+          // @ts-ignore
+          const SectionRow = dataSource.reduce(
+            (r, v, i) => r.concat(v.custom ? i : []),
+            []
+          );
+
+          const renderComponent = displayMobileList ? (
+            <BlockProducersList dataSource={dataSource} />
+          ) : (
+            <Table
+              // @ts-ignore
+              rowClassName={(record, index) =>
+                SectionRow.includes(index) ? "ant-table-section-row " : ""
+              }
+              pagination={{ pageSize: 50 }}
+              dataSource={dataSource}
+              columns={this.columns}
+              scroll={{ x: true }}
+              rowKey={"id"}
+            />
+          );
+
+          return (
+            <div className={"table-list"}>
+              <SpinPreloader spinning={loading}>
+                {renderComponent}
+              </SpinPreloader>
+            </div>
+          );
+        }}
+      </Query>
+    );
+  }
 }
