@@ -1,17 +1,5 @@
 {
   "devDependencies": {
     "lerna": "3.13.2"
-  },
-  "private": true,
-  "scripts": {
-    "bootstrap": "lerna bootstrap",
-    "test": "lerna run test",
-    "clean": "rimraf packages/**/lib"
-  },
-  "workspaces": [
-    "packages/*"
-  ],
-  "dependencies": {
-    "yarn": "^1.15.2"
   }
 }
