@@ -8,7 +8,7 @@ jobs:
 
     steps:
       - checkout
-      #- run: sudo npm install lerna -g
+      - run: sudo npm install lerna -g
       - run: lerna bootstrap
       - run: lerna run test
 
