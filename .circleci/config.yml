@@ -9,8 +9,8 @@ jobs:
     steps:
       - checkout
       - run: sudo npm install lerna -g
-      - run: lerna bootstrap
-      - run: lerna run test
+      - run: sudo lerna bootstrap
+      - run: sudo lerna run test
 
 workflows:
   version: 2
