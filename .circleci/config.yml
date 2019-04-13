@@ -1,0 +1,30 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: "circleci/node:10.15.3-browsers-legacy@sha256:36b4b1f22459ae2174c9cf713f8e54e2a0df172bf27411859fd544f6f488833d"
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "yarn.lock" }}
+          - v1-dependencies-
+
+      - run: yarn install --frozen-lockfile
+      - run: yarn bootstrap
+      - run: yarn build
+      - run: ls -la node_modules/@quramy
+      - run: ls -la node_modules/.bin
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "yarn.lock" }}
+
+workflows:
+  version: 2
+  commit:
+    jobs:
+      - build
