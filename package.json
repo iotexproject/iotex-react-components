@@ -1,5 +1,14 @@
 {
   "devDependencies": {
     "lerna": "3.13.2"
-  }
+  },
+  "scripts": {
+    "bootstrap": "lerna bootstrap",
+    "test": "lerna run test"
+  },
+  "name": "iotex-react-components",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/iotexproject/iotex-react-components.git",
+  "license": "MIT"
 }
