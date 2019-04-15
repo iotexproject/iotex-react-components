@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build_test_docker:
+  build:
     docker:
       - image: "circleci/node:10.15.3-browsers-legacy@sha256:36b4b1f22459ae2174c9cf713f8e54e2a0df172bf27411859fd544f6f488833d"
 
@@ -26,4 +26,4 @@ workflows:
   version: 2
   commit:
     jobs:
-      - build_test_docker
+      - build
