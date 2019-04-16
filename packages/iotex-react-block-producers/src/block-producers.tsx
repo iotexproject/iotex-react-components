@@ -50,7 +50,10 @@ const renderHook = (render: Function, customRender: Function) => (
   return render(text, record, index);
 };
 
-type Props = {};
+type Props = {
+  extraColumns?: Array<object>;
+  extraMobileComponents?: Array<Component>;
+};
 
 type State = {
   displayMobileList: boolean;
@@ -83,52 +86,62 @@ export class BlockProducers extends Component<Props, State> {
     });
   }
 
-  public columns: Array<object> = [
-    {
-      title: "#",
-      key: "index",
-      dataIndex: "rank",
-      render: (text: number) => text,
-      customRender: (text: string) => (
-        <Avatar
-          shape="square"
-          size={14}
-          src={assetURL(`https://member.iotex.io/bpStatus/${text}.png`)}
-        />
-      )
-    },
-    {
-      title: t("candidate.delegate_name"),
-      dataIndex: "name",
-      key: "name",
-      render: renderDelegateName,
-      customRender: (text: string) => <b>{text}</b>
-    },
-    {
-      title: t("candidate.status"),
-      dataIndex: "status",
-      render: renderStatus
-    },
-    {
-      title: t("candidate.live_votes"),
-      dataIndex: "liveVotes",
-      key: "liveVotes",
-      render: renderLiveVotes
-    },
-    {
-      title: t("candidate.percent"),
-      dataIndex: "percent",
-      key: "percent",
-      render: (text: number) => `${Math.abs(text)}%`
-    }
-  ].map(i => {
-    // @ts-ignore
-    i.render = renderHook(i.render, i.customRender);
-    return i;
-  });
+  public columns: Array<object>;
+
+  public getColumns(): Array<object> {
+    const { extraColumns = [] } = this.props;
+
+    return [
+      {
+        title: "#",
+        key: "index",
+        dataIndex: "rank",
+        render: (text: number) => text,
+        customRender: (text: string) => (
+          <Avatar
+            shape="square"
+            size={14}
+            src={assetURL(`https://member.iotex.io/bpStatus/${text}.png`)}
+          />
+        )
+      },
+      {
+        title: t("candidate.delegate_name"),
+        dataIndex: "name",
+        key: "name",
+        render: renderDelegateName,
+        customRender: (text: string) => <b>{text}</b>
+      },
+      {
+        title: t("candidate.status"),
+        dataIndex: "status",
+        render: renderStatus
+      },
+      {
+        title: t("candidate.live_votes"),
+        dataIndex: "liveVotes",
+        key: "liveVotes",
+        render: renderLiveVotes
+      },
+      {
+        title: t("candidate.percent"),
+        dataIndex: "percent",
+        key: "percent",
+        render: (text: number) => `${Math.abs(text)}%`
+      },
+      ...extraColumns
+    ];
+  }
 
   public render(): JSX.Element {
     const { displayMobileList } = this.state;
+    const { extraMobileComponents } = this.props;
+    const columns = this.getColumns();
+    columns.map(i => {
+      // @ts-ignore
+      i.render = renderHook(i.render, i.customRender);
+      return i;
+    });
 
     return (
       <Query client={webBpApolloClient} query={GET_BP_CANDIDATES}>
@@ -149,30 +162,37 @@ export class BlockProducers extends Component<Props, State> {
           const dataSource = getClassifyDelegate(
             (data && data.bpCandidates) || []
           );
-          // @ts-ignore
           const SectionRow = dataSource.reduce(
+            // @ts-ignore
             (r, v, i) => r.concat(v.custom ? i : []),
             []
           );
 
           const renderComponent = displayMobileList ? (
-            <BlockProducersList dataSource={dataSource} />
+            <BlockProducersList
+              dataSource={dataSource}
+              extraComponents={extraMobileComponents}
+            />
           ) : (
             <Table
               // @ts-ignore
               rowClassName={(record, index) =>
+                // @ts-ignore
                 SectionRow.includes(index) ? "ant-table-section-row " : ""
               }
               pagination={{ pageSize: 50 }}
               dataSource={dataSource}
-              columns={this.columns}
+              columns={columns}
               scroll={{ x: true }}
               rowKey={"id"}
             />
           );
 
           return (
-            <div className={"table-list"}>
+            <div
+              className={"table-list"}
+              style={{ backgroundColor: "transparent" }}
+            >
               <SpinPreloader spinning={loading}>
                 {renderComponent}
               </SpinPreloader>

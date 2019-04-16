@@ -1,24 +1,25 @@
+// tslint:disable:react-no-dangerous-html
+// tslint:disable:no-var-requires
 // tslint:disable:no-any
 import Avatar from "antd/lib/avatar";
 import Icon from "antd/lib/icon";
 import Popover from "antd/lib/popover";
+import isBrowser from "is-browser";
 // @ts-ignore
 import { t } from "onefx/lib/iso-i18n";
 import React from "react";
-import { cloudinaryImage } from "./image-utils";
+import { Image } from "./image";
 import { colors } from "./style-color";
 
+export const ASSET_URL = "https://member.iotex.io";
 export function renderDelegateName(text: string, record: any): JSX.Element {
   return (
-    <a
-      href={`https://member.iotex.io/delegate/${record.id}`}
-      style={{ display: "flex" }}
-    >
-      <Avatar
-        shape="square"
-        src={cloudinaryImage(record.logo)
-          .changeWidth(32)
-          .cdnUrl()}
+    <a href={`/delegate/${record.id}`} style={{ display: "flex" }}>
+      <Image
+        src={record.logo}
+        resizeWidth={32}
+        width={"32px"}
+        height={"32px"}
       />
       <div
         style={{
@@ -29,6 +30,7 @@ export function renderDelegateName(text: string, record: any): JSX.Element {
         }}
       >
         <div>{text}</div>
+        {/* Todo change to name for voting */}
         <div
           style={{
             fontSize: "12px",
@@ -44,27 +46,50 @@ export function renderDelegateName(text: string, record: any): JSX.Element {
   );
 }
 
+const JsonGlobal = require("safe-json-globals/get");
+const state = isBrowser && JsonGlobal("state");
+const ENABLE_DETAILED_STATUS =
+  state && state.base && state.base.enableDetailedServerStatus;
+
 // @ts-ignore
 export function renderStatus(text: string, record: any): JSX.Element {
-  const status: "UNQUALIFIED" | "ELECTED" | "NOT_ELECTED" = record.status
-    ? record.status
-    : "UNQUALIFIED";
-  // tslint:disable:react-no-dangerous-html
-  const content = (
-    <p dangerouslySetInnerHTML={{ __html: t("candidates.election.explain") }} />
-  );
+  const status = record.status ? record.status : "UNQUALIFIED";
+  const serverStatus = record.serverStatus
+    ? record.serverStatus
+    : "NOT_EQUIPPED";
   return (
-    <Popover content={content} trigger="click">
-      <div style={{ cursor: "pointer" }}>
-        <Avatar
-          shape="square"
-          size={14}
-          style={{ backgroundColor: colors[status] }}
+    <Popover
+      content={
+        <p
+          dangerouslySetInnerHTML={{ __html: t("candidates.election.explain") }}
         />
-        <span style={{ padding: "0.5em" }}>
-          {t(`candidates.election.${status}`)}
-        </span>
-      </div>
+      }
+      trigger="hover"
+    >
+      {ENABLE_DETAILED_STATUS ? (
+        <div style={{ cursor: "pointer" }}>
+          <Avatar
+            shape="square"
+            size={14}
+            src={`${ASSET_URL}/bpStatus/${serverStatus}.png`}
+          />
+          <span style={{ padding: "0.5em" }}>
+            {t(`candidates.election.${serverStatus}`)}
+          </span>
+        </div>
+      ) : (
+        <div style={{ cursor: "pointer" }}>
+          <Avatar
+            shape="square"
+            size={14}
+            // @ts-ignore
+            style={{ backgroundColor: colors[status] }}
+          />
+          <span style={{ padding: "0.5em" }}>
+            {t(`candidates.election.${status}`)}
+          </span>
+        </div>
+      )}
     </Popover>
   );
 }
@@ -106,8 +131,4 @@ export function renderLiveVotes(text: number, record: any): JSX.Element {
       </span>
     </div>
   );
-}
-
-export function renderBlockHashLink(text: string, record: any): JSX.Element {
-  return <a href={`/block/${record.hash}`}>{text}</a>;
 }

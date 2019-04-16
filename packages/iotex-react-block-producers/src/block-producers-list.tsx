@@ -7,11 +7,12 @@ import { t } from "onefx/lib/iso-i18n";
 import { styled } from "onefx/lib/styletron-react";
 import React, { Component } from "react";
 import { renderLiveVotes, renderStatus } from "./bp-render";
-import { cloudinaryImage } from "./image-utils";
+import { cloudinaryImage } from "./image";
 import { TBpCandidate } from "./types";
 
 type Props = {
   dataSource: Array<TBpCandidate & { custom: boolean }>;
+  extraComponents?: Array<Component>;
 };
 
 const Title = styled("div", () => ({
@@ -60,7 +61,8 @@ const CategoryTitle = styled("div", () => ({
 
 export class BlockProducersList extends Component<Props> {
   public render(): JSX.Element {
-    const { dataSource } = this.props;
+    const { dataSource, extraComponents } = this.props;
+    const components = extraComponents || [];
     const columns = [
       {
         title: t("candidate.status"),
@@ -113,6 +115,9 @@ export class BlockProducersList extends Component<Props> {
                     <Name>{delegate.name}</Name>
                   </a>
                 </div>
+                {components.map(component => {
+                  return component;
+                })}
               </Title>
               <div>
                 <Table
