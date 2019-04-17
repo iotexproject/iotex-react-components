@@ -9,7 +9,11 @@ import { t } from "onefx/lib/iso-i18n";
 import React, { Component } from "react";
 import { Query, QueryResult } from "react-apollo";
 import { webBpApolloClient } from "./apollo-client";
-import { BlockProducersList } from "./block-producers-list";
+import {
+  BlockProducersList,
+  CustomTBpCandidate,
+  RenderDelegateComponent
+} from "./block-producers-list";
 import { renderDelegateName, renderLiveVotes, renderStatus } from "./bp-render";
 import { getClassifyDelegate } from "./partition-help";
 import { SpinPreloader } from "./spin-preloader";
@@ -36,7 +40,7 @@ export const GET_BP_CANDIDATES = gql`
 
 const renderHook = (render: Function, customRender: Function) => (
   text: string,
-  record: TBpCandidate & { custom: boolean },
+  record: CustomTBpCandidate,
   index: number
 ) => {
   if (record.custom) {
@@ -52,7 +56,7 @@ const renderHook = (render: Function, customRender: Function) => (
 
 type Props = {
   extraColumns?: Array<object>;
-  extraMobileComponents?: Array<Component>;
+  extraMobileComponents?: Array<RenderDelegateComponent>;
 };
 
 type State = {
@@ -67,7 +71,7 @@ export class BlockProducers extends Component<Props, State> {
     };
   }
 
-  public async componentDidMount(): Promise<void> {
+  public componentDidMount(): void {
     if (
       document.documentElement &&
       document.documentElement.clientWidth <= PALM_WIDTH
@@ -85,8 +89,6 @@ export class BlockProducers extends Component<Props, State> {
       }
     });
   }
-
-  public columns: Array<object>;
 
   public getColumns(): Array<object> {
     const { extraColumns = [] } = this.props;

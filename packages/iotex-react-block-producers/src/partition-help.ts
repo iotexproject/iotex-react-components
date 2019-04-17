@@ -1,11 +1,15 @@
+// @ts-ignore
 import partition from "lodash.partition";
+// @ts-ignore
+import { t } from "onefx/lib/iso-i18n";
+import { CustomTBpCandidate } from "./block-producers-list";
 import { TBpCandidate } from "./types";
 
 const consensusDelegatesCount = 12;
 
 export function getClassifyDelegate(
   candidatesArray: Array<TBpCandidate>
-): Array<TBpCandidate & { custom: boolean }> {
+): Array<CustomTBpCandidate> {
   const bpCandidates = candidatesArray.filter(Boolean);
   const [allDelegates, candidates] = partition(
     bpCandidates,
@@ -18,22 +22,22 @@ export function getClassifyDelegate(
     {
       id: -1,
       custom: true,
-      rank: "ONLINE",
-      name: "IoTeX Consensus Delegates"
+      rank: "ELECTED",
+      name: t("candidates.election.consensus_delegates")
     },
     ...consensusDelegates,
     {
       id: -2,
       custom: true,
       rank: "LATEST_VERION",
-      name: "IoTeX  Delegates"
+      name: t("candidates.election.delegates")
     },
     ...delegates,
     {
       id: -3,
       custom: true,
       rank: "ONLINE_HALF",
-      name: "IoTeX  Delegates Candidates"
+      name: t("candidates.election.delegates_candidates")
     },
     ...candidates
   ];

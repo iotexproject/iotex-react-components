@@ -1,7 +1,5 @@
 // tslint:disable:no-any
 // tslint:disable:no-http-string
-// @ts-ignore
-import { styled } from "onefx/lib/styletron-react";
 import React from "react";
 
 const LEN = "100%";

@@ -1,63 +1,122 @@
+// tslint:disable:no-any
 import { Avatar, Table } from "antd";
 // @ts-ignore
 import { assetURL } from "onefx/lib/asset-url";
 // @ts-ignore
 import { t } from "onefx/lib/iso-i18n";
-// @ts-ignore
-import { styled } from "onefx/lib/styletron-react";
 import React, { Component } from "react";
 import { renderLiveVotes, renderStatus } from "./bp-render";
 import { cloudinaryImage } from "./image";
 import { TBpCandidate } from "./types";
 
+export type CustomTBpCandidate = TBpCandidate & { custom: boolean };
+
+export type RenderDelegateComponent = (
+  delegate?: CustomTBpCandidate
+) => JSX.Element;
+
 type Props = {
-  dataSource: Array<TBpCandidate & { custom: boolean }>;
-  extraComponents?: Array<Component>;
+  dataSource: Array<CustomTBpCandidate>;
+  extraComponents?: Array<RenderDelegateComponent>;
 };
 
-const Title = styled("div", () => ({
-  width: "100%",
-  height: "77px",
-  backgroundColor: "#f6f8fa",
-  justifyContent: "space-between",
-  display: "flex",
-  alignItems: "center"
-}));
+// @ts-ignore
+const Title = ({ children }) => {
+  return (
+    <div
+      style={{
+        width: "100%",
+        height: "77px",
+        backgroundColor: "#f6f8fa",
+        justifyContent: "space-between",
+        display: "flex",
+        alignItems: "center"
+      }}
+    >
+      {children}
+    </div>
+  );
+};
 
-const Item = styled("div", () => ({
-  width: "100%",
-  marginBottom: "16px",
-  boxShadow: "0px 1px 2px #e3e2e2"
-}));
+// @ts-ignore
+const Item = ({ children }) => {
+  return (
+    <div
+      style={{
+        width: "100%",
+        marginBottom: "16px",
+        boxShadow: "0px 1px 2px #e3e2e2"
+      }}
+    >
+      {children}
+    </div>
+  );
+};
 
-const Name = styled("span", () => ({
-  display: "inline-block",
-  fontWeight: "bold",
-  fontSize: "16px",
-  color: "rgb(12 140 231)",
-  marginLeft: "9px",
-  lineHeight: "18px"
-}));
+// @ts-ignore
+const Name = ({ children }) => {
+  return (
+    <span
+      style={{
+        display: "inline-block",
+        fontWeight: "bold",
+        fontSize: "16px",
+        color: "rgb(12 140 231)",
+        marginLeft: "9px",
+        lineHeight: "18px"
+      }}
+    >
+      {children}
+    </span>
+  );
+};
 
-const ItemIndex = styled("span", () => ({
-  display: "inline-block",
-  width: "40px",
-  textAlign: "center",
-  fontWeight: "bold"
-}));
+// @ts-ignore
+const ItemIndex = ({ children }) => {
+  return (
+    <span
+      style={{
+        display: "inline-block",
+        width: "40px",
+        textAlign: "center",
+        fontWeight: "bold"
+      }}
+    >
+      {children}
+    </span>
+  );
+};
 
-const IconWrapper = styled("span", () => ({
-  display: "inline-block",
-  width: "40px",
-  textAlign: "center"
-}));
+// @ts-ignore
+const IconWrapper = ({ children }) => {
+  return (
+    <span
+      style={{
+        display: "inline-block",
+        width: "40px",
+        textAlign: "center"
+      }}
+    >
+      {children}
+    </span>
+  );
+};
 
-const CategoryTitle = styled("div", () => ({
-  height: "54px",
-  background: "#dcf5ee",
-  lineHeight: "54px",
-  borderBottom: "1px solid #e8e8e8"
-}));
+// @ts-ignore
+const CategoryTitle = ({ children }) => {
+  return (
+    <div
+      style={{
+        height: "54px",
+        background: "#dcf5ee",
+        lineHeight: "54px",
+        borderBottom: "1px solid #e8e8e8"
+      }}
+    >
+      {children}
+    </div>
+  );
+};
 
 export class BlockProducersList extends Component<Props> {
   public render(): JSX.Element {
@@ -115,8 +174,8 @@ export class BlockProducersList extends Component<Props> {
                     <Name>{delegate.name}</Name>
                   </a>
                 </div>
-                {components.map(component => {
-                  return component;
+                {components.map((renderComponent, index) => {
+                  return <div key={index}>{renderComponent(delegate)}</div>;
                 })}
               </Title>
               <div>

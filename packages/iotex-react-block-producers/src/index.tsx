@@ -12,6 +12,8 @@ if (translations) {
   initClientI18n(translations);
 }
 import { BlockProducers } from "./block-producers";
+import { RenderDelegateComponent } from "./block-producers-list";
 
 export default BlockProducers;
 export { webBpApolloClient };
+export { RenderDelegateComponent };
