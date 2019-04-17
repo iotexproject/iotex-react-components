@@ -24,16 +24,18 @@ export const PALM_WIDTH = 575;
 export const GET_BP_CANDIDATES = gql`
   query bpCandidates {
     bpCandidates {
-      rank
       id
+      rank
       logo
       name
       status
+      serverStatus
       liveVotes
       liveVotesDelta
       percent
       registeredName
       socialMedia
+      productivity
     }
   }
 `;
