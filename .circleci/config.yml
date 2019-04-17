@@ -1,0 +1,29 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: "circleci/node:10.15.3-browsers-legacy@sha256:c1f1c580e0cea31a56de72441c4909f6fa8f00d41408bd3494b77231538f8e65"
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "yarn.lock" }}
+            - v1-dependencies-
+      - run: yarn install --frozen-lockfile
+      - run: yarn bootstrap
+      - run: yarn test
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "yarn.lock" }}
+        #- run: sudo npm install lerna -g
+        #      - run: sudo lerna bootstrap
+        #      - run: sudo lerna run test
+workflows:
+  version: 2
+  commit:
+    jobs:
+      - build
