@@ -61,13 +61,15 @@ type Props = {
 
 type State = {
   displayMobileList: boolean;
+  currentPage: number;
 };
 
 export class BlockProducers extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      displayMobileList: false
+      displayMobileList: false,
+      currentPage: 1
     };
   }
 
@@ -120,6 +122,14 @@ export class BlockProducers extends Component<Props, State> {
         render: renderStatus
       },
       {
+        title: t("candidate.productivity"),
+        dataIndex: "productivity",
+        render: (text: string) => text,
+        customRender: (text: number | string) => (
+          <b>{text === 0 ? "-" : text}</b>
+        )
+      },
+      {
         title: t("candidate.live_votes"),
         dataIndex: "liveVotes",
         key: "liveVotes",
@@ -146,7 +156,7 @@ export class BlockProducers extends Component<Props, State> {
     });
 
     return (
-      <Query client={webBpApolloClient} query={GET_BP_CANDIDATES}>
+      <Query client={webBpApolloClient} query={GET_BP_CANDIDATES} ssr={true}>
         {({
           loading,
           error,
@@ -182,11 +192,17 @@ export class BlockProducers extends Component<Props, State> {
                 // @ts-ignore
                 SectionRow.includes(index) ? "ant-table-section-row " : ""
               }
-              pagination={{ pageSize: 50 }}
+              pagination={{
+                current: this.state.currentPage,
+                pageSize: 50,
+                onChange: page => {
+                  this.setState({ currentPage: page });
+                }
+              }}
               dataSource={dataSource}
               columns={columns}
               scroll={{ x: true }}
-              rowKey={"id"}
+              rowKey={"rank"}
             />
           );
 
