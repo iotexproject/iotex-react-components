@@ -196,7 +196,7 @@ export class BlockProducers extends Component<Props, State> {
               }
               pagination={{
                 current: this.state.currentPage,
-                pageSize: 50,
+                pageSize: 100,
                 onChange: page => {
                   this.setState({ currentPage: page });
                 }
