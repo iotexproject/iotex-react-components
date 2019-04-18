@@ -1,7 +1,7 @@
 {
   "name": "iotex-react-block-producers",
   "license": "MIT",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "field_description",
   "main": "./lib/index.js",
   "files": [
@@ -118,10 +118,14 @@
     "onefx": "1.4.4",
     "react": "^16.8.6",
     "react-apollo": "^2.5.4",
-    "styletron-engine-atomic": "^1.1.0"
+    "styletron-engine-atomic": "^1.1.0",
+    "lodash.partition": "^4.6.0"
   },
   "engines": {
     "node": "10.15.3",
     "npm": "6.9.0"
+  },
+  "dependencies": {
+    "safe-json-globals": "^2.1.0"
   }
 }
