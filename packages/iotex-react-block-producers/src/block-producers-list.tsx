@@ -1,5 +1,6 @@
 // tslint:disable:no-any
-import { Avatar, Table } from "antd";
+import Avatar from "antd/lib/avatar";
+import Table from "antd/lib/table";
 // @ts-ignore
 import { assetURL } from "onefx/lib/asset-url";
 // @ts-ignore
