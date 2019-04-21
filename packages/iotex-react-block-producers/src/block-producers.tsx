@@ -127,9 +127,7 @@ export class BlockProducers extends Component<Props, State> {
         title: t("candidate.productivity"),
         dataIndex: "productivity",
         render: (text: string) => text,
-        customRender: (text: number | string) => (
-          <b>{text === 0 ? "-" : text}</b>
-        )
+        customRender: (text: number | string) => <b>{text || ""}</b>
       },
       {
         title: t("candidate.live_votes"),
