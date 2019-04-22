@@ -3,7 +3,6 @@
 import React, { Component } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
 import { connect } from "react-redux";
-import { Fa } from "./fa";
 import { shade } from "./shade";
 import { colors } from "./style-color";
 import { Languages } from "./supported-languages";
@@ -159,23 +158,6 @@ const Wrapper = ({ children, ...others }) => {
     >
       {children}
     </div>
-  );
-};
-
-// @ts-ignore
-const Icon = ({ ...props }) => {
-  return (
-    <Fa
-      {...props}
-      style={{
-        padding: "13px 5px 13px 20px",
-        color: colors.inverse01,
-        [MEDIA_DROPDOWN_MENU]: {
-          padding: "0 0 0 0",
-          alignSelf: "center"
-        }
-      }}
-    />
   );
 };
 

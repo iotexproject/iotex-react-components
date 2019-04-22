@@ -87,7 +87,6 @@
     "pretty-quick": "1.10.0",
     "react": "16.8.6",
     "react-test-renderer": "16.8.6",
-    "shader": "1.0.0",
     "source-map-loader": "0.2.4",
     "ts-node": "8.1.0",
     "tslint": "5.15.0",
@@ -103,19 +102,16 @@
   },
   "peerDependencies": {
     "@types/react": "^16.8.11",
+    "@types/react-outside-click-handler": "^1.2.0",
+    "@types/react-redux": "^7.0.7",
     "onefx": "1.4.4",
     "react": "^16.8.6",
-    "@types/react-outside-click-handler": "^1.2.0",
-    "@types/react-redux": "^7.0.7"
+    "shader": "1.0.0",
+    "global": "^4.3.2"
   },
   "engines": {
     "node": "10.15.3",
     "npm": "6.9.0"
   },
-  "private": true,
-  "dependencies": {
-    "@types/react-outside-click-handler": "^1.2.0",
-    "@types/react-redux": "^7.0.7",
-    "global": "^4.3.2"
-  }
+  "private": true
 }
