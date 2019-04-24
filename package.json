@@ -3,7 +3,7 @@
     "lerna": "3.13.3"
   },
   "scripts": {
-    "bootstrap": "lerna bootstrap",
+    "bootstrap": "lerna bootstrap --no-ci",
     "test": "lerna run test"
   },
   "name": "iotex-react-components",
