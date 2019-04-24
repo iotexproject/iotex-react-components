@@ -1,25 +1,21 @@
 version: 2
+
 jobs:
   build:
     docker:
-      - image: "circleci/node:10.15.3-browsers-legacy@sha256:c1f1c580e0cea31a56de72441c4909f6fa8f00d41408bd3494b77231538f8e65"
-
-    working_directory: ~/repo
-
+      - image: "circleci/node:10.15.3-browsers-legacy@sha256:52ed5afe2c8d199d2c7e6d7fb18bf1e10b343aa69258d6f28896901f9ef47855"
     steps:
       - checkout
+      # Download and cache dependencies
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "yarn.lock" }}
-            - v1-dependencies-
+            - v2-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v2-dependencies-
+      - run: npm install
       - run: npm run bootstrap
-      - run: npm run test
       - save_cache:
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "yarn.lock" }}
-workflows:
-  version: 2
-  commit:
-    jobs:
-      - build
+          key: v2-dependencies-{{ checksum "package.json" }}
+      - run: npm test
