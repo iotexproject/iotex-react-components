@@ -26,7 +26,7 @@ export type TBpCandidate = TNewBpCandidate & {
   liveVotes: string;
   liveVotesDelta: string;
   status: "ELECTED" | "NOT_ELECTED" | "UNQUALIFIED";
-  serverStatus: "ONLINE" | "OFFLINE" | "NOT_EQUPPIED";
+  serverStatus: "ONLINE" | "OFFLINE" | "NOT_EQUIPPED";
   percent: string;
   productivity: number;
   productivityBase: number;
