@@ -28,6 +28,8 @@ export type TBpCandidate = TNewBpCandidate & {
   status: "ELECTED" | "NOT_ELECTED" | "UNQUALIFIED";
   serverStatus: "ONLINE" | "OFFLINE" | "NOT_EQUPPIED";
   percent: string;
+  productivity: number;
+  productivityBase: number;
 
   createAt: string;
   updateAt: string;

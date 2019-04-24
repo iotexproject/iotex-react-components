@@ -36,6 +36,7 @@ export const GET_BP_CANDIDATES = gql`
       registeredName
       socialMedia
       productivity
+      productivityBase
     }
   }
 `;
@@ -126,7 +127,13 @@ export class BlockProducers extends Component<Props, State> {
       {
         title: t("candidate.productivity"),
         dataIndex: "productivity",
-        render: (text: string) => text,
+        render: (text: string, record: CustomTBpCandidate) => {
+          return !record.productivityBase ||
+            record.productivityBase === 0 ||
+            !text
+            ? "-"
+            : `${text} / ${record.productivityBase}`;
+        },
         customRender: (text: number | string) => <b>{text || ""}</b>
       },
       {
