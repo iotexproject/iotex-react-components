@@ -7,8 +7,6 @@ import Component from "..";
 import { TestRoot } from "../.dev/test-root";
 browserEnv();
 
-export const STYLETRON_GLOBAL = "styletron-global";
-
 test("Component snapshot", async t => {
   const tree = render
     .create(

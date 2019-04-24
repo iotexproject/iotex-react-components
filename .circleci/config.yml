@@ -12,16 +12,12 @@ jobs:
           keys:
             - v1-dependencies-{{ checksum "yarn.lock" }}
             - v1-dependencies-
-      - run: yarn install --frozen-lockfile
-      - run: yarn bootstrap
-      - run: yarn test
+      - run: npm run bootstrap
+      - run: npm run test
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "yarn.lock" }}
-        #- run: sudo npm install lerna -g
-        #      - run: sudo lerna bootstrap
-        #      - run: sudo lerna run test
 workflows:
   version: 2
   commit:

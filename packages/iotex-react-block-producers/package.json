@@ -97,6 +97,7 @@
     "pretty-quick": "1.10.0",
     "react": "16.8.6",
     "react-apollo": "2.5.4",
+    "react-dom": "^16.8.6",
     "react-test-renderer": "16.8.6",
     "source-map-loader": "0.2.4",
     "ts-node": "8.1.0",
@@ -109,7 +110,10 @@
     "webpack": "4.30.0",
     "webpack-bundle-analyzer": "3.3.2",
     "webpack-cli": "3.3.0",
-    "webpack-dev-server": "3.3.0"
+    "webpack-dev-server": "3.3.0",
+    "@types/react": "^16.8.11",
+    "lodash.partition": "^4.6.0",
+    "styletron-engine-atomic": "^1.1.0"
   },
   "peerDependencies": {
     "@types/react": "^16.8.11",
