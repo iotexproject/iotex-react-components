@@ -50,7 +50,7 @@ class LanguageSwitcher extends Component<Props, State> {
     window.googleTranslateElementInit = this.googleTranslateElementInit;
   }
 
-  public googleTranslateElementInit = () => {
+  public googleTranslateElementInit(): any {
     const google = window.google;
     if (google) {
       return new google.translate.TranslateElement(
@@ -59,7 +59,7 @@ class LanguageSwitcher extends Component<Props, State> {
       );
     }
     return undefined;
-  };
+  }
 
   public render(): JSX.Element {
     let uri = "";
@@ -300,11 +300,11 @@ function updateQueryStringParameter(
 
 export const LanguageSwitcherContainer = connect(
   (state: {
-    base: { locale: string; acceptLanguage: string; localeSelected: string };
+    base: { locale: string; acceptlanguage: string; localeselected: string };
   }): object => {
     if (state.base) {
-      const { locale, acceptLanguage, localeSelected } = state.base;
-      return { locale, acceptLanguage, localeSelected };
+      const { locale, acceptlanguage, localeselected } = state.base;
+      return { locale, acceptlanguage, localeselected };
     }
     return {};
   }
