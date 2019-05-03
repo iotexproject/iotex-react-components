@@ -1,9 +1,8 @@
 // tslint:disable:no-var-requires
 // tslint:disable:no-http-string
 import React, { Component } from "react";
-import OutsideClickHandler from "react-outside-click-handler";
+// import OutsideClickHandler from "react-outside-click-handler";
 import { connect } from "react-redux";
-import { shade } from "./shade";
 import { colors } from "./style-color";
 import { Languages } from "./supported-languages";
 
@@ -17,16 +16,17 @@ const GOOGLE_TRANSLATE = "GOOGLE_TRANSLATE";
 
 const languages = [
   { value: Languages.EN, children: "English" },
-  { value: Languages.KO, children: "한국어" },
-  { value: Languages.ZH_CN, children: "简体中文" },
-  { value: Languages.RU, children: "Русский" },
-  { value: Languages.IT, children: "Italiano" },
-  { value: GOTO_TRANS, children: "Help Translation?" },
-  { value: GOOGLE_TRANSLATE, children: "Google Translation" }
+  // { value: Languages.KO, children: "한국어" },
+  { value: Languages.ZH_CN, children: "简体中文" }
+  // { value: Languages.RU, children: "Русский" },
+  // { value: Languages.IT, children: "Italiano" },
+  // { value: GOTO_TRANS, children: "Help Translation?" },
+  // { value: GOOGLE_TRANSLATE, children: "Google Translation" }
 ];
 
 interface State {
   displayTranslationMenu: boolean;
+  linkCIndex: number;
 }
 
 interface Props {
@@ -37,7 +37,8 @@ class LanguageSwitcher extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      displayTranslationMenu: false
+      displayTranslationMenu: false,
+      linkCIndex: -1
     };
   }
 
@@ -66,6 +67,14 @@ class LanguageSwitcher extends Component<Props, State> {
     if (window.location) {
       uri = window.location.href;
     }
+
+    const checkCurrentLi = (key: number) => {
+      const { linkCIndex } = this.state;
+      if (key === linkCIndex) {
+        return colors.deltaUp;
+      }
+      return "white";
+    };
 
     const { style = { width: "1em" }, ...others } = this.props;
     const translationBlock = (
@@ -100,6 +109,17 @@ class LanguageSwitcher extends Component<Props, State> {
               <LanguageItem key={i}>
                 <LAnchor
                   href={updateQueryStringParameter(uri, "locale", o.value)}
+                  onMouseOver={() =>
+                    this.setState({
+                      linkCIndex: i
+                    })
+                  }
+                  onMouseLeave={() => {
+                    this.setState({
+                      linkCIndex: -1
+                    });
+                  }}
+                  color={checkCurrentLi(i)}
                 >
                   {o.children}
                 </LAnchor>
@@ -120,17 +140,21 @@ class LanguageSwitcher extends Component<Props, State> {
       <Wrapper {...others}>
         <div>
           <LanguageSwitchButton
-            onClick={() =>
+            onMouseOver={() =>
               this.setState({
-                displayTranslationMenu: !this.state.displayTranslationMenu
+                displayTranslationMenu: true
               })
             }
+            onMouseLeave={() => {
+              hideTranslationMenu();
+            }}
+            onClick={() => {
+              hideTranslationMenu();
+            }}
           >
             <TranslationIcon style={style} />
-          </LanguageSwitchButton>
-          <OutsideClickHandler onOutsideClick={hideTranslationMenu}>
             {translationBlock}
-          </OutsideClickHandler>
+          </LanguageSwitchButton>
         </div>
       </Wrapper>
     );
@@ -162,17 +186,15 @@ const Wrapper = ({ children, ...others }) => {
 };
 
 // @ts-ignore
-const LAnchor = ({ children, href, ...props }) => {
+const LAnchor = ({ children, href, color = "white", ...props }) => {
   return (
     <a
       href={href}
       style={{
         textDecoration: "none",
         cursor: "pointer",
-        color: "white",
-        ":hover": {
-          color: `${shade(colors.brand01)} !important`
-        }
+        color: color,
+        fontWeight: "bold"
       }}
       {...props}
     >
@@ -210,13 +232,14 @@ const LanguageMenu = ({ children }) => {
       style={{
         position: "fixed",
         marginLeft: "-10px",
-        lineHeight: "40px",
+        lineHeight: "32px",
         backgroundColor: colors.nav01,
-        width: "170px",
-        marginTop: "-7px",
+        width: "120px",
+        marginTop: "0",
         listStyle: "none inside",
-        paddingLeft: "20px",
+        padding: "5px 0 5px 20px",
         textAlign: "left",
+        opacity: 0.96,
         [MEDIA_DROPDOWN_MENU]: {
           backgroundColor: "#fff"
         }
@@ -252,8 +275,7 @@ const LanguageItem = ({ children }) => {
   return (
     <li
       style={{
-        margin: "0px",
-        width: "160px"
+        margin: "0px"
       }}
     >
       {children}
