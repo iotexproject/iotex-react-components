@@ -1,7 +1,6 @@
 // tslint:disable:no-var-requires
 // tslint:disable:no-http-string
 import React, { Component } from "react";
-// import OutsideClickHandler from "react-outside-click-handler";
 import { connect } from "react-redux";
 import { colors } from "./style-color";
 import { Languages } from "./supported-languages";
@@ -16,12 +15,7 @@ const GOOGLE_TRANSLATE = "GOOGLE_TRANSLATE";
 
 const languages = [
   { value: Languages.EN, children: "English" },
-  // { value: Languages.KO, children: "한국어" },
   { value: Languages.ZH_CN, children: "简体中文" }
-  // { value: Languages.RU, children: "Русский" },
-  // { value: Languages.IT, children: "Italiano" },
-  // { value: GOTO_TRANS, children: "Help Translation?" },
-  // { value: GOOGLE_TRANSLATE, children: "Google Translation" }
 ];
 
 interface State {
