@@ -94,19 +94,19 @@ class LanguageSwitcher extends Component<Props, State> {
     return googleTools ? languagesMap.concat(googleToolMap) : languagesMap;
   }
 
+  public checkCurrentLi = (key: number) => {
+    const { linkCIndex } = this.state;
+    if (key === linkCIndex) {
+      return colors.deltaUp;
+    }
+    return "white";
+  };
+
   public render(): JSX.Element {
     let uri = "";
     if (window.location) {
       uri = window.location.href;
     }
-
-    const checkCurrentLi = (key: number) => {
-      const { linkCIndex } = this.state;
-      if (key === linkCIndex) {
-        return colors.deltaUp;
-      }
-      return "white";
-    };
 
     const {
       style = { width: "3em", display: "inline-block" },
@@ -156,7 +156,7 @@ class LanguageSwitcher extends Component<Props, State> {
                       linkCIndex: -1
                     });
                   }}
-                  color={checkCurrentLi(i)}
+                  color={this.checkCurrentLi(i)}
                 >
                   {o.children}
                 </LAnchor>
