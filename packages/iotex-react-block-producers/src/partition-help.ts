@@ -5,7 +5,7 @@ import { t } from "onefx/lib/iso-i18n";
 import { CustomTBpCandidate } from "./block-producers-list";
 import { TBpCandidate } from "./types";
 
-const consensusDelegatesCount = 12;
+const consensusDelegatesCount = 18;
 
 export function getClassifyDelegate(
   candidatesArray: Array<TBpCandidate>
