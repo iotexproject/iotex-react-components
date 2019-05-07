@@ -6,3 +6,9 @@
 npm run bootstrap
 npm run test
 ```
+
+## Publish
+
+```bash
+npm run publish
+```
