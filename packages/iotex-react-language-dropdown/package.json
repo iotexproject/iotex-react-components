@@ -1,7 +1,7 @@
 {
   "name": "iotex-react-language-dropdown",
   "license": "MIT",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "field_description",
   "main": "./lib/index.js",
   "files": [
@@ -74,6 +74,7 @@
     "@types/react": "16.8.15",
     "@types/react-redux": "7.0.8",
     "@types/react-test-renderer": "16.8.1",
+    "antd": "3.16.6",
     "ava": "1.4.1",
     "awesome-typescript-loader": "5.2.1",
     "babel-loader": "8.0.5",
@@ -103,17 +104,16 @@
     "webpack": "4.30.0",
     "webpack-bundle-analyzer": "3.3.2",
     "webpack-cli": "3.3.1",
-    "webpack-dev-server": "3.3.0",
-    "antd": "3.16.6"
+    "webpack-dev-server": "3.3.0"
   },
   "peerDependencies": {
     "@types/react": "^16.8.11",
     "@types/react-redux": "^7.0.7",
+    "antd": "3.16.6",
     "global": "^4.3.2",
     "onefx": "1.4.6",
     "react": "^16.8.6",
-    "shader": "1.0.0",
-    "antd": "3.16.6"
+    "shader": "1.0.0"
   },
   "engines": {
     "node": "10.15.3",
