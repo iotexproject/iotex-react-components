@@ -1,22 +1,29 @@
 // @ts-ignore
-import partition from "lodash.partition";
-// @ts-ignore
 import { t } from "onefx/lib/iso-i18n";
 import { CustomTBpCandidate } from "./block-producers-list";
 import { TBpCandidate } from "./types";
-
-const consensusDelegatesCount = 18;
 
 export function getClassifyDelegate(
   candidatesArray: Array<TBpCandidate>
 ): Array<CustomTBpCandidate> {
   const bpCandidates = candidatesArray.filter(Boolean);
-  const [allDelegates, candidates] = partition(
-    bpCandidates,
-    (i: TBpCandidate) => i.status === "ELECTED"
-  );
-  const consensusDelegates = allDelegates.slice(0, consensusDelegatesCount);
-  const delegates = allDelegates.slice(consensusDelegatesCount, 100);
+
+  const consensusDelegates = Array<TBpCandidate>();
+  const delegates = Array<TBpCandidate>();
+  const candidates = Array<TBpCandidate>();
+
+  for (const bp of bpCandidates) {
+    if (bp.category === "CONSENSUS_DELEGATE") {
+      consensusDelegates.push(bp);
+    }
+    if (bp.category === "DELEGATE") {
+      delegates.push(bp);
+    }
+    if (bp.category === "DELEGATE_CANDIDATE") {
+      candidates.push(bp);
+    }
+  }
+
   // @ts-ignore
   return [
     {
