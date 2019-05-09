@@ -1,8 +1,13 @@
+// tslint:disable:no-any
 import Avatar from "antd/lib/avatar";
 import Input from "antd/lib/input";
 import Button from "antd/lib/button";
+import React from "react";
+// @ts-ignore
 import { styled } from "onefx/lib/styletron-react";
+// @ts-ignore
 import { assetURL } from "onefx/lib/asset-url";
+// @ts-ignore
 import { t } from "onefx/lib/iso-i18n";
 import { contentPadding } from "./style-padding";
 import { colors } from "./style-color";
@@ -43,10 +48,86 @@ const images = [
   }
 ];
 
+const links = [
+  {
+    name: "footer.resource",
+    value: [
+      {
+        name: "footer.lauch",
+        href: "https://www.launch.iotex.io/"
+      },
+      {
+        name: "footer.roadmap",
+        href: ""
+      },
+      {
+        name: "footer.research_paper",
+        href: "https://iotex.io/academics"
+      },
+      {
+        name: "footer.announcemenets",
+        href: "https://iotex.io/feed"
+      },
+      {
+        name: "footer.delegates_program",
+        href: "https://member.iotex.io/"
+      },
+      {
+        name: "footer.charity_program",
+        href: "https://iotex.io/charity"
+      }
+    ]
+  },
+  {
+    name: "footer.develop",
+    value: [
+      {
+        name: "footer.github",
+        href: "https://github.com/iotexproject"
+      },
+      {
+        name: "footer.documentations",
+        href: "https://docs.iotex.io/"
+      },
+      {
+        name: "footer.libraries_tools",
+        href: "https://docs.iotex.io/docs/libraries-and-tools.html"
+      },
+      {
+        name: "footer.explorer",
+        href: "https://iotexscan.io/"
+      },
+      {
+        name: "footer.wallet",
+        href: "https://iotexscan.io/wallet"
+      }
+    ]
+  },
+  {
+    name: "footer.about_us",
+    value: [
+      {
+        name: "footer.team",
+        href: "https://iotex-web-master.herokuapp.com/about"
+      },
+      {
+        name: "footer.forum",
+        href: "https://forum.iotex.io/"
+      },
+      {
+        name: "footer.support",
+        href: "https://iotex.zendesk.com/hc/en-us"
+      }
+    ]
+  }
+];
+
 export function Footer(): JSX.Element {
+<<<<<<< HEAD
+=======
   const links = [
     {
-      name: t("footer.resources"),
+      name: t("footer.resource"),
       value: [
         {
           name: t("footer.lauch"),
@@ -117,13 +198,14 @@ export function Footer(): JSX.Element {
       ]
     }
   ];
+>>>>>>> b504a5b2ceff97faeef2a717bfea11f00287cadc
   return (
     <FooterWrapper>
       <Align>
         <Flex>
           {links.map((link, i) => (
             <LinkWrapper key={i}>
-              <Title>{link.name}</Title>
+              <Title>{t(link.name)}</Title>
               {link.value.map((res, j) => (
                 <div key={`${i}-${j}`}>
                   <Link href={res.href}>{res.name}</Link>
@@ -132,7 +214,7 @@ export function Footer(): JSX.Element {
             </LinkWrapper>
           ))}
           <FooterRight>
-            <FooterInput placeholder={"Enter email for IoTeX updates!"} />
+            <FooterInput placeholder={t("footer.enter_email")} />
             <FooterButton>{t("footer.subscribe")}</FooterButton>
             <FooterImages>
               {images.map((image, index) => (
@@ -158,7 +240,8 @@ const Flex = styled("div", {
   display: "flex",
   alignItems: "top",
   width: "100%",
-  justifyContent: "space-between"
+  justifyContent: "space-between",
+  flexWrap: "wrap"
 });
 
 const Team = styled("a", {
