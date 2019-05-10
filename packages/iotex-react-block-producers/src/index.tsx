@@ -1,7 +1,7 @@
 // tslint:disable:no-var-requires
 // @ts-ignore
 import isBrowser from "is-browser";
-import { webBpApolloClient } from "./apollo-client";
+import { createWebBpApolloClient } from "./apollo-client";
 const JsonGlobal = require("safe-json-globals/get");
 // @ts-ignore
 import { initClientI18n } from "onefx/lib/iso-i18n";
@@ -15,5 +15,5 @@ import { BlockProducers } from "./block-producers";
 import { RenderDelegateComponent } from "./block-producers-list";
 
 export default BlockProducers;
-export { webBpApolloClient };
+export { createWebBpApolloClient };
 export { RenderDelegateComponent };
