@@ -25,8 +25,8 @@ export function getClassifyDelegate(
     }
   }
 
-  // @ts-ignore
   if (!addHeaderItem) {
+    // @ts-ignore
     return [...consensusDelegates, ...delegates, ...candidates];
   }
 
