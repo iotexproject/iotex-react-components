@@ -14,7 +14,12 @@ import {
   CustomTBpCandidate,
   RenderDelegateComponent
 } from "./block-producers-list";
-import { renderDelegateName, renderLiveVotes, renderStatus } from "./bp-render";
+import {
+  renderDelegateName,
+  renderLiveVotes,
+  renderRank,
+  TableAppendix
+} from "./bp-render";
 import { getClassifyDelegate } from "./partition-help";
 import { SpinPreloader } from "./spin-preloader";
 import { TBpCandidate } from "./types";
@@ -102,10 +107,10 @@ export class BlockProducers extends Component<Props, State> {
 
     return [
       {
-        title: "#",
+        title: t("candidates.rank"),
         key: "index",
         dataIndex: "rank",
-        render: (text: number) => text,
+        render: renderRank,
         customRender: (text: string) => (
           <Avatar
             shape="square"
@@ -122,21 +127,6 @@ export class BlockProducers extends Component<Props, State> {
         customRender: (text: string) => <b>{text}</b>
       },
       {
-        title: t("candidate.status"),
-        dataIndex: "status",
-        render: renderStatus
-      },
-      {
-        title: t("candidate.productivity"),
-        dataIndex: "productivity",
-        render: (text: string, record: CustomTBpCandidate) => {
-          return record.productivityBase
-            ? `${text} / ${record.productivityBase}`
-            : "-";
-        },
-        customRender: (text: number | string) => <b>{text || ""}</b>
-      },
-      {
         title: t("candidate.live_votes"),
         dataIndex: "liveVotes",
         key: "liveVotes",
@@ -147,6 +137,16 @@ export class BlockProducers extends Component<Props, State> {
         dataIndex: "percent",
         key: "percent",
         render: (text: number) => `${Math.abs(text)}%`
+      },
+      {
+        title: t("candidate.productivity"),
+        dataIndex: "productivity",
+        render: (text: string, record: CustomTBpCandidate) => {
+          return record.productivityBase
+            ? `${text} / ${record.productivityBase}`
+            : "-";
+        },
+        customRender: (text: number | string) => <b>{text || ""}</b>
       },
       ...extraColumns
     ];
@@ -179,8 +179,10 @@ export class BlockProducers extends Component<Props, State> {
           }
 
           const dataSource = getClassifyDelegate(
-            (data && data.bpCandidates) || []
+            (data && data.bpCandidates) || [],
+            false
           );
+
           const SectionRow = dataSource.reduce(
             // @ts-ignore
             (r, v, i) => r.concat(v.custom ? i : []),
@@ -208,17 +210,24 @@ export class BlockProducers extends Component<Props, State> {
               }}
               dataSource={dataSource}
               columns={columns}
-              scroll={{ x: true }}
               rowKey={"rank"}
+              scroll={{ y: 770 }}
             />
           );
 
           return (
             <div
               className={"table-list"}
-              style={{ backgroundColor: "transparent" }}
+              style={{
+                backgroundColor: "transparent",
+                padding: "20pt",
+                boxShadow:
+                  "0 5pt 10pt rgba(128,128,128,0.3), 0 5pt 10pt rgba(128,128,128,0.3)",
+                borderRadius: "5pt"
+              }}
             >
               <SpinPreloader spinning={loading}>
+                <TableAppendix />
                 {renderComponent}
               </SpinPreloader>
             </div>
