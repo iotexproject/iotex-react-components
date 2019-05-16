@@ -1,20 +1,19 @@
 // tslint:disable:no-any
 import Avatar from "antd/lib/avatar";
-import Input from "antd/lib/input";
 import Button from "antd/lib/button";
-import React from "react";
-// @ts-ignore
-import { styled } from "onefx/lib/styletron-react";
+import Input from "antd/lib/input";
 // @ts-ignore
 import { assetURL } from "onefx/lib/asset-url";
 // @ts-ignore
 import { t } from "onefx/lib/iso-i18n";
-import { contentPadding } from "./style-padding";
+// @ts-ignore
+import { styled } from "onefx/lib/styletron-react";
+import React from "react";
 import { colors } from "./style-color";
 import { media } from "./style-media";
+import { contentPadding } from "./style-padding";
 
 export const FOOTER_HEIGHT = 325;
-
 
 const images = [
   {
@@ -53,12 +52,8 @@ const links = [
     name: "footer.resource",
     value: [
       {
-        name: "footer.lauch",
+        name: "footer.launch",
         href: "https://www.launch.iotex.io/"
-      },
-      {
-        name: "footer.roadmap",
-        href: ""
       },
       {
         name: "footer.research_paper",
@@ -104,18 +99,14 @@ const links = [
     ]
   },
   {
-    name: "footer.about_us",
+    name: t("footer.about_us"),
     value: [
       {
-        name: "footer.team",
-        href: "https://iotex-web-master.herokuapp.com/about"
-      },
-      {
-        name: "footer.forum",
+        name: t("footer.forum"),
         href: "https://forum.iotex.io/"
       },
       {
-        name: "footer.support",
+        name: t("footer.support"),
         href: "https://iotex.zendesk.com/hc/en-us"
       }
     ]
@@ -123,82 +114,6 @@ const links = [
 ];
 
 export function Footer(): JSX.Element {
-<<<<<<< HEAD
-=======
-  const links = [
-    {
-      name: t("footer.resource"),
-      value: [
-        {
-          name: t("footer.lauch"),
-          href: "https://www.launch.iotex.io/"
-        },
-        {
-          name: t("footer.roadmap"),
-          href: ""
-        },
-        {
-          name: t("footer.research_paper"),
-          href: "https://iotex.io/academics"
-        },
-        {
-          name: t("footer.announcemenets"),
-          href: "https://iotex.io/feed"
-        },
-        {
-          name: t("footer.delegates_program"),
-          href: "https://member.iotex.io/"
-        },
-        {
-          name: t("footer.charity_program"),
-          href: "https://iotex.io/charity"
-        }
-      ]
-    },
-    {
-      name: t("footer.develop"),
-      value: [
-        {
-          name: t("footer.github"),
-          href: "https://github.com/iotexproject"
-        },
-        {
-          name: t("footer.documentations"),
-          href: "https://docs.iotex.io/"
-        },
-        {
-          name: t("footer.libraries_tools"),
-          href: "https://docs.iotex.io/docs/libraries-and-tools.html"
-        },
-        {
-          name: t("footer.explorer"),
-          href: "https://iotexscan.io/"
-        },
-        {
-          name: t("footer.wallet"),
-          href: "https://iotexscan.io/wallet"
-        }
-      ]
-    },
-    {
-      name: t("footer.about_us"),
-      value: [
-        {
-          name: t("footer.team"),
-          href: "https://iotex-web-master.herokuapp.com/about"
-        },
-        {
-          name: t("footer.forum"),
-          href: "https://forum.iotex.io/"
-        },
-        {
-          name: t("footer.support"),
-          href: "https://iotex.zendesk.com/hc/en-us"
-        }
-      ]
-    }
-  ];
->>>>>>> b504a5b2ceff97faeef2a717bfea11f00287cadc
   return (
     <FooterWrapper>
       <Align>
@@ -208,7 +123,7 @@ export function Footer(): JSX.Element {
               <Title>{t(link.name)}</Title>
               {link.value.map((res, j) => (
                 <div key={`${i}-${j}`}>
-                  <Link href={res.href}>{res.name}</Link>
+                  <Link href={res.href}>{t(res.name)}</Link>
                 </div>
               ))}
             </LinkWrapper>

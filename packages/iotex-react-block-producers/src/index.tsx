@@ -13,7 +13,7 @@ if (translations) {
 }
 import { BlockProducers } from "./block-producers";
 import { RenderDelegateComponent } from "./block-producers-list";
-import { FOOTER_HEIGHT, Footer } from "./footer";
+import { Footer, FOOTER_HEIGHT } from "./footer";
 
 export default BlockProducers;
 export { webBpApolloClient, RenderDelegateComponent, FOOTER_HEIGHT, Footer };
