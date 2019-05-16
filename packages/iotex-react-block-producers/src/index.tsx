@@ -1,7 +1,7 @@
 // tslint:disable:no-var-requires
 // @ts-ignore
 import isBrowser from "is-browser";
-import { webBpApolloClient } from "./apollo-client";
+import { createWebBpApolloClient } from "./apollo-client";
 const JsonGlobal = require("safe-json-globals/get");
 // @ts-ignore
 import { initClientI18n } from "onefx/lib/iso-i18n";
@@ -16,4 +16,5 @@ import { RenderDelegateComponent } from "./block-producers-list";
 import { Footer, FOOTER_HEIGHT } from "./footer";
 
 export default BlockProducers;
-export { webBpApolloClient, RenderDelegateComponent, FOOTER_HEIGHT, Footer };
+export { createWebBpApolloClient };
+export { RenderDelegateComponent };

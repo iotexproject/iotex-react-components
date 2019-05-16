@@ -1,6 +1,7 @@
 import Avatar from "antd/lib/avatar";
 import notification from "antd/lib/notification";
 import Table from "antd/lib/table";
+import { ApolloClient } from "apollo-client";
 import gql from "graphql-tag";
 // @ts-ignore
 import { assetURL } from "onefx/lib/asset-url";
@@ -8,7 +9,6 @@ import { assetURL } from "onefx/lib/asset-url";
 import { t } from "onefx/lib/iso-i18n";
 import React, { Component } from "react";
 import { Query, QueryResult } from "react-apollo";
-import { webBpApolloClient } from "./apollo-client";
 import {
   BlockProducersList,
   CustomTBpCandidate,
@@ -29,6 +29,7 @@ export const GET_BP_CANDIDATES = gql`
       logo
       name
       status
+      category
       serverStatus
       liveVotes
       liveVotesDelta
@@ -60,6 +61,7 @@ const renderHook = (render: Function, customRender: Function) => (
 type Props = {
   extraColumns?: Array<object>;
   extraMobileComponents?: Array<RenderDelegateComponent>;
+  apolloClient: ApolloClient<{}>;
 };
 
 type State = {
@@ -128,11 +130,9 @@ export class BlockProducers extends Component<Props, State> {
         title: t("candidate.productivity"),
         dataIndex: "productivity",
         render: (text: string, record: CustomTBpCandidate) => {
-          return !record.productivityBase ||
-            record.productivityBase === 0 ||
-            !text
-            ? "-"
-            : `${text} / ${record.productivityBase}`;
+          return record.productivityBase
+            ? `${text} / ${record.productivityBase}`
+            : "-";
         },
         customRender: (text: number | string) => <b>{text || ""}</b>
       },
@@ -154,7 +154,7 @@ export class BlockProducers extends Component<Props, State> {
 
   public render(): JSX.Element {
     const { displayMobileList } = this.state;
-    const { extraMobileComponents } = this.props;
+    const { extraMobileComponents, apolloClient } = this.props;
     const columns = this.getColumns();
     columns.map(i => {
       // @ts-ignore
@@ -163,7 +163,7 @@ export class BlockProducers extends Component<Props, State> {
     });
 
     return (
-      <Query client={webBpApolloClient} query={GET_BP_CANDIDATES} ssr={true}>
+      <Query client={apolloClient} query={GET_BP_CANDIDATES} ssr={true}>
         {({
           loading,
           error,

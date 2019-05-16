@@ -4,7 +4,8 @@
   },
   "scripts": {
     "bootstrap": "lerna bootstrap --no-ci",
-    "test": "lerna run test"
+    "test": "lerna run test",
+    "publish": "lerna run build && lerna publish"
   },
   "name": "iotex-react-components",
   "version": "1.0.0",

@@ -1,8 +1,8 @@
 {
   "name": "iotex-react-block-producers",
   "license": "MIT",
-  "version": "1.2.2",
-  "description": "field_description",
+  "version": "2.0.0",
+  "description": "block producer table",
   "main": "./lib/index.js",
   "files": [
     "lib"
@@ -88,15 +88,15 @@
     "browser-env": "3.2.6",
     "build-changelog": "2.1.2",
     "global": "4.3.2",
-    "graphql": "14.2.1",
+    "graphql": "14.3.0",
     "graphql-tag": "2.10.1",
     "html-webpack-plugin": "3.2.0",
     "husky": "2.2.0",
     "isomorphic-unfetch": "3.0.0",
     "lodash.partition": "4.6.0",
-    "nyc": "14.1.0",
+    "nyc": "14.1.1",
     "onefx": "1.4.6",
-    "prettier": "1.17.0",
+    "prettier": "1.17.1",
     "pretty-quick": "1.10.0",
     "react": "16.8.6",
     "react-apollo": "2.5.5",
@@ -113,7 +113,7 @@
     "uglifyjs-webpack-plugin": "2.1.2",
     "webpack": "4.30.0",
     "webpack-bundle-analyzer": "3.3.2",
-    "webpack-cli": "3.3.1",
+    "webpack-cli": "3.3.2",
     "webpack-dev-server": "3.3.0"
   },
   "peerDependencies": {
