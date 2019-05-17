@@ -114,7 +114,7 @@
     "webpack": "4.30.0",
     "webpack-bundle-analyzer": "3.3.2",
     "webpack-cli": "3.3.2",
-    "webpack-dev-server": "3.3.0"
+    "webpack-dev-server": "3.4.1"
   },
   "peerDependencies": {
     "@types/react": "^16.8.11",
