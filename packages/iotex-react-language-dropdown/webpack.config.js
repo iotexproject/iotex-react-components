@@ -12,7 +12,7 @@ const OUTPUT_DIR = "dist/";
 
 module.exports = {
   mode: PROD ? "production" : "development",
-  entry: [path.resolve(__dirname, ".dev/index.tsx")],
+  entry: [path.resolve(__dirname, "src/.dev/index.tsx")],
   output: {
     filename: PROD ? "[name]-[chunkhash].js" : "[name].js",
     path: path.resolve(__dirname, OUTPUT_DIR)
@@ -38,7 +38,7 @@ module.exports = {
     modules: [
       "node_modules",
       path.resolve(__dirname, "src"),
-      path.resolve(__dirname, ".dev")
+      path.resolve(__dirname, "src/.dev")
     ],
     // directories where to look for modules
     extensions: [".js", ".json", ".jsx", ".ts", ".tsx"],
@@ -49,7 +49,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, ".dev/index.ejs"),
+      template: path.resolve(__dirname, "src/.dev/index.ejs"),
       minify: { collapseWhitespace: true }
     }),
     ...(ANALYZE ? [new BundleAnalyzerPlugin()] : []),
