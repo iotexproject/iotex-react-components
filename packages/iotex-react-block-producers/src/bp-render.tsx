@@ -8,6 +8,7 @@ import isBrowser from "is-browser";
 // @ts-ignore
 import { t } from "onefx/lib/iso-i18n";
 import React from "react";
+import { CustomTBpCandidate } from "./block-producers-list";
 import { Circle } from "./circle";
 import { colors } from "./style-color";
 import { TBpCandidate } from "./types";
@@ -137,6 +138,17 @@ export function renderLiveVotes(text: number, record: any): JSX.Element {
   );
 }
 
+export function renderProductivity(
+  text: string,
+  record: CustomTBpCandidate
+): JSX.Element {
+  return (
+    <div>
+      {record.productivityBase ? `${text} / ${record.productivityBase}` : "-"}
+    </div>
+  );
+}
+
 const linearGradient = (opacity: number, endOpacity: number) =>
   `linear-gradient(to right, rgba(3,179,178,${opacity}), rgba(27,221,164,${endOpacity}))`;
 
@@ -197,16 +209,19 @@ export function renderRank(text: string, record: TBpCandidate): JSX.Element {
   return consensusIcon(text, rate, 43, 57, "-10px -16px");
 }
 
-export function TableAppendix(): JSX.Element {
+export function tableAppendix(isMobile: boolean): JSX.Element {
+  const flexDirection = isMobile ? "column" : "row";
+  const marginRight = isMobile ? "0" : "25pt";
+
   return (
     <div
       style={{
         display: "flex",
-        flexDirection: "row",
+        flexDirection,
         width: "100%",
-        paddingLeft: "10pt",
         paddingBottom: "10pt",
-        justifyContent: "space-between"
+        justifyContent: "space-between",
+        flexWrap: "wrap"
       }}
     >
       <div
@@ -224,8 +239,9 @@ export function TableAppendix(): JSX.Element {
       <div
         style={{
           display: "flex",
-          flexDirection: "row",
-          fontSize: "12pt"
+          flexDirection,
+          fontSize: "12pt",
+          flexWrap: "wrap"
         }}
       >
         <div
@@ -233,7 +249,7 @@ export function TableAppendix(): JSX.Element {
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
-            marginLeft: "25pt"
+            marginRight
           }}
         >
           {consensusIcon("", 1, 14, 10, "0")}
@@ -246,7 +262,7 @@ export function TableAppendix(): JSX.Element {
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
-            marginLeft: "25pt"
+            marginRight
           }}
         >
           <Circle color={colors.ONLINE} />
@@ -259,7 +275,7 @@ export function TableAppendix(): JSX.Element {
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
-            marginLeft: "25pt"
+            marginRight
           }}
         >
           <Circle color={colors.OFFLINE} />
@@ -272,7 +288,7 @@ export function TableAppendix(): JSX.Element {
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
-            marginLeft: "25pt"
+            marginRight
           }}
         >
           <Circle color={colors.NOT_EQUIPPED} />

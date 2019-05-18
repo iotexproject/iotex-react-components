@@ -17,8 +17,9 @@ import {
 import {
   renderDelegateName,
   renderLiveVotes,
+  renderProductivity,
   renderRank,
-  TableAppendix
+  tableAppendix
 } from "./bp-render";
 import { getClassifyDelegate } from "./partition-help";
 import { SpinPreloader } from "./spin-preloader";
@@ -142,11 +143,7 @@ export class BlockProducers extends Component<Props, State> {
       {
         title: t("candidate.productivity"),
         dataIndex: "productivity",
-        render: (text: string, record: CustomTBpCandidate) => {
-          return record.productivityBase
-            ? `${text} / ${record.productivityBase}`
-            : "-";
-        },
+        render: renderProductivity,
         customRender: (text: number | string) => <b>{text || ""}</b>
       },
       ...extraColumns
@@ -227,7 +224,7 @@ export class BlockProducers extends Component<Props, State> {
               }}
             >
               <SpinPreloader spinning={loading}>
-                <TableAppendix />
+                {tableAppendix(displayMobileList)}
                 {renderComponent}
               </SpinPreloader>
             </div>

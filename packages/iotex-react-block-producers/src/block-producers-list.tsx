@@ -6,8 +6,12 @@ import { assetURL } from "onefx/lib/asset-url";
 // @ts-ignore
 import { t } from "onefx/lib/iso-i18n";
 import React, { Component } from "react";
-import { renderLiveVotes, renderStatus } from "./bp-render";
-import { cloudinaryImage } from "./image";
+import {
+  consensusIcon,
+  renderDelegateName,
+  renderLiveVotes,
+  renderProductivity
+} from "./bp-render";
 import { TBpCandidate } from "./types";
 
 export type CustomTBpCandidate = TBpCandidate & { custom: boolean };
@@ -29,9 +33,9 @@ const Title = ({ children }) => {
         width: "100%",
         height: "77px",
         backgroundColor: "#f6f8fa",
-        justifyContent: "space-between",
         display: "flex",
-        alignItems: "center"
+        alignItems: "center",
+        flexDirection: "row"
       }}
     >
       {children}
@@ -125,11 +129,6 @@ export class BlockProducersList extends Component<Props> {
     const components = extraComponents || [];
     const columns = [
       {
-        title: t("candidate.status"),
-        dataIndex: "serverStatus",
-        render: renderStatus
-      },
-      {
         title: t("candidate.live_votes"),
         dataIndex: "liveVotes",
         key: "liveVotes",
@@ -140,11 +139,19 @@ export class BlockProducersList extends Component<Props> {
         dataIndex: "percent",
         key: "percent",
         render: (text: number) => `${Math.abs(text)}%`
+      },
+      {
+        title: t("candidate.productivity"),
+        dataIndex: "productivity",
+        render: renderProductivity
       }
     ];
+
     return (
       <div className="mobile-delegate-list">
         {dataSource.map((delegate, index) => {
+          const rate = delegate.category === "CONSENSUS_DELEGATE" ? 1 : 0;
+
           return delegate.custom ? (
             <CategoryTitle key={index}>
               <IconWrapper>
@@ -163,17 +170,9 @@ export class BlockProducersList extends Component<Props> {
           ) : (
             <Item key={index}>
               <Title>
-                <div>
-                  <ItemIndex>{delegate.rank}</ItemIndex>
-                  <a href={`/delegate/${delegate.id}`}>
-                    <Avatar
-                      shape="square"
-                      src={cloudinaryImage(delegate.logo)
-                        .changeWidth(35)
-                        .cdnUrl()}
-                    />
-                    <Name>{delegate.name}</Name>
-                  </a>
+                {consensusIcon(delegate.rank, rate, 43, 57, "")}
+                <div style={{ marginLeft: "14pt" }}>
+                  {renderDelegateName(delegate.name, delegate)}
                 </div>
                 {components.map((renderComponent, index) => {
                   return <div key={index}>{renderComponent(delegate)}</div>;
