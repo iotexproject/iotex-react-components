@@ -18,29 +18,30 @@ export function renderDelegateName(
   record: TBpCandidate
 ): JSX.Element {
   return (
-    <a href={`/delegate/${record.id}`} style={{ display: "flex" }}>
-      <div style={{ marginTop: "3px" }}>
-        <Circle color={colors[record.serverStatus]} />
-      </div>
-      <div
-        style={{
-          paddingLeft: "1em",
-          color: colors.black90,
-          fontWeight: "bold",
-          lineHeight: 1.36
-        }}
-      >
-        <div>{text}</div>
-        {/* Todo change to name for voting */}
+    <a href={`/delegate/${record.id}`}>
+      <div style={{ display: "flex" }}>
+        <div style={{ marginTop: "3px" }}>
+          <Circle color={colors[record.serverStatus]} />
+        </div>
         <div
           style={{
-            fontSize: "12px",
-            color: colors.black80,
-            fontWeight: "normal",
-            paddingTop: "5px"
+            paddingLeft: "1em",
+            color: colors.black90,
+            fontWeight: "bold",
+            lineHeight: 1.36
           }}
         >
-          {record.registeredName}
+          <div>{text}</div>
+          <div
+            style={{
+              fontSize: "12px",
+              color: colors.black80,
+              fontWeight: "normal",
+              paddingTop: "5px"
+            }}
+          >
+            {record.registeredName}
+          </div>
         </div>
       </div>
     </a>
@@ -115,11 +116,7 @@ export function renderLiveVotes(text: number, record: any): JSX.Element {
 
   return (
     <div>
-      {
-        <span style={{ padding: "0.5em" }}>
-          {Math.abs(text).toLocaleString()}
-        </span>
-      }
+      {<span>{Math.abs(text).toLocaleString()}</span>}
       {enableDelta && (
         <Icon
           type={iconType}

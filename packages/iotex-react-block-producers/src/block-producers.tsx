@@ -67,6 +67,7 @@ type Props = {
   extraColumns?: Array<object>;
   extraMobileComponents?: Array<RenderDelegateComponent>;
   apolloClient: ApolloClient<{}>;
+  height?: string;
 };
 
 type State = {
@@ -154,7 +155,11 @@ export class BlockProducers extends Component<Props, State> {
 
   public render(): JSX.Element {
     const { displayMobileList } = this.state;
-    const { extraMobileComponents, apolloClient } = this.props;
+    const {
+      extraMobileComponents,
+      apolloClient,
+      height = "calc(100vh - 100pt)"
+    } = this.props;
     const columns = this.getColumns();
     columns.map(i => {
       // @ts-ignore
@@ -195,24 +200,19 @@ export class BlockProducers extends Component<Props, State> {
               extraComponents={extraMobileComponents}
             />
           ) : (
-            <Table
-              // @ts-ignore
-              rowClassName={(record, index) =>
+            <div style={{ height, overflowY: "scroll" }}>
+              <Table
                 // @ts-ignore
-                SectionRow.includes(index) ? "ant-table-section-row " : ""
-              }
-              pagination={{
-                current: this.state.currentPage,
-                pageSize: 100,
-                onChange: page => {
-                  this.setState({ currentPage: page });
+                rowClassName={(record, index) =>
+                  // @ts-ignore
+                  SectionRow.includes(index) ? "ant-table-section-row " : ""
                 }
-              }}
-              dataSource={dataSource}
-              columns={columns}
-              rowKey={"rank"}
-              scroll={{ y: 770 }}
-            />
+                pagination={false}
+                dataSource={dataSource}
+                columns={columns}
+                rowKey={"rank"}
+              />
+            </div>
           );
 
           return (
