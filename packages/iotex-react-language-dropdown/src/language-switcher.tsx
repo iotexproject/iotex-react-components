@@ -44,7 +44,7 @@ interface Props {
   googleTools?: boolean;
 }
 
-class LanguageSwitcher extends Component<Props, State> {
+export class LanguageSwitcher extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -110,6 +110,8 @@ class LanguageSwitcher extends Component<Props, State> {
 
     const {
       style = { width: "3em", display: "inline-block" },
+      supportLanguages,
+      googleTools,
       ...others
     } = this.props;
     const languages = this.initLanguageMenu(this.props);
