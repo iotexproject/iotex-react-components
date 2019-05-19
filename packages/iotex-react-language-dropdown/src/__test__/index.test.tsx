@@ -5,6 +5,9 @@ import React from "react";
 import render from "react-test-renderer";
 import Component from "..";
 import { TestRoot } from "../.dev/test-root";
+import { LanguageSwitcher } from "../language-switcher";
+import { Languages } from "../supported-languages";
+
 browserEnv();
 
 test("Component snapshot", async t => {
@@ -12,6 +15,17 @@ test("Component snapshot", async t => {
     .create(
       <TestRoot>
         <Component />
+      </TestRoot>
+    )
+    .toJSON();
+  t.snapshot(tree);
+});
+
+test("LanguageSwitcher snapshot", async t => {
+  const tree = render
+    .create(
+      <TestRoot>
+        <LanguageSwitcher supportedLanguages={[Languages.KO]} />
       </TestRoot>
     )
     .toJSON();

@@ -4,7 +4,7 @@ import { Icon } from "antd";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { colors } from "./style-color";
-import { Languages } from "./supported-languages";
+import { Language, Languages } from "./supported-languages";
 
 const document = require("global/document");
 const window = require("global/window");
@@ -40,7 +40,7 @@ interface State {
 
 interface Props {
   style?: object;
-  supportLanguages?: [];
+  supportedLanguages?: Array<Language>;
   googleTools?: boolean;
 }
 
@@ -74,12 +74,12 @@ export class LanguageSwitcher extends Component<Props, State> {
   };
 
   public initLanguageMenu(props: Props): Array<languageMenu> {
-    const { supportLanguages, googleTools } = props;
+    const { supportedLanguages, googleTools } = props;
 
     const userLanguageMenus: Array<languageMenu> = languagesMap.filter(o => {
       return (
-        supportLanguages &&
-        supportLanguages.some(j => {
+        supportedLanguages &&
+        supportedLanguages.some(j => {
           return o.value === j;
         })
       );
@@ -110,7 +110,7 @@ export class LanguageSwitcher extends Component<Props, State> {
 
     const {
       style = { width: "3em", display: "inline-block" },
-      supportLanguages,
+      supportedLanguages,
       googleTools,
       ...others
     } = this.props;
