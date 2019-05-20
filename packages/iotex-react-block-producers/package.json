@@ -1,7 +1,7 @@
 {
   "name": "iotex-react-block-producers",
   "license": "MIT",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "block producer table",
   "main": "./lib/index.js",
   "files": [
@@ -95,7 +95,7 @@
     "isomorphic-unfetch": "3.0.0",
     "lodash.partition": "4.6.0",
     "nyc": "14.1.1",
-    "onefx": "1.4.6",
+    "onefx": "1.4.7",
     "prettier": "1.17.1",
     "pretty-quick": "1.10.0",
     "react": "16.8.6",
