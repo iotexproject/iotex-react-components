@@ -6,6 +6,7 @@ import { assetURL } from "onefx/lib/asset-url";
 // @ts-ignore
 import { t } from "onefx/lib/iso-i18n";
 import React, { Component } from "react";
+import withStyles from "react-jss";
 import {
   consensusIcon,
   renderDelegateName,
@@ -13,7 +14,6 @@ import {
   renderProductivity
 } from "./bp-render";
 import { TBpCandidate } from "./types";
-import withStyles from "react-jss";
 
 export type CustomTBpCandidate = TBpCandidate & { custom: boolean };
 
@@ -168,6 +168,7 @@ export class BlockProducersList extends Component<Props> {
       <div className="mobile-delegate-list">
         {dataSource.map((delegate, index) => {
           const rate = delegate.category === "CONSENSUS_DELEGATE" ? 1 : 0;
+          const justifyContent = components.length > 0 ? "space-between" : "";
 
           return delegate.custom ? (
             <CategoryTitle key={index}>
@@ -186,9 +187,7 @@ export class BlockProducersList extends Component<Props> {
             </CategoryTitle>
           ) : (
             <Item key={index}>
-              <Title
-                justifyContent={components.length > 0 ? "space-between" : ""}
-              >
+              <Title justifyContent={justifyContent}>
                 {consensusIcon(delegate.rank, rate, 43, 57, "")}
                 <div style={{ margin: "0 14pt" }}>
                   {renderDelegateName(delegate.name, delegate)}
