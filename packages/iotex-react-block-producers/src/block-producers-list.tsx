@@ -6,7 +6,6 @@ import { assetURL } from "onefx/lib/asset-url";
 // @ts-ignore
 import { t } from "onefx/lib/iso-i18n";
 import React, { Component } from "react";
-import withStyles from "react-jss";
 import {
   consensusIcon,
   renderDelegateName,
@@ -14,6 +13,9 @@ import {
   renderProductivity
 } from "./bp-render";
 import { TBpCandidate } from "./types";
+
+// @ts-ignore
+import withStyles, { WithStyles } from "react-jss";
 
 export type CustomTBpCandidate = TBpCandidate & { custom: boolean };
 
@@ -133,8 +135,13 @@ const styles = {
   }
 };
 
+interface IProps extends WithStyles<typeof styles> {
+  children: React.ReactNode;
+  height: string;
+}
+
 // @ts-ignore
-const Div = ({ classes, children }) => (
+const Div: React.FunctionComponent<IProps> = ({ classes, children }) => (
   <div className={classes.tableContent}>{children}</div>
 );
 

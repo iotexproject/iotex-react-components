@@ -9,7 +9,6 @@ import { assetURL } from "onefx/lib/asset-url";
 import { t } from "onefx/lib/iso-i18n";
 import React, { Component } from "react";
 import { Query, QueryResult } from "react-apollo";
-import withStyles from "react-jss";
 import {
   BlockProducersList,
   CustomTBpCandidate,
@@ -25,6 +24,9 @@ import {
 import { getClassifyDelegate } from "./partition-help";
 import { SpinPreloader } from "./spin-preloader";
 import { TBpCandidate } from "./types";
+
+// @ts-ignore
+import withStyles, { WithStyles } from "react-jss";
 
 export const PALM_WIDTH = 575;
 
@@ -69,13 +71,23 @@ const styles = {
   BpTableContainer: {
     "& .ant-table-thead > tr > th": {
       position: "sticky",
-      top: 0
+      top: 0,
+      zIndex: 1
     }
   }
 };
 
+interface IProps extends WithStyles<typeof styles> {
+  children: React.ReactNode;
+  height: string;
+}
+
 // @ts-ignore
-const Div = ({ classes, children, height }) => (
+const Div: React.FunctionComponent<IProps> = ({
+  classes,
+  children,
+  height
+}) => (
   <div
     className={classes.BpTableContainer}
     style={{ height, overflowY: "scroll" }}
