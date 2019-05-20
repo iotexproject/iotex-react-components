@@ -97,7 +97,7 @@
     "nyc": "14.1.1",
     "onefx": "1.4.7",
     "prettier": "1.17.1",
-    "pretty-quick": "1.10.0",
+    "pretty-quick": "1.11.0",
     "react": "16.8.6",
     "react-apollo": "2.5.5",
     "react-dom": "16.8.6",
