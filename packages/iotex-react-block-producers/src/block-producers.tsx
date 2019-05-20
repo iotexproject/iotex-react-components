@@ -9,6 +9,7 @@ import { assetURL } from "onefx/lib/asset-url";
 import { t } from "onefx/lib/iso-i18n";
 import React, { Component } from "react";
 import { Query, QueryResult } from "react-apollo";
+import withStyles from "react-jss";
 import {
   BlockProducersList,
   CustomTBpCandidate,
@@ -64,11 +65,32 @@ const renderHook = (render: Function, customRender: Function) => (
   return render(text, record, index);
 };
 
+const styles = {
+  BpTableContainer: {
+    "& .ant-table-thead > tr > th": {
+      position: "sticky",
+      top: 0
+    }
+  }
+};
+
+// @ts-ignore
+const Div = ({ classes, children, height }) => (
+  <div
+    className={classes.BpTableContainer}
+    style={{ height, overflowY: "scroll" }}
+  >
+    {children}
+  </div>
+);
+
+const BpTableContainer = withStyles(styles)(Div);
+
 type Props = {
   extraColumns?: Array<object>;
   extraMobileComponents?: Array<RenderDelegateComponent>;
   apolloClient: ApolloClient<{}>;
-  height?: number;
+  height?: string;
 };
 
 type State = {
@@ -154,8 +176,8 @@ export class BlockProducers extends Component<Props, State> {
     const { displayMobileList } = this.state;
     const {
       extraMobileComponents,
-      apolloClient
-      // height = 600
+      apolloClient,
+      height = "calc(100vh - 100pt)"
     } = this.props;
     const columns = this.getColumns();
     columns.map(i => {
@@ -191,24 +213,26 @@ export class BlockProducers extends Component<Props, State> {
             []
           );
 
+          const padding = displayMobileList ? "4pt" : "20pt";
           const renderComponent = displayMobileList ? (
             <BlockProducersList
               dataSource={dataSource}
               extraComponents={extraMobileComponents}
             />
           ) : (
-            <Table
-              // @ts-ignore
-              rowClassName={(record, index) =>
+            <BpTableContainer height={height}>
+              <Table
                 // @ts-ignore
-                SectionRow.includes(index) ? "ant-table-section-row " : ""
-              }
-              pagination={false}
-              dataSource={dataSource}
-              columns={columns}
-              rowKey={"rank"}
-              // scroll={{ y: height }}
-            />
+                rowClassName={(record, index) =>
+                  // @ts-ignore
+                  SectionRow.includes(index) ? "ant-table-section-row " : ""
+                }
+                pagination={false}
+                dataSource={dataSource}
+                columns={columns}
+                rowKey={"rank"}
+              />
+            </BpTableContainer>
           );
 
           return (
@@ -216,7 +240,7 @@ export class BlockProducers extends Component<Props, State> {
               className={"table-list"}
               style={{
                 backgroundColor: "transparent",
-                padding: "20pt",
+                padding,
                 boxShadow:
                   "0 5pt 10pt rgba(128,128,128,0.3), 0 5pt 10pt rgba(128,128,128,0.3)",
                 borderRadius: "5pt"
