@@ -137,7 +137,7 @@ const styles = {
 
 interface IProps extends WithStyles<typeof styles> {
   children: React.ReactNode;
-  height: string;
+  classes: any;
 }
 
 // @ts-ignore
