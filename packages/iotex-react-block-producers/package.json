@@ -131,10 +131,7 @@
     "npm": "6.9.0"
   },
   "dependencies": {
-    "@types/react-jss": "^8.6.3",
+    "react-jss": "^8.6.1",
     "safe-json-globals": "^2.1.0"
-  },
-  "resolutions": {
-    "@types/react": "^16.8.15"
   }
 }
