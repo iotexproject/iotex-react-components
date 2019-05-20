@@ -131,6 +131,7 @@
     "npm": "6.9.0"
   },
   "dependencies": {
+    "@types/react-jss": "^8.6.3",
     "safe-json-globals": "^2.1.0"
   }
 }

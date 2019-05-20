@@ -13,6 +13,7 @@ import {
   renderProductivity
 } from "./bp-render";
 import { TBpCandidate } from "./types";
+import withStyles from "react-jss";
 
 export type CustomTBpCandidate = TBpCandidate & { custom: boolean };
 
@@ -26,7 +27,7 @@ type Props = {
 };
 
 // @ts-ignore
-const Title = ({ children }) => {
+const Title = ({ children, ...others }) => {
   return (
     <div
       style={{
@@ -35,7 +36,8 @@ const Title = ({ children }) => {
         backgroundColor: "#f6f8fa",
         display: "flex",
         alignItems: "center",
-        flexDirection: "row"
+        flexDirection: "row",
+        ...others
       }}
     >
       {children}
@@ -123,6 +125,21 @@ const CategoryTitle = ({ children }) => {
   );
 };
 
+const styles = {
+  tableContent: {
+    "& .ant-table-thead > tr > th": {
+      padding: "16px 10px !important"
+    }
+  }
+};
+
+// @ts-ignore
+const Div = ({ classes, children }) => (
+  <div className={classes.tableContent}>{children}</div>
+);
+
+const TableContent = withStyles(styles)(Div);
+
 export class BlockProducersList extends Component<Props> {
   public render(): JSX.Element {
     const { dataSource, extraComponents } = this.props;
@@ -169,23 +186,25 @@ export class BlockProducersList extends Component<Props> {
             </CategoryTitle>
           ) : (
             <Item key={index}>
-              <Title>
+              <Title
+                justifyContent={components.length > 0 ? "space-between" : ""}
+              >
                 {consensusIcon(delegate.rank, rate, 43, 57, "")}
-                <div style={{ marginLeft: "14pt" }}>
+                <div style={{ margin: "0 14pt" }}>
                   {renderDelegateName(delegate.name, delegate)}
                 </div>
                 {components.map((renderComponent, index) => {
                   return <div key={index}>{renderComponent(delegate)}</div>;
                 })}
               </Title>
-              <div>
+              <TableContent>
                 <Table
                   dataSource={[delegate]}
                   columns={columns}
                   rowKey={"id"}
                   pagination={false}
                 />
-              </div>
+              </TableContent>
             </Item>
           );
         })}
