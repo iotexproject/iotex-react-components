@@ -4,6 +4,7 @@ export const colors = {
 
   black: "#000000",
   black95: "#050505",
+  black90: "#333333",
   black80: "#999999",
   black60: "#CCCCCC",
   black40: "#E5E5E5",
@@ -11,6 +12,7 @@ export const colors = {
   black10: "#F7F7F7",
 
   text01: "#333333",
+  text02: "#333341",
   white: "#fff",
 
   error: "#E54937", //	Error
@@ -26,5 +28,8 @@ export const colors = {
   ELECTED: "#06a35a",
   NOT_ELECTED: "#ff9100",
   UNQUALIFIED: "#999999",
-  deltaUp: "#00b4a0"
+  deltaUp: "#00b4a0",
+  ONLINE: "#06a35a",
+  OFFLINE: "#cccccc",
+  NOT_EQUIPPED: "#e54937"
 };

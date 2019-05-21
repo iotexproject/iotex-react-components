@@ -4,7 +4,8 @@ import { CustomTBpCandidate } from "./block-producers-list";
 import { TBpCandidate } from "./types";
 
 export function getClassifyDelegate(
-  candidatesArray: Array<TBpCandidate>
+  candidatesArray: Array<TBpCandidate>,
+  addHeaderItem: boolean
 ): Array<CustomTBpCandidate> {
   const bpCandidates = candidatesArray.filter(Boolean);
 
@@ -22,6 +23,11 @@ export function getClassifyDelegate(
     if (bp.category === "DELEGATE_CANDIDATE") {
       candidates.push(bp);
     }
+  }
+
+  if (!addHeaderItem) {
+    // @ts-ignore
+    return [...consensusDelegates, ...delegates, ...candidates];
   }
 
   // @ts-ignore

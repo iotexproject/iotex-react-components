@@ -1,3 +1,4 @@
+// tslint:disable:no-any
 import Avatar from "antd/lib/avatar";
 import notification from "antd/lib/notification";
 import Table from "antd/lib/table";
@@ -14,10 +15,19 @@ import {
   CustomTBpCandidate,
   RenderDelegateComponent
 } from "./block-producers-list";
-import { renderDelegateName, renderLiveVotes, renderStatus } from "./bp-render";
+import {
+  renderDelegateName,
+  renderLiveVotes,
+  renderProductivity,
+  renderRank,
+  tableAppendix
+} from "./bp-render";
 import { getClassifyDelegate } from "./partition-help";
 import { SpinPreloader } from "./spin-preloader";
 import { TBpCandidate } from "./types";
+
+// @ts-ignore
+import withStyles, { WithStyles } from "react-jss";
 
 export const PALM_WIDTH = 575;
 
@@ -58,10 +68,43 @@ const renderHook = (render: Function, customRender: Function) => (
   return render(text, record, index);
 };
 
+const styles = {
+  BpTableContainer: {
+    "& .ant-table-thead > tr > th": {
+      position: "sticky",
+      top: 0,
+      zIndex: 1
+    }
+  }
+};
+
+interface IProps extends WithStyles<typeof styles> {
+  children: React.ReactNode;
+  height: string;
+  classes: any;
+}
+
+// @ts-ignore
+const Div: React.FunctionComponent<IProps> = ({
+  classes,
+  children,
+  height
+}) => (
+  <div
+    className={classes.BpTableContainer}
+    style={{ height, overflowY: "scroll" }}
+  >
+    {children}
+  </div>
+);
+
+const BpTableContainer = withStyles(styles)(Div);
+
 type Props = {
   extraColumns?: Array<object>;
   extraMobileComponents?: Array<RenderDelegateComponent>;
   apolloClient: ApolloClient<{}>;
+  height?: string;
 };
 
 type State = {
@@ -102,10 +145,10 @@ export class BlockProducers extends Component<Props, State> {
 
     return [
       {
-        title: "#",
+        title: t("candidates.rank"),
         key: "index",
         dataIndex: "rank",
-        render: (text: number) => text,
+        render: renderRank,
         customRender: (text: string) => (
           <Avatar
             shape="square"
@@ -122,21 +165,6 @@ export class BlockProducers extends Component<Props, State> {
         customRender: (text: string) => <b>{text}</b>
       },
       {
-        title: t("candidate.status"),
-        dataIndex: "status",
-        render: renderStatus
-      },
-      {
-        title: t("candidate.productivity"),
-        dataIndex: "productivity",
-        render: (text: string, record: CustomTBpCandidate) => {
-          return record.productivityBase
-            ? `${text} / ${record.productivityBase}`
-            : "-";
-        },
-        customRender: (text: number | string) => <b>{text || ""}</b>
-      },
-      {
         title: t("candidate.live_votes"),
         dataIndex: "liveVotes",
         key: "liveVotes",
@@ -148,13 +176,23 @@ export class BlockProducers extends Component<Props, State> {
         key: "percent",
         render: (text: number) => `${Math.abs(text)}%`
       },
+      {
+        title: t("candidate.productivity"),
+        dataIndex: "productivity",
+        render: renderProductivity,
+        customRender: (text: number | string) => <b>{text || ""}</b>
+      },
       ...extraColumns
     ];
   }
 
   public render(): JSX.Element {
     const { displayMobileList } = this.state;
-    const { extraMobileComponents, apolloClient } = this.props;
+    const {
+      extraMobileComponents,
+      apolloClient,
+      height = "calc(100vh - 100px)"
+    } = this.props;
     const columns = this.getColumns();
     columns.map(i => {
       // @ts-ignore
@@ -179,13 +217,25 @@ export class BlockProducers extends Component<Props, State> {
           }
 
           const dataSource = getClassifyDelegate(
-            (data && data.bpCandidates) || []
+            (data && data.bpCandidates) || [],
+            false
           );
+
           const SectionRow = dataSource.reduce(
             // @ts-ignore
             (r, v, i) => r.concat(v.custom ? i : []),
             []
           );
+
+          const containerStyles = displayMobileList
+            ? {}
+            : {
+                backgroundColor: "transparent",
+                padding: "20px",
+                boxShadow:
+                  "0 5px 10px rgba(128,128,128,0.3), 0 5px 10px rgba(128,128,128,0.3)",
+                borderRadius: "5px"
+              };
 
           const renderComponent = displayMobileList ? (
             <BlockProducersList
@@ -193,32 +243,25 @@ export class BlockProducers extends Component<Props, State> {
               extraComponents={extraMobileComponents}
             />
           ) : (
-            <Table
-              // @ts-ignore
-              rowClassName={(record, index) =>
+            <BpTableContainer height={height}>
+              <Table
                 // @ts-ignore
-                SectionRow.includes(index) ? "ant-table-section-row " : ""
-              }
-              pagination={{
-                current: this.state.currentPage,
-                pageSize: 100,
-                onChange: page => {
-                  this.setState({ currentPage: page });
+                rowClassName={(record, index) =>
+                  // @ts-ignore
+                  SectionRow.includes(index) ? "ant-table-section-row " : ""
                 }
-              }}
-              dataSource={dataSource}
-              columns={columns}
-              scroll={{ x: true }}
-              rowKey={"rank"}
-            />
+                pagination={false}
+                dataSource={dataSource}
+                columns={columns}
+                rowKey={"rank"}
+              />
+            </BpTableContainer>
           );
 
           return (
-            <div
-              className={"table-list"}
-              style={{ backgroundColor: "transparent" }}
-            >
+            <div className={"table-list"} style={containerStyles}>
               <SpinPreloader spinning={loading}>
+                {tableAppendix(displayMobileList)}
                 {renderComponent}
               </SpinPreloader>
             </div>

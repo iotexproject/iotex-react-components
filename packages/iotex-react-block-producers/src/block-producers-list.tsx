@@ -6,9 +6,16 @@ import { assetURL } from "onefx/lib/asset-url";
 // @ts-ignore
 import { t } from "onefx/lib/iso-i18n";
 import React, { Component } from "react";
-import { renderLiveVotes, renderStatus } from "./bp-render";
-import { cloudinaryImage } from "./image";
+import {
+  consensusIcon,
+  renderDelegateName,
+  renderLiveVotes,
+  renderProductivity
+} from "./bp-render";
 import { TBpCandidate } from "./types";
+
+// @ts-ignore
+import withStyles, { WithStyles } from "react-jss";
 
 export type CustomTBpCandidate = TBpCandidate & { custom: boolean };
 
@@ -22,16 +29,17 @@ type Props = {
 };
 
 // @ts-ignore
-const Title = ({ children }) => {
+const Title = ({ children, ...others }) => {
   return (
     <div
       style={{
         width: "100%",
         height: "77px",
         backgroundColor: "#f6f8fa",
-        justifyContent: "space-between",
         display: "flex",
-        alignItems: "center"
+        alignItems: "center",
+        flexDirection: "row",
+        ...others
       }}
     >
       {children}
@@ -119,16 +127,31 @@ const CategoryTitle = ({ children }) => {
   );
 };
 
+const styles = {
+  tableContent: {
+    "& .ant-table-thead > tr > th": {
+      padding: "16px 10px !important"
+    }
+  }
+};
+
+interface IProps extends WithStyles<typeof styles> {
+  children: React.ReactNode;
+  classes: any;
+}
+
+// @ts-ignore
+const Div: React.FunctionComponent<IProps> = ({ classes, children }) => (
+  <div className={classes.tableContent}>{children}</div>
+);
+
+const TableContent = withStyles(styles)(Div);
+
 export class BlockProducersList extends Component<Props> {
   public render(): JSX.Element {
     const { dataSource, extraComponents } = this.props;
     const components = extraComponents || [];
     const columns = [
-      {
-        title: t("candidate.status"),
-        dataIndex: "serverStatus",
-        render: renderStatus
-      },
       {
         title: t("candidate.live_votes"),
         dataIndex: "liveVotes",
@@ -140,11 +163,20 @@ export class BlockProducersList extends Component<Props> {
         dataIndex: "percent",
         key: "percent",
         render: (text: number) => `${Math.abs(text)}%`
+      },
+      {
+        title: t("candidate.productivity"),
+        dataIndex: "productivity",
+        render: renderProductivity
       }
     ];
+
     return (
       <div className="mobile-delegate-list">
         {dataSource.map((delegate, index) => {
+          const rate = delegate.category === "CONSENSUS_DELEGATE" ? 1 : 0;
+          const justifyContent = components.length > 0 ? "space-between" : "";
+
           return delegate.custom ? (
             <CategoryTitle key={index}>
               <IconWrapper>
@@ -162,31 +194,23 @@ export class BlockProducersList extends Component<Props> {
             </CategoryTitle>
           ) : (
             <Item key={index}>
-              <Title>
-                <div>
-                  <ItemIndex>{delegate.rank}</ItemIndex>
-                  <a href={`/delegate/${delegate.id}`}>
-                    <Avatar
-                      shape="square"
-                      src={cloudinaryImage(delegate.logo)
-                        .changeWidth(35)
-                        .cdnUrl()}
-                    />
-                    <Name>{delegate.name}</Name>
-                  </a>
+              <Title justifyContent={justifyContent}>
+                {consensusIcon(delegate.rank, rate, 43, 57, "")}
+                <div style={{ margin: "0 14px" }}>
+                  {renderDelegateName(delegate.name, delegate)}
                 </div>
                 {components.map((renderComponent, index) => {
                   return <div key={index}>{renderComponent(delegate)}</div>;
                 })}
               </Title>
-              <div>
+              <TableContent>
                 <Table
                   dataSource={[delegate]}
                   columns={columns}
                   rowKey={"id"}
                   pagination={false}
                 />
-              </div>
+              </TableContent>
             </Item>
           );
         })}
