@@ -20,8 +20,8 @@ export function renderDelegateName(
 ): JSX.Element {
   return (
     <a href={`/delegate/${record.id}`}>
-      <div style={{ display: "flex" }}>
-        <div style={{ marginTop: "3px" }}>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <div>
           <Circle color={colors[record.serverStatus]} />
         </div>
         <div
@@ -167,35 +167,35 @@ export function consensusIcon(
       style={{
         display: "flex",
         flexDirection: "row",
-        height: `${height}pt`,
-        width: `${width}pt`,
+        height: `${height}px`,
+        width: `${width}px`,
         margin
       }}
     >
       <div
         style={{
           backgroundImage: linearGradient(fullOpacity, fullOpacity),
-          width: "2pt",
+          width: "2px",
           height: "100%"
         }}
       />
       <div
         style={{
           backgroundImage: linearGradient(halfOpacity, halfOpacity),
-          width: "1pt",
+          width: "1px",
           height: "100%",
-          marginLeft: "1pt"
+          marginLeft: "1px"
         }}
       />
       <div
         style={{
           backgroundImage: linearGradient(lessOpacity, 0),
-          width: "calc(100% - 4pt)",
+          width: "calc(100% - 4px)",
           height: "100%",
           display: "flex",
           alignItems: "center",
           justifyContent: "flex-end",
-          paddingRight: "4pt"
+          paddingRight: "4px"
         }}
       >
         {text}
@@ -211,7 +211,7 @@ export function renderRank(text: string, record: TBpCandidate): JSX.Element {
 
 export function tableAppendix(isMobile: boolean): JSX.Element {
   const flexDirection = isMobile ? "column" : "row";
-  const marginRight = isMobile ? "0" : "25pt";
+  const marginRight = isMobile ? "0" : "25px";
 
   return (
     <div
@@ -219,7 +219,7 @@ export function tableAppendix(isMobile: boolean): JSX.Element {
         display: "flex",
         flexDirection,
         width: "100%",
-        paddingBottom: "10pt",
+        paddingBottom: "10px",
         justifyContent: "space-between",
         flexWrap: "wrap"
       }}
@@ -229,9 +229,9 @@ export function tableAppendix(isMobile: boolean): JSX.Element {
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
-          marginLeft: "10pt",
+          marginLeft: "10px",
           color: colors.text02,
-          fontSize: "24pt"
+          fontSize: "24px"
         }}
       >
         {t("candidates.delegate_list")}
@@ -240,7 +240,7 @@ export function tableAppendix(isMobile: boolean): JSX.Element {
         style={{
           display: "flex",
           flexDirection,
-          fontSize: "12pt",
+          fontSize: "12px",
           flexWrap: "wrap"
         }}
       >
@@ -253,7 +253,7 @@ export function tableAppendix(isMobile: boolean): JSX.Element {
           }}
         >
           {consensusIcon("", 1, 14, 10, "0")}
-          <span style={{ marginLeft: "9pt" }}>
+          <span style={{ marginLeft: "9px" }}>
             {t("candidates.election.consensus_delegates")}
           </span>
         </div>
@@ -266,7 +266,7 @@ export function tableAppendix(isMobile: boolean): JSX.Element {
           }}
         >
           <Circle color={colors.ONLINE} />
-          <span style={{ marginLeft: "9pt" }}>
+          <span style={{ marginLeft: "9px" }}>
             {t(`candidates.election.ONLINE`)}
           </span>
         </div>
@@ -279,7 +279,7 @@ export function tableAppendix(isMobile: boolean): JSX.Element {
           }}
         >
           <Circle color={colors.OFFLINE} />
-          <span style={{ marginLeft: "9pt" }}>
+          <span style={{ marginLeft: "9px" }}>
             {t(`candidates.election.OFFLINE`)}
           </span>
         </div>
@@ -292,7 +292,7 @@ export function tableAppendix(isMobile: boolean): JSX.Element {
           }}
         >
           <Circle color={colors.NOT_EQUIPPED} />
-          <span style={{ marginLeft: "9pt" }}>
+          <span style={{ marginLeft: "9px" }}>
             {t(`candidates.election.NOT_EQUIPPED`)}
           </span>
         </div>

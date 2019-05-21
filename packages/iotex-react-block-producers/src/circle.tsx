@@ -11,8 +11,8 @@ export function Circle({ size = 8, color = colors.black }: Props): JSX.Element {
     <div
       style={{
         borderRadius: "50%",
-        width: `${size}pt`,
-        height: `${size}pt`,
+        width: `${size}px`,
+        height: `${size}px`,
         backgroundColor: color
       }}
     />

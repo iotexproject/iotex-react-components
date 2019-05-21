@@ -196,7 +196,7 @@ export class BlockProducersList extends Component<Props> {
             <Item key={index}>
               <Title justifyContent={justifyContent}>
                 {consensusIcon(delegate.rank, rate, 43, 57, "")}
-                <div style={{ margin: "0 14pt" }}>
+                <div style={{ margin: "0 14px" }}>
                   {renderDelegateName(delegate.name, delegate)}
                 </div>
                 {components.map((renderComponent, index) => {

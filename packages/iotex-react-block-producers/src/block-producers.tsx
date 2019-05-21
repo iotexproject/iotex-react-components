@@ -191,7 +191,7 @@ export class BlockProducers extends Component<Props, State> {
     const {
       extraMobileComponents,
       apolloClient,
-      height = "calc(100vh - 100pt)"
+      height = "calc(100vh - 100px)"
     } = this.props;
     const columns = this.getColumns();
     columns.map(i => {
@@ -227,7 +227,16 @@ export class BlockProducers extends Component<Props, State> {
             []
           );
 
-          const padding = displayMobileList ? "4pt" : "20pt";
+          const containerStyles = displayMobileList
+            ? {}
+            : {
+                backgroundColor: "transparent",
+                padding: "20px",
+                boxShadow:
+                  "0 5px 10px rgba(128,128,128,0.3), 0 5px 10px rgba(128,128,128,0.3)",
+                borderRadius: "5px"
+              };
+
           const renderComponent = displayMobileList ? (
             <BlockProducersList
               dataSource={dataSource}
@@ -250,16 +259,7 @@ export class BlockProducers extends Component<Props, State> {
           );
 
           return (
-            <div
-              className={"table-list"}
-              style={{
-                backgroundColor: "transparent",
-                padding,
-                boxShadow:
-                  "0 5pt 10pt rgba(128,128,128,0.3), 0 5pt 10pt rgba(128,128,128,0.3)",
-                borderRadius: "5pt"
-              }}
-            >
+            <div className={"table-list"} style={containerStyles}>
               <SpinPreloader spinning={loading}>
                 {tableAppendix(displayMobileList)}
                 {renderComponent}
