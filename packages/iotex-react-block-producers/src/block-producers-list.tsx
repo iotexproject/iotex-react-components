@@ -176,6 +176,7 @@ export class BlockProducersList extends Component<Props> {
         {dataSource.map((delegate, index) => {
           const rate = delegate.category === "CONSENSUS_DELEGATE" ? 1 : 0;
           const justifyContent = components.length > 0 ? "space-between" : "";
+          const sizes = components.length > 0 ? { width: "40%" } : {};
 
           return delegate.custom ? (
             <CategoryTitle key={index}>
@@ -196,7 +197,7 @@ export class BlockProducersList extends Component<Props> {
             <Item key={index}>
               <Title justifyContent={justifyContent}>
                 {consensusIcon(delegate.rank, rate, 43, 57, "")}
-                <div style={{ margin: "0 14px" }}>
+                <div style={{ margin: "0 14px", ...sizes }}>
                   {renderDelegateName(delegate.name, delegate)}
                 </div>
                 {components.map((renderComponent, index) => {
