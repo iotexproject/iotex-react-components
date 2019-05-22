@@ -201,7 +201,12 @@ export class BlockProducers extends Component<Props, State> {
     });
 
     return (
-      <Query client={apolloClient} query={GET_BP_CANDIDATES} ssr={true}>
+      <Query
+        client={apolloClient}
+        query={GET_BP_CANDIDATES}
+        ssr={false}
+        fetchPolicy="network-only"
+      >
         {({
           loading,
           error,
