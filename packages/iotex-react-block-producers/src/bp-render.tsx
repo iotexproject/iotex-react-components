@@ -229,7 +229,6 @@ export function tableAppendix(isMobile: boolean): JSX.Element {
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
-          marginLeft: "10px",
           color: colors.text02,
           fontSize: "24px"
         }}
