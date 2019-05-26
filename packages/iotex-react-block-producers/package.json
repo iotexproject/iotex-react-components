@@ -95,7 +95,7 @@
     "isomorphic-unfetch": "3.0.0",
     "lodash.partition": "4.6.0",
     "nyc": "14.1.1",
-    "onefx": "1.4.7",
+    "onefx": "1.4.10",
     "prettier": "1.17.1",
     "pretty-quick": "1.11.0",
     "react": "16.8.6",
@@ -121,7 +121,7 @@
     "apollo-link-http": "^1.5.14",
     "graphql-tag": "^2.10.1",
     "lodash.partition": "^4.6.0",
-    "onefx": "1.4.6",
+    "onefx": "1.4.10",
     "react": "^16.8.6",
     "react-apollo": "^2.5.4",
     "styletron-engine-atomic": "^1.1.0"
