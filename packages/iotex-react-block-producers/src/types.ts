@@ -20,13 +20,18 @@ export type TNewBpCandidate = {
   tempEthAddress?: string;
 };
 
+export type DelegateCategory =
+  | "CONSENSUS_DELEGATE"
+  | "DELEGATE"
+  | "DELEGATE_CANDIDATE";
+
 export type TBpCandidate = TNewBpCandidate & {
   rank: string;
   registeredName: string;
   liveVotes: string;
   liveVotesDelta: string;
   status: "ELECTED" | "NOT_ELECTED" | "UNQUALIFIED";
-  category: "CONSENSUS_DELEGATE" | "DELEGATE" | "DELEGATE_CANDIDATE";
+  category: DelegateCategory;
   serverStatus: "ONLINE" | "OFFLINE" | "NOT_EQUIPPED";
   percent: string;
   productivity: number;

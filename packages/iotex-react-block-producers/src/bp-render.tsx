@@ -11,7 +11,7 @@ import React from "react";
 import { CustomTBpCandidate } from "./block-producers-list";
 import { Circle } from "./circle";
 import { colors } from "./style-color";
-import { TBpCandidate } from "./types";
+import { TBpCandidate, DelegateCategory } from "./types";
 
 export const ASSET_URL = "https://member.iotex.io";
 export function renderDelegateName(
@@ -149,19 +149,78 @@ export function renderProductivity(
   );
 }
 
-const linearGradient = (opacity: number, endOpacity: number) =>
-  `linear-gradient(to right, rgba(3,179,178,${opacity}), rgba(27,221,164,${endOpacity}))`;
+interface LinearGradientColor {
+  red: number;
+  green: number;
+  blue: number;
+}
+
+interface LinearGradientPallet<T> {
+  green: Array<T>;
+  yellow: Array<T>;
+}
+
+type PalletType = keyof LinearGradientPallet<LinearGradientColor>;
+
+type LinearGradientDirection = "right" | "left" | "bottom" | "top";
+
+interface LinearGradientConfig {
+  type: PalletType;
+  direction: LinearGradientDirection;
+}
+
+/**
+ * @description Linear gradient config.
+ * Add additional color below.
+ */
+const pallet: LinearGradientPallet<LinearGradientColor> = {
+  green: [
+    { red: 3, green: 179, blue: 178 },
+    { red: 27, green: 221, blue: 164 }
+  ],
+  yellow: [
+    { red: 245, green: 167, blue: 30 },
+    { red: 255, green: 208, blue: 80 }
+  ]
+};
+const primaryLinearConfig: LinearGradientConfig = {
+  type: "green",
+  direction: "right"
+};
+const secondaryLinearConfig: LinearGradientConfig = {
+  type: "yellow",
+  direction: "right"
+};
+
+const colorWithAlpha = (
+  { red, green, blue }: LinearGradientColor,
+  alpha: number
+): string => `rgba(${red},${green},${blue},${alpha})`;
+
+const linearGradient = (
+  opacity: number,
+  endOpacity: number,
+  { type, direction }: LinearGradientConfig
+) => {
+  const [color, endColor] = pallet[type];
+  const start = colorWithAlpha(color, opacity);
+  const end = colorWithAlpha(endColor, endOpacity);
+
+  return `linear-gradient(to ${direction}, ${start}, ${end})`;
+};
 
 export function consensusIcon(
   text: string,
   rate: number,
   width: number,
   height: number,
-  margin: string
+  margin: string,
+  config = primaryLinearConfig
 ): JSX.Element {
   const fullOpacity = rate;
   const halfOpacity = rate * 0.5;
   const lessOpacity = rate * 0.1;
+
   return (
     <div
       style={{
@@ -174,14 +233,14 @@ export function consensusIcon(
     >
       <div
         style={{
-          backgroundImage: linearGradient(fullOpacity, fullOpacity),
+          backgroundImage: linearGradient(fullOpacity, fullOpacity, config),
           width: "2px",
           height: "100%"
         }}
       />
       <div
         style={{
-          backgroundImage: linearGradient(halfOpacity, halfOpacity),
+          backgroundImage: linearGradient(halfOpacity, halfOpacity, config),
           width: "1px",
           height: "100%",
           marginLeft: "1px"
@@ -189,7 +248,7 @@ export function consensusIcon(
       />
       <div
         style={{
-          backgroundImage: linearGradient(lessOpacity, 0),
+          backgroundImage: linearGradient(lessOpacity, 0, config),
           width: "calc(100% - 4px)",
           height: "100%",
           display: "flex",
@@ -204,9 +263,99 @@ export function consensusIcon(
   );
 }
 
-export function renderRank(text: string, record: TBpCandidate): JSX.Element {
-  const rate = record.category === "CONSENSUS_DELEGATE" ? 1 : 0;
-  return consensusIcon(text, rate, 43, 57, "-10px -16px");
+/**
+ * @description Whether the category needs an identifier
+ */
+function isNeedCategoryIndicator(category: DelegateCategory): boolean {
+  const categories: Array<DelegateCategory> = [
+    "CONSENSUS_DELEGATE",
+    "DELEGATE_CANDIDATE"
+  ];
+
+  return categories.includes(category);
+}
+
+interface RankIndicator {
+  rate: number;
+  config?: LinearGradientConfig;
+}
+
+/**
+ * @description
+ */
+function getCategoryLinearConfig(category: DelegateCategory): RankIndicator {
+  const rate = Number(isNeedCategoryIndicator(category));
+
+  switch (category) {
+    case "CONSENSUS_DELEGATE":
+      return { rate, config: primaryLinearConfig };
+    case "DELEGATE_CANDIDATE":
+      return { rate, config: secondaryLinearConfig };
+    default:
+      return { rate };
+  }
+}
+
+export function renderRank(
+  text: string,
+  { category }: TBpCandidate
+): JSX.Element {
+  const { rate, config } = getCategoryLinearConfig(category);
+
+  return consensusIcon(text, rate, 43, 57, "-10px -16px", config);
+}
+
+interface AppendixProps {
+  marginRight: string;
+  text: string;
+}
+
+interface IconAppendixProps extends AppendixProps {
+  config?: LinearGradientConfig;
+}
+
+function IconAppendix({
+  marginRight,
+  text,
+  config
+}: IconAppendixProps): JSX.Element {
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        marginRight
+      }}
+    >
+      {consensusIcon("", 1, 14, 10, "0", config)}
+      <span style={{ marginLeft: "9px" }}>{t(text)}</span>
+    </div>
+  );
+}
+
+interface CircleAppendixProps extends AppendixProps {
+  color: string;
+}
+
+function CircleAppendix({
+  marginRight,
+  text,
+  color
+}: CircleAppendixProps): JSX.Element {
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        marginRight
+      }}
+    >
+      <Circle color={color} />
+      <span style={{ marginLeft: "9px" }}>{t(text)}</span>
+    </div>
+  );
 }
 
 export function tableAppendix(isMobile: boolean): JSX.Element {
@@ -243,58 +392,34 @@ export function tableAppendix(isMobile: boolean): JSX.Element {
           flexWrap: "wrap"
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            marginRight
-          }}
-        >
-          {consensusIcon("", 1, 14, 10, "0")}
-          <span style={{ marginLeft: "9px" }}>
-            {t("candidates.election.consensus_delegates")}
-          </span>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            marginRight
-          }}
-        >
-          <Circle color={colors.ONLINE} />
-          <span style={{ marginLeft: "9px" }}>
-            {t(`candidates.election.ONLINE`)}
-          </span>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            marginRight
-          }}
-        >
-          <Circle color={colors.OFFLINE} />
-          <span style={{ marginLeft: "9px" }}>
-            {t(`candidates.election.OFFLINE`)}
-          </span>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            marginRight
-          }}
-        >
-          <Circle color={colors.NOT_EQUIPPED} />
-          <span style={{ marginLeft: "9px" }}>
-            {t(`candidates.election.NOT_EQUIPPED`)}
-          </span>
-        </div>
+        <IconAppendix
+          marginRight={marginRight}
+          text="candidates.election.consensus_delegates"
+        />
+
+        <IconAppendix
+          marginRight={marginRight}
+          text="candidates.election.delegates_candidates"
+          config={secondaryLinearConfig}
+        />
+
+        <CircleAppendix
+          marginRight={marginRight}
+          text="candidates.election.ONLINE"
+          color={colors.ONLINE}
+        />
+
+        <CircleAppendix
+          marginRight={marginRight}
+          text="candidates.election.OFFLINE"
+          color={colors.OFFLINE}
+        />
+
+        <CircleAppendix
+          marginRight={marginRight}
+          text="candidates.election.NOT_EQUIPPED"
+          color={colors.NOT_EQUIPPED}
+        />
       </div>
     </div>
   );
