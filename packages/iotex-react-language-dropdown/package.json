@@ -85,7 +85,7 @@
     "build-changelog": "2.1.2",
     "global": "4.3.2",
     "html-webpack-plugin": "3.2.0",
-    "husky": "2.2.0",
+    "husky": "2.4.0",
     "nyc": "14.1.1",
     "onefx": "1.4.10",
     "prettier": "1.17.1",
