@@ -269,7 +269,7 @@ export function consensusIcon(
 function isNeedCategoryIndicator(category: DelegateCategory): boolean {
   const categories: Array<DelegateCategory> = [
     "CONSENSUS_DELEGATE",
-    "DELEGATE_CANDIDATE"
+    "DELEGATE"
   ];
 
   return categories.includes(category);
@@ -289,7 +289,7 @@ function getCategoryLinearConfig(category: DelegateCategory): RankIndicator {
   switch (category) {
     case "CONSENSUS_DELEGATE":
       return { rate, config: primaryLinearConfig };
-    case "DELEGATE_CANDIDATE":
+    case "DELEGATE":
       return { rate, config: secondaryLinearConfig };
     default:
       return { rate };
