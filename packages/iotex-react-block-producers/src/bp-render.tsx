@@ -11,7 +11,7 @@ import React from "react";
 import { CustomTBpCandidate } from "./block-producers-list";
 import { Circle } from "./circle";
 import { colors } from "./style-color";
-import { TBpCandidate, DelegateCategory } from "./types";
+import { DelegateCategory, TBpCandidate } from "./types";
 
 export const ASSET_URL = "https://member.iotex.io";
 export function renderDelegateName(
@@ -215,7 +215,7 @@ export function consensusIcon(
   width: number,
   height: number,
   margin: string,
-  config = primaryLinearConfig
+  config: LinearGradientConfig = primaryLinearConfig
 ): JSX.Element {
   const fullOpacity = rate;
   const halfOpacity = rate * 0.5;
