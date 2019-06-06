@@ -366,5 +366,3 @@ export const LanguageSwitcherContainer = connect(
     return {};
   }
 )(LanguageSwitcher);
-
-export const SupportLanguages = Languages;
