@@ -11,7 +11,7 @@ import React from "react";
 import { CustomTBpCandidate } from "./block-producers-list";
 import { Circle } from "./circle";
 import { colors } from "./style-color";
-import { TBpCandidate, DelegateCategory } from "./types";
+import { DelegateCategory, TBpCandidate } from "./types";
 
 export const ASSET_URL = "https://member.iotex.io";
 export function renderDelegateName(
@@ -215,7 +215,7 @@ export function consensusIcon(
   width: number,
   height: number,
   margin: string,
-  config = primaryLinearConfig
+  config: LinearGradientConfig = primaryLinearConfig
 ): JSX.Element {
   const fullOpacity = rate;
   const halfOpacity = rate * 0.5;
@@ -269,7 +269,7 @@ export function consensusIcon(
 function isNeedCategoryIndicator(category: DelegateCategory): boolean {
   const categories: Array<DelegateCategory> = [
     "CONSENSUS_DELEGATE",
-    "DELEGATE_CANDIDATE"
+    "DELEGATE"
   ];
 
   return categories.includes(category);
@@ -289,7 +289,7 @@ function getCategoryLinearConfig(category: DelegateCategory): RankIndicator {
   switch (category) {
     case "CONSENSUS_DELEGATE":
       return { rate, config: primaryLinearConfig };
-    case "DELEGATE_CANDIDATE":
+    case "DELEGATE":
       return { rate, config: secondaryLinearConfig };
     default:
       return { rate };
