@@ -88,7 +88,7 @@
     "husky": "2.2.0",
     "nyc": "14.1.1",
     "onefx": "1.4.10",
-    "prettier": "1.17.1",
+    "prettier": "1.18.0",
     "pretty-quick": "1.11.0",
     "react": "16.8.6",
     "react-test-renderer": "16.8.6",
