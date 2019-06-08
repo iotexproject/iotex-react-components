@@ -1,7 +1,6 @@
-import {
-  LanguageSwitcherContainer,
-  SupportLanguages
-} from "./language-switcher";
+import { LanguageSwitcherContainer } from "./language-switcher";
+import { Language, Languages } from "./supported-languages";
 
 export default LanguageSwitcherContainer;
-export const Languages = SupportLanguages;
+
+export { Language, Languages };
