@@ -1,9 +1,9 @@
 import { Icon } from "antd";
+import { IconProps } from "antd/lib/icon";
 import React, { Component, PropsWithChildren } from "react";
 import { connect } from "react-redux";
 import { colors } from "./style-color";
 import { Language, Languages } from "./supported-languages";
-import { IconProps } from "antd/lib/icon";
 
 const document = require("global/document");
 const window = require("global/window");
@@ -17,8 +17,14 @@ const languagesMap: Array<languageMenu> = [
   { value: Languages.EN, children: "English" },
   { value: Languages.KO, children: "한국어" },
   { value: Languages.ZH_CN, children: "简体中文" },
+  { value: Languages.ZH_TW, children: "繁體中文" },
   { value: Languages.RU, children: "Русский" },
-  { value: Languages.IT, children: "Italiano" }
+  { value: Languages.IT, children: "Italiano" },
+  { value: Languages.ES, children: "Español" },
+  { value: Languages.VI, children: "Tiếng Việt" },
+  { value: Languages.DE, children: "Deutsch" },
+  { value: Languages.JA, children: "日本語" },
+  { value: Languages.ID, children: "Indonesia" }
 ];
 
 const googleToolMap: Array<languageMenu> = [
@@ -218,8 +224,8 @@ const Wrapper = ({ children }: React.Props<any>) => {
 interface LAnchorProps {
   href: string;
   color?: string;
-  onMouseOver?: () => void;
-  onMouseLeave?: () => void;
+  onMouseOver?(): void;
+  onMouseLeave?(): void;
   style?: { [key: string]: string };
   target?: string;
 }
@@ -292,9 +298,9 @@ const LanguageMenu = ({ children }: React.Props<any>) => {
 };
 
 interface LanguageSwitchButtonProps {
-  onMouseLeave: () => void;
-  onMouseOver: () => void;
-  onClick: () => void;
+  onMouseLeave(): void;
+  onMouseOver(): void;
+  onClick(): void;
 }
 
 const LanguageSwitchButton = ({
