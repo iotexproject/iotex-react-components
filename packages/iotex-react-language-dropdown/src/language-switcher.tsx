@@ -1,3 +1,4 @@
+// tslint:disable:no-var-requires
 import { Icon } from "antd";
 import { IconProps } from "antd/lib/icon";
 import React, { Component, PropsWithChildren } from "react";
