@@ -237,8 +237,7 @@ export class BlockProducers extends Component<Props, State> {
             : {
                 backgroundColor: "transparent",
                 padding: "20px",
-                boxShadow:
-                  "0 5px 10px rgba(128,128,128,0.3), 0 5px 10px rgba(128,128,128,0.3)",
+                boxShadow: "0 5px 10px 0 rgba(128, 128, 128, 0.3)",
                 borderRadius: "5px"
               };
 
