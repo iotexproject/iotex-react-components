@@ -399,7 +399,7 @@ export function tableAppendix(isMobile: boolean): JSX.Element {
 
         <IconAppendix
           marginRight={marginRight}
-          text="candidates.election.delegates_candidates"
+          text="candidates.election.delegates"
           config={secondaryLinearConfig}
         />
 
