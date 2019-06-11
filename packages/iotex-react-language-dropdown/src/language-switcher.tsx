@@ -1,13 +1,13 @@
-// tslint:disable:no-var-requires
-// tslint:disable:no-http-string
 import { Icon } from "antd";
-import React, { Component } from "react";
+import { IconProps } from "antd/lib/icon";
+// @ts-ignore
+import document from "global/document";
+// @ts-ignore
+import window from "global/window";
+import React, { Component, PropsWithChildren } from "react";
 import { connect } from "react-redux";
 import { colors } from "./style-color";
 import { Language, Languages } from "./supported-languages";
-
-const document = require("global/document");
-const window = require("global/window");
 
 const MEDIA_DROPDOWN_MENU = `@media only screen and (maxWidth: 900px)`;
 
@@ -38,7 +38,7 @@ interface State {
   linkCIndex: number;
 }
 
-interface Props {
+interface Props extends React.Props<any> {
   style?: object;
   supportedLanguages?: Array<Language>;
   googleTools?: boolean;
@@ -108,12 +108,7 @@ export class LanguageSwitcher extends Component<Props, State> {
       uri = window.location.href;
     }
 
-    const {
-      style = { width: "3em", display: "inline-block" },
-      supportedLanguages,
-      googleTools,
-      ...others
-    } = this.props;
+    const { style = { width: "3em", display: "inline-block" } } = this.props;
     const languages = this.initLanguageMenu(this.props);
 
     const translationBlock = (
@@ -140,6 +135,7 @@ export class LanguageSwitcher extends Component<Props, State> {
             if (o.value.toLowerCase() === GOOGLE_TRANSLATE.toLowerCase()) {
               return (
                 <LanguageItem key={i}>
+                  {/* FIXME: Is it possible to use the same ID for multiple buttons? */}
                   <GoogleTranslateButton id="google_translate_element" />
                 </LanguageItem>
               );
@@ -176,35 +172,31 @@ export class LanguageSwitcher extends Component<Props, State> {
     };
 
     return (
-      <Wrapper {...others}>
-        <div>
-          <LanguageSwitchButton
-            onMouseOver={() =>
-              this.setState({
-                displayTranslationMenu: true
-              })
-            }
-            onMouseLeave={() => {
-              hideTranslationMenu();
-            }}
-            onClick={() => {
-              hideTranslationMenu();
-            }}
-          >
-            <TranslationIcon style={style} />
-            {translationBlock}
-          </LanguageSwitchButton>
-        </div>
+      <Wrapper>
+        <LanguageSwitchButton
+          onMouseOver={() =>
+            this.setState({
+              displayTranslationMenu: true
+            })
+          }
+          onMouseLeave={() => {
+            hideTranslationMenu();
+          }}
+          onClick={() => {
+            hideTranslationMenu();
+          }}
+        >
+          <TranslationIcon style={style} />
+          {translationBlock}
+        </LanguageSwitchButton>
       </Wrapper>
     );
   }
 }
 
-// @ts-ignore
-const Wrapper = ({ children, ...others }) => {
+const Wrapper = ({ children }: React.Props<any>) => {
   return (
     <div
-      {...others}
       style={{
         display: "flex",
         alignSelf: "center",
@@ -224,8 +216,21 @@ const Wrapper = ({ children, ...others }) => {
   );
 };
 
-// @ts-ignore
-const LAnchor = ({ children, href, color = "white", ...props }) => {
+interface LAnchorProps {
+  href: string;
+  color?: string;
+  onMouseOver?(): void;
+  onMouseLeave?(): void;
+  style?: { [key: string]: string };
+  target?: string;
+}
+
+const LAnchor = ({
+  children,
+  href,
+  color = "white",
+  ...props
+}: PropsWithChildren<LAnchorProps>) => {
   return (
     <a
       href={href}
@@ -242,7 +247,6 @@ const LAnchor = ({ children, href, color = "white", ...props }) => {
   );
 };
 
-// @ts-ignore
 const GoogleTranslateButton = ({ ...props }) => {
   return (
     <div
@@ -264,8 +268,7 @@ const GoogleTranslateButton = ({ ...props }) => {
   );
 };
 
-// @ts-ignore
-const LanguageMenu = ({ children }) => {
+const LanguageMenu = ({ children }: React.Props<any>) => {
   return (
     <ul
       style={{
@@ -289,8 +292,16 @@ const LanguageMenu = ({ children }) => {
   );
 };
 
-// @ts-ignore
-const LanguageSwitchButton = ({ children, ...props }) => {
+interface LanguageSwitchButtonProps {
+  onMouseLeave(): void;
+  onMouseOver(): void;
+  onClick(): void;
+}
+
+const LanguageSwitchButton = ({
+  children,
+  ...props
+}: PropsWithChildren<LanguageSwitchButtonProps>) => {
   return (
     <button
       {...props}
@@ -309,8 +320,7 @@ const LanguageSwitchButton = ({ children, ...props }) => {
   );
 };
 
-// @ts-ignore
-const LanguageItem = ({ children }) => {
+const LanguageItem = ({ children }: React.Props<any>) => {
   return (
     <li
       style={{
@@ -322,8 +332,9 @@ const LanguageItem = ({ children }) => {
   );
 };
 
-// @ts-ignore
-const TranslationIcon = props => <Icon component={TranslationSvg} {...props} />;
+const TranslationIcon = (props: IconProps) => (
+  <Icon component={TranslationSvg} {...props} />
+);
 
 const TranslationSvg = () => (
   <svg fill="currentColor" viewBox="0 0 1024 500">
@@ -356,5 +367,3 @@ export const LanguageSwitcherContainer = connect(
     return {};
   }
 )(LanguageSwitcher);
-
-export const SupportLanguages = Languages;
