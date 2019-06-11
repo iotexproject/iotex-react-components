@@ -1,13 +1,13 @@
-// tslint:disable:no-var-requires
 import { Icon } from "antd";
 import { IconProps } from "antd/lib/icon";
+// @ts-ignore
+import document from "global/document";
+// @ts-ignore
+import window from "global/window";
 import React, { Component, PropsWithChildren } from "react";
 import { connect } from "react-redux";
 import { colors } from "./style-color";
 import { Language, Languages } from "./supported-languages";
-
-const document = require("global/document");
-const window = require("global/window");
 
 const MEDIA_DROPDOWN_MENU = `@media only screen and (maxWidth: 900px)`;
 
