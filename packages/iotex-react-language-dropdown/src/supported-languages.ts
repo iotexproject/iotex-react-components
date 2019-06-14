@@ -7,7 +7,9 @@ export type Language =
   | "ja"
   | "id"
   | "it"
-  | "es";
+  | "es"
+  | "de"
+  | "vi";
 
 export enum Languages {
   EN = "en",
@@ -18,5 +20,7 @@ export enum Languages {
   JA = "ja",
   ID = "id",
   IT = "it",
-  ES = "es"
+  ES = "es",
+  DE = "de",
+  VI = "vi"
 }
