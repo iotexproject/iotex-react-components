@@ -18,8 +18,14 @@ const languagesMap: Array<languageMenu> = [
   { value: Languages.EN, children: "English" },
   { value: Languages.KO, children: "한국어" },
   { value: Languages.ZH_CN, children: "简体中文" },
+  { value: Languages.ZH_TW, children: "繁體中文" },
   { value: Languages.RU, children: "Русский" },
-  { value: Languages.IT, children: "Italiano" }
+  { value: Languages.IT, children: "Italiano" },
+  { value: Languages.ES, children: "Español" },
+  { value: Languages.VI, children: "Tiếng Việt" },
+  { value: Languages.DE, children: "Deutsch" },
+  { value: Languages.JA, children: "日本語" },
+  { value: Languages.ID, children: "Indonesia" }
 ];
 
 const googleToolMap: Array<languageMenu> = [
