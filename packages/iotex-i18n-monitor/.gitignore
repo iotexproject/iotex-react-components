@@ -52,3 +52,6 @@ flow-typed/npm/
 .env
 dump.rdb
 .vscode/
+
+# test directory
+translations/

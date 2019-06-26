@@ -1,5 +1,12 @@
 import log from "fancy-log";
-import { existsSync, readdir, readFile, writeFile } from "fs";
+import {
+  existsSync,
+  mkdirSync,
+  readdir,
+  readFile,
+  writeFile,
+  writeFileSync
+} from "fs";
 import { resolve } from "path";
 
 export interface GitDiff {
@@ -67,7 +74,10 @@ class Base {
       result[index] = updated;
     }
 
-    return result.filter(item => !this.isEmpty(item.content) && !this.onlyDeletedContent(item.content));
+    return result.filter(
+      item =>
+        !this.isEmpty(item.content) && !this.onlyDeletedContent(item.content)
+    );
   };
 
   /**
@@ -128,7 +138,11 @@ class Base {
   /**
    * @description archive content;
    */
-  protected addArchiveFlag(content: string, { time, stamp }: Timestamp, isMerged = false): string {
+  protected addArchiveFlag(
+    content: string,
+    { time, stamp }: Timestamp,
+    isMerged = false
+  ): string {
     const start = `#<<----Updated Start---${time}-------\n\n`;
     const end = !isMerged
       ? `\n\n#------Updated End-----${stamp}----->>`
@@ -167,7 +181,10 @@ class Base {
   }
 
   protected removeDeleted = (archives: Archive[]): Archive[] => {
-    return archives.map(({ timestamp, content }) => ({ timestamp, content: this.removeDeletedItem(content) }));
+    return archives.map(({ timestamp, content }) => ({
+      timestamp,
+      content: this.removeDeletedItem(content)
+    }));
   };
 
   /**
@@ -233,6 +250,7 @@ class Watcher extends Base {
   constructor(file: WatchedFile) {
     super();
     this.file = file;
+    this.checkDir(file);
   }
 
   async start(): Promise<UpdateResult> {
@@ -240,25 +258,53 @@ class Watcher extends Base {
     const diff = await this.getDiff(this.file);
     const updatedContent = await this.getUpdatedContent(diff);
 
-    return this.updateContent(oldContent, updatedContent, diff ? "success" : "clean");
+    return this.updateContent(
+      oldContent,
+      updatedContent,
+      diff ? "success" : "clean"
+    );
   }
 
   /**
-   * @description Get file content before update;
+   * @description If output folder does not exist, create it.
+   * If the source folder does not exist, interrupt execution.
+   */
+  private checkDir({ output, path }: WatchedFile): void {
+    const idx = output.lastIndexOf("/");
+    const outputDir = output.slice(0, idx);
+
+    if (!existsSync(outputDir)) {
+      mkdirSync(outputDir);
+    }
+
+    if (!existsSync(path)) {
+      throw new Error("The folder of i18n yaml is not exists!");
+    }
+  }
+
+  /**
+   * @description Get file content before update, if the target file is not exist, create it here.
    */
   private async getOldContent({ output }: WatchedFile): Promise<string> {
     return new Promise(resolve => {
       const isExists = existsSync(output);
 
       if (isExists) {
-        readFile(output, ENCODE_TYPE, (error: NodeJS.ErrnoException | null, data: string) => {
-          if (error) {
-            throw error;
+        readFile(
+          output,
+          ENCODE_TYPE,
+          (error: NodeJS.ErrnoException | null, data: string) => {
+            if (error) {
+              throw error;
+            }
+            resolve(data);
           }
-          resolve(data);
-        });
+        );
       } else {
-        resolve("");
+        const content = "";
+
+        writeFileSync(output, "");
+        resolve(content);
       }
     });
   }
@@ -277,14 +323,19 @@ class Watcher extends Base {
   /**
    * @description Get content which need to update;
    */
-  private async getUpdatedContent(yamlDiff: GitDiff | undefined): Promise<string> {
+  private async getUpdatedContent(
+    yamlDiff: GitDiff | undefined
+  ): Promise<string> {
     if (!yamlDiff) {
       return this.addArchiveFlag(" ", this.getTimestamp());
     }
 
     const reg = /(?<=[\r\n])[+-]{1}.+(?=[\r\n])/g;
     const result = yamlDiff.hunks
-      .reduce((acc: string[], cur: string) => [...acc, ...(cur.match(reg) || [])], [])
+      .reduce(
+        (acc: string[], cur: string) => [...acc, ...(cur.match(reg) || [])],
+        []
+      )
       .map(hunk => this.replaceHunkFlag(hunk));
 
     return this.addArchiveFlag(result.join("\n"), this.getTimestamp());
@@ -293,62 +344,85 @@ class Watcher extends Base {
   /**
    * @description Update content
    */
-  private updateContent(old: string, target: string, status: ResultStatus): Promise<UpdateResult> {
+  private updateContent(
+    old: string,
+    target: string,
+    status: ResultStatus
+  ): Promise<UpdateResult> {
     const oldArchive = this.toArchive(old);
     const newArchive = this.toArchive(target);
-    const handle = this.combine<Archive[]>(this.updateArchive, this.removeDeleted, this.sortArchives);
+    const handle = this.combine<Archive[]>(
+      this.updateArchive,
+      this.removeDeleted,
+      this.sortArchives
+    );
     const content = handle([...oldArchive, newArchive[0]])
       .map(({ content }) => content)
       .join("\n\n\n");
     const output = this.file.output;
 
     return new Promise(resolve => {
-      writeFile(output, content, ENCODE_TYPE, (error: NodeJS.ErrnoException | null) => {
-        if (error) {
-          log.error(`Update ${output} failed!`);
-          resolve({ status: "fail", file: this.file, error });
+      writeFile(
+        output,
+        content,
+        ENCODE_TYPE,
+        (error: NodeJS.ErrnoException | null) => {
+          if (error) {
+            log.error(`Update ${output} failed!`);
+            resolve({ status: "fail", file: this.file, error });
+          }
+          resolve({ status, file: this.file });
         }
-        resolve({ status, file: this.file });
-      });
+      );
     });
   }
 }
 
-function check({ source, output, monitorLanguages }: Config): Promise<WatchedFile[]> {
+function check({
+  source,
+  output,
+  monitorLanguages
+}: Config): Promise<WatchedFile[]> {
   const sourcePath = resolve(source);
   const outputPath = resolve(output);
 
   return new Promise(resolve => {
-    readdir(sourcePath, { withFileTypes: true }, (error: NodeJS.ErrnoException | null, data) => {
-      if (error) {
-        throw error;
+    readdir(
+      sourcePath,
+      { withFileTypes: true },
+      (error: NodeJS.ErrnoException | null, data) => {
+        if (error) {
+          throw error;
+        }
+        const files = data
+          .filter(item => item.isFile() && item.name.endsWith("yaml"))
+          .map(file => file.name);
+        const targetFiles: { name: string; lan: Language }[] = monitorLanguages
+          .map(lan => {
+            const name = files.find(item => item.startsWith(lan)) || "";
+
+            return { name, lan };
+          })
+          .filter(item => !!item.name);
+
+        if (targetFiles.length < monitorLanguages.length) {
+          log.warn("Some source files can not be found");
+        }
+
+        const result = targetFiles.map(({ name, lan }) => ({
+          path: `${sourcePath}/${name}`,
+          output: `${outputPath}/${lan}.modified.yaml`,
+          language: lan,
+          name
+        }));
+
+        resolve(result);
       }
-      const files = data.filter(item => item.isFile() && item.name.endsWith("yaml")).map(file => file.name);
-      const targetFiles: { name: string; lan: Language }[] = monitorLanguages
-        .map(lan => {
-          const name = files.find(item => item.startsWith(lan)) || "";
-
-          return { name, lan };
-        })
-        .filter(item => !!item.name);
-
-      if (targetFiles.length < monitorLanguages.length) {
-        log.warn("Some source files can not be found");
-      }
-
-      const result = targetFiles.map(({ name, lan }) => ({
-        path: `${sourcePath}/${name}`,
-        output: `${outputPath}/${lan}.modified.yaml`,
-        language: lan,
-        name
-      }));
-
-      resolve(result);
-    });
+    );
   });
 }
 
-export function monitor(config: Config): () => void {
+export function i18nMonitor(config: Config): () => void {
   const source = check(config);
 
   return () => {
