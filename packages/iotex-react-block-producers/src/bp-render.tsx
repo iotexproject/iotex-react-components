@@ -4,6 +4,7 @@
 import Avatar from "antd/lib/avatar";
 import Icon from "antd/lib/icon";
 import Popover from "antd/lib/popover";
+import Progress from "antd/lib/progress";
 import isBrowser from "is-browser";
 // @ts-ignore
 import { t } from "onefx/lib/iso-i18n";
@@ -113,7 +114,7 @@ export function renderLiveVotes(text: number, record: any): JSX.Element {
     color = colors.error;
   }
 
-  const enableDelta = false;
+  const enableDelta = true;
 
   return (
     <div>
@@ -123,7 +124,8 @@ export function renderLiveVotes(text: number, record: any): JSX.Element {
           type={iconType}
           style={{
             color,
-            fontSize: "11px"
+            fontSize: "11px",
+            marginLeft: "0.5rem"
           }}
         />
       )}
@@ -142,9 +144,33 @@ export function renderProductivity(
   text: string,
   record: CustomTBpCandidate
 ): JSX.Element {
+  if (!record.productivityBase) {
+    return <div>-</div>;
+  }
+  const persent =
+    (Number(text) > record.productivityBase
+      ? 100
+      : Number(text) / record.productivityBase) * 100;
+  const exceedPersent =
+    Number(text) > record.productivityBase
+      ? ((Number(text) - record.productivityBase) / record.productivityBase) *
+        100
+      : 0;
   return (
-    <div>
-      {record.productivityBase ? `${text} / ${record.productivityBase}` : "-"}
+    <div style={{ display: "flex", flexDirection: "row" }}>
+      <div style={{ position: "relative", marginRight: "0.5rem" }}>
+        <Progress type="circle" percent={persent} showInfo={false} width={20} />
+        {exceedPersent && (
+          <Progress
+            type="circle"
+            percent={exceedPersent}
+            showInfo={false}
+            width={10}
+            style={{ position: "absolute", left: "5px" }}
+          />
+        )}
+      </div>
+      <div>{`${text} / ${record.productivityBase}`}</div>
     </div>
   );
 }
