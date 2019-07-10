@@ -147,11 +147,11 @@ export function renderProductivity(
   if (!record.productivityBase) {
     return <div>-</div>;
   }
-  const persent =
+  const percent =
     (Number(text) > record.productivityBase
       ? 100
       : Number(text) / record.productivityBase) * 100;
-  const exceedPersent =
+  const exceedPercent =
     Number(text) > record.productivityBase
       ? ((Number(text) - record.productivityBase) / record.productivityBase) *
         100
@@ -159,11 +159,11 @@ export function renderProductivity(
   return (
     <div style={{ display: "flex", flexDirection: "row" }}>
       <div style={{ position: "relative", marginRight: "0.5rem" }}>
-        <Progress type="circle" percent={persent} showInfo={false} width={20} />
-        {exceedPersent && (
+        <Progress type="circle" percent={percent} showInfo={false} width={20} />
+        {exceedPercent && (
           <Progress
             type="circle"
-            percent={exceedPersent}
+            percent={exceedPercent}
             showInfo={false}
             width={10}
             style={{ position: "absolute", left: "5px" }}
@@ -340,6 +340,11 @@ interface IconAppendixProps extends AppendixProps {
   config?: LinearGradientConfig;
 }
 
+const appendixSpanStyle: React.CSSProperties = {
+  marginLeft: "9px",
+  whiteSpace: "nowrap"
+};
+
 function IconAppendix({
   marginRight,
   text,
@@ -355,7 +360,7 @@ function IconAppendix({
       }}
     >
       {consensusIcon("", 1, 14, 10, "0", config)}
-      <span style={{ marginLeft: "9px" }}>{t(text)}</span>
+      <span style={appendixSpanStyle}>{t(text)}</span>
     </div>
   );
 }
@@ -379,7 +384,7 @@ function CircleAppendix({
       }}
     >
       <Circle color={color} />
-      <span style={{ marginLeft: "9px" }}>{t(text)}</span>
+      <span style={appendixSpanStyle}>{t(text)}</span>
     </div>
   );
 }
@@ -413,39 +418,54 @@ export function tableAppendix(isMobile: boolean): JSX.Element {
       <div
         style={{
           display: "flex",
-          flexDirection,
-          fontSize: "12px",
-          flexWrap: "wrap"
+          flexDirection: "row",
+          fontSize: "12px"
         }}
       >
-        <IconAppendix
-          marginRight={marginRight}
-          text="candidates.election.consensus_delegates"
-        />
+        <div
+          style={{
+            display: "flex",
+            flexDirection
+          }}
+        >
+          <IconAppendix
+            marginRight={marginRight}
+            text="candidates.election.consensus_delegates"
+          />
 
-        <IconAppendix
-          marginRight={marginRight}
-          text="candidates.election.delegates"
-          config={secondaryLinearConfig}
-        />
+          <IconAppendix
+            marginRight={marginRight}
+            text="candidates.election.delegates"
+            config={secondaryLinearConfig}
+          />
+        </div>
 
-        <CircleAppendix
-          marginRight={marginRight}
-          text="candidates.election.ONLINE"
-          color={colors.ONLINE}
-        />
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            marginLeft: isMobile ? "9px" : "0",
+            justifyContent: "space-between"
+          }}
+        >
+          <CircleAppendix
+            marginRight={marginRight}
+            text="candidates.election.ONLINE"
+            color={colors.ONLINE}
+          />
 
-        <CircleAppendix
-          marginRight={marginRight}
-          text="candidates.election.OFFLINE"
-          color={colors.OFFLINE}
-        />
+          <CircleAppendix
+            marginRight={marginRight}
+            text="candidates.election.OFFLINE"
+            color={colors.OFFLINE}
+          />
 
-        <CircleAppendix
-          marginRight={marginRight}
-          text="candidates.election.NOT_EQUIPPED"
-          color={colors.NOT_EQUIPPED}
-        />
+          <CircleAppendix
+            marginRight={marginRight}
+            text="candidates.election.NOT_EQUIPPED"
+            color={colors.NOT_EQUIPPED}
+          />
+        </div>
       </div>
     </div>
   );
