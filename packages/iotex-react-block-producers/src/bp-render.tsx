@@ -147,11 +147,11 @@ export function renderProductivity(
   if (!record.productivityBase) {
     return <div>-</div>;
   }
-  const persent =
+  const percent =
     (Number(text) > record.productivityBase
       ? 100
       : Number(text) / record.productivityBase) * 100;
-  const exceedPersent =
+  const exceedPercent =
     Number(text) > record.productivityBase
       ? ((Number(text) - record.productivityBase) / record.productivityBase) *
         100
@@ -159,11 +159,11 @@ export function renderProductivity(
   return (
     <div style={{ display: "flex", flexDirection: "row" }}>
       <div style={{ position: "relative", marginRight: "0.5rem" }}>
-        <Progress type="circle" percent={persent} showInfo={false} width={20} />
-        {exceedPersent && (
+        <Progress type="circle" percent={percent} showInfo={false} width={20} />
+        {exceedPercent && (
           <Progress
             type="circle"
-            percent={exceedPersent}
+            percent={exceedPercent}
             showInfo={false}
             width={10}
             style={{ position: "absolute", left: "5px" }}
