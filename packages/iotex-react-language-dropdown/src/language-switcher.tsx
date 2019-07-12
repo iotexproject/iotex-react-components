@@ -53,6 +53,8 @@ export class LanguageSwitcher extends Component<Props, State> {
     HTMLUListElement
   >();
 
+  private noClickHappen = true;
+
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -109,6 +111,19 @@ export class LanguageSwitcher extends Component<Props, State> {
     }
     return "white";
   };
+
+  /**
+   * @description Since mouseEnter and click event may happened in a short interval, this cause the first
+   * click has no effect, user must to click the button again to see the list.
+   *
+   * This function used for prevent toggleTranslationMenu run which triggered by mouseEvent event,
+   * if a click event occur immediately.
+   */
+  private canRun(): Promise<boolean> {
+    return new Promise(resolve => {
+      setTimeout(() => resolve(this.noClickHappen), 100);
+    });
+  }
 
   public render(): JSX.Element {
     let uri = "";
@@ -176,7 +191,9 @@ export class LanguageSwitcher extends Component<Props, State> {
     const toggleTranslationMenu = (state?: boolean) => (
       event: React.MouseEvent<HTMLButtonElement, MouseEvent>
     ) => {
-      const isDisplay = !!state ? state : !this.state.displayTranslationMenu;
+      event.persist();
+      const isDisplay =
+        typeof state === "boolean" ? state : !this.state.displayTranslationMenu;
 
       this.setState({
         displayTranslationMenu: isDisplay
@@ -193,13 +210,24 @@ export class LanguageSwitcher extends Component<Props, State> {
           }
         }, 100);
       }
+
+      this.noClickHappen = true;
     };
     return (
       <Wrapper>
         <LanguageSwitchButton
-          onMouseOver={toggleTranslationMenu(true)}
+          onMouseEnter={event => {
+            this.canRun().then(can => {
+              if (can) {
+                toggleTranslationMenu(true)(event);
+              }
+            });
+          }}
           onMouseLeave={toggleTranslationMenu(false)}
-          onClick={toggleTranslationMenu()}
+          onClick={event => {
+            this.noClickHappen = false;
+            toggleTranslationMenu()(event);
+          }}
         >
           <TranslationIcon style={style} />
           {translationBlock}
@@ -297,7 +325,7 @@ const LanguageMenu = React.forwardRef(
 
 interface LanguageSwitchButtonProps {
   onMouseLeave(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
-  onMouseOver(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
+  onMouseEnter(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
   onClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
 }
 
