@@ -7,7 +7,30 @@
     "lint": "tslint --fix --project tsconfig.json -t stylish",
     "watch": "gulp",
     "build": "rm -rf && tsc && webpack --config ./webpack.config.js",
-    "test": "npm run lint && ava"
+    "test": "npm run cover",
+    "ava": "NODE_ENV=test ava",
+    "cover": "npm run lint && nyc npm run ava"
+  },
+  "nyc": {
+    "include": [
+      "src/**/*.ts"
+    ],
+    "exclude": [
+      "src/**/*.test.ts",
+      "src/**/__tests__/**"
+    ],
+    "reporter": [
+      "lcov",
+      "text",
+      "text-summary",
+      "cobertura"
+    ],
+    "extension": [
+      ".tsx",
+      ".ts"
+    ],
+    "cache": true,
+    "temp-directory": "./coverage/.nyc_output"
   },
   "author": "",
   "license": "MIT",
@@ -23,6 +46,8 @@
     "ava": "^2.2.0",
     "awesome-typescript-loader": "^5.2.1",
     "gulp": "^4.0.2",
+    "nyc": "^14.1.1",
+    "ts-node": "^8.3.0",
     "tslint": "^5.18.0",
     "tslint-config-prettier": "^1.18.0",
     "tslint-microsoft-contrib": "^6.2.0",
