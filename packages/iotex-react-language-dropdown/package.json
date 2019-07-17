@@ -1,7 +1,7 @@
 {
   "name": "iotex-react-language-dropdown",
   "license": "MIT",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "field_description",
   "main": "./lib/index.js",
   "files": [
