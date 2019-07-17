@@ -1,5 +1,5 @@
 {
-  "name": "iotex-i18n-detector",
+  "name": "iotex-react-i18n-detector",
   "version": "2.3.1",
   "description": "",
   "main": "./lib/index.js",
@@ -58,5 +58,5 @@
     "webpack-cli": "3.3.3",
     "webpack-node-externals": "1.7.2"
   },
-  "gitHead": "a3c43bcfaae2e26e5b835318aa93aa23d6890e8d"
+  "gitHead": "2c6812d557f25a14fc23144559b686a5e43e79af"
 }
