@@ -1,7 +1,7 @@
 {
   "name": "iotex-react-block-producers",
   "license": "MIT",
-  "version": "2.2.3",
+  "version": "2.3.0",
   "description": "block producer table",
   "main": "./lib/index.js",
   "files": [
