@@ -1,5 +1,5 @@
 {
-  "name": "iotex-i18n-monitor",
+  "name": "iotex-i18n-detector",
   "version": "2.3.0",
   "description": "",
   "main": "./lib/index.js",
@@ -57,5 +57,6 @@
     "webpack": "4.36.1",
     "webpack-cli": "3.3.3",
     "webpack-node-externals": "1.7.2"
-  }
+  },
+  "gitHead": "a3c43bcfaae2e26e5b835318aa93aa23d6890e8d"
 }

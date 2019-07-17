@@ -133,5 +133,6 @@
   "dependencies": {
     "react-jss": "^8.6.1",
     "safe-json-globals": "^2.1.0"
-  }
+  },
+  "gitHead": "a3c43bcfaae2e26e5b835318aa93aa23d6890e8d"
 }
