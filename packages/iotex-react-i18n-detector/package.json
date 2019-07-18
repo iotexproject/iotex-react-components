@@ -1,6 +1,6 @@
 {
-  "name": "iotex-i18n-monitor",
-  "version": "1.0.0",
+  "name": "iotex-react-i18n-detector",
+  "version": "2.3.2",
   "description": "",
   "main": "./lib/index.js",
   "scripts": {
@@ -57,5 +57,7 @@
     "webpack": "4.36.1",
     "webpack-cli": "3.3.3",
     "webpack-node-externals": "1.7.2"
-  }
+  },
+  "gitHead": "0f8468adb54e8a6657ad5c27e6a8c8e9783d8d3b",
+  "private": true
 }
