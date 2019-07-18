@@ -25,7 +25,9 @@ const languagesMap: Array<languageMenu> = [
   { value: Languages.VI, children: "Tiếng Việt" },
   { value: Languages.DE, children: "Deutsch" },
   { value: Languages.JA, children: "日本語" },
-  { value: Languages.ID, children: "Indonesia" }
+  { value: Languages.ID, children: "Indonesia" },
+  { value: Languages.PT, children: "Português" },
+  { value: Languages.TU, children: "Türk dili" }
 ];
 
 const googleToolMap: Array<languageMenu> = [
