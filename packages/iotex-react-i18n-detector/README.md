@@ -9,13 +9,13 @@ The .yaml file in this folder records the changes in the corresponding i18n file
 For example, in en.yaml:
 
 ```yaml
-auth/invalid-email: 'Email is invalid'
+auth/invalid-email: "Email is invalid"
 ```
 
 If content changes, like this:
 
 ```yaml
-auth/invalid-email: 'Email is valid'
+auth/invalid-email: "Email is valid"
 ```
 
 The contents of en.modified.yaml will contain the following content(Except the content at tail that begin with #)
@@ -24,7 +24,7 @@ The contents of en.modified.yaml will contain the following content(Except the c
 #<<----Updated Start---2019-6-15-------      # Start position of an update.
 
 #auth/invalid-email: 'Email is invalid'      # before update
-auth/invalid-email: 'Email is valid'         # updated content, need to translate.
+auth/invalid-email: "Email is valid" # updated content, need to translate.
 
 #------Updated End-----1560608493918----->>  # End position of an update.
 ```

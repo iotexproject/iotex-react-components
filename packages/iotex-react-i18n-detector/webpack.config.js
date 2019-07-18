@@ -12,7 +12,13 @@ module.exports = {
     path: path.resolve(__dirname, OUTPUT_DIR)
   },
   module: {
-    rules: [{ test: /\.ts?$/, use: "awesome-typescript-loader", exclude: /node_modules/ }],
+    rules: [
+      {
+        test: /\.ts?$/,
+        use: "awesome-typescript-loader",
+        exclude: /node_modules/
+      }
+    ]
   },
   resolve: {
     // options for resolving module requests

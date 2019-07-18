@@ -16,7 +16,7 @@ export interface GitDiff {
   sha: string;
   size: number;
   oldSize: number;
-  hunks: string[];
+  hunks: Array<string>;
 }
 
 export interface Timestamp {
@@ -34,7 +34,7 @@ export type LineType = "comment" | "normal";
 export type Language = "en" | "zh-CN" | "de" | "es" | "ru" | "vi";
 
 export interface Config {
-  monitorLanguages: Language[];
+  monitorLanguages: Array<Language>;
   output: string; // output dir for monitoring files;
   source: string; // source dir to be monitored;
 }
@@ -58,14 +58,14 @@ const git = require("nodegit-kit");
 const ENCODE_TYPE = "utf-8";
 
 class Base {
-  protected updateArchive = (data: Archive[]): Archive[] => {
+  protected updateArchive = (data: Array<Archive>): Array<Archive> => {
     const old = data.slice(0, -1);
     const updated = data[data.length - 1];
     const {
       timestamp: { time }
     } = updated;
     const index = old.findIndex(item => item.timestamp.time === time);
-    let result: Archive[];
+    let result: Array<Archive>;
 
     if (index === -1) {
       result = [...old, updated];
@@ -83,7 +83,7 @@ class Base {
   /**
    * @description sort content by asc
    */
-  protected sortArchives = (archives: Archive[]): Archive[] => {
+  protected sortArchives = (archives: Array<Archive>): Array<Archive> => {
     return archives.sort((o, n) => {
       const oStamp = o.timestamp.stamp;
       const nStamp = n.timestamp.stamp;
@@ -100,7 +100,7 @@ class Base {
   /**
    * @description Transform string to Archive;
    */
-  protected toArchive(target: string): Archive[] {
+  protected toArchive(target: string): Array<Archive> {
     if (/^\s*$/.test(target)) {
       return [];
     }
@@ -141,7 +141,7 @@ class Base {
   protected addArchiveFlag(
     content: string,
     { time, stamp }: Timestamp,
-    isMerged = false
+    isMerged: boolean = false
   ): string {
     const start = `#<<----Updated Start---${time}-------\n\n`;
     const end = !isMerged
@@ -151,7 +151,7 @@ class Base {
     return start + content + end;
   }
 
-  protected getArchiveItem(archive: string): string[] {
+  protected getArchiveItem(archive: string): Array<string> {
     return archive
       .split(/\n|\r/)
       .slice(1, -1)
@@ -162,8 +162,8 @@ class Base {
     const ary = archive.split(/\n|\r/);
 
     return {
-      start: ary[0] + "\n",
-      end: "\n" + ary[ary.length - 1]
+      start: `${ary[0]}"\n"`,
+      end: `"\n"${ary[ary.length - 1]}`
     };
   }
 
@@ -180,7 +180,7 @@ class Base {
     return str;
   }
 
-  protected removeDeleted = (archives: Archive[]): Archive[] => {
+  protected removeDeleted = (archives: Array<Archive>): Array<Archive> => {
     return archives.map(({ timestamp, content }) => ({
       timestamp,
       content: this.removeDeletedItem(content)
@@ -192,7 +192,7 @@ class Base {
    */
   private removeDeletedItem(archive: string): string {
     const data = this.getArchiveItem(archive);
-    const obj: { [key: string]: { index: number; type: LineType }[] } = {};
+    const obj: { [key: string]: Array<{ index: number; type: LineType }> } = {};
 
     data.forEach((item, index) => {
       const key = this.getKey(item);
@@ -231,7 +231,7 @@ class Base {
    */
   protected replaceHunkFlag(str: string): string {
     if (str.startsWith("-")) {
-      return "#" + str.substr(1);
+      return `"#"${str.substr(1)}`;
     } else if (str.startsWith("+")) {
       return str.substr(1);
     } else {
@@ -239,13 +239,13 @@ class Base {
     }
   }
 
-  protected combine<T>(...fns: ((arg: T) => T)[]) {
+  protected combine<T>(...fns: Array<(arg: T) => T>): (arg: T) => T {
     return (arg: T) => fns.reduce((acc, fn) => fn(acc), arg);
   }
 }
 
 class Watcher extends Base {
-  private file: WatchedFile;
+  private readonly file: WatchedFile;
 
   constructor(file: WatchedFile) {
     super();
@@ -253,7 +253,7 @@ class Watcher extends Base {
     this.checkDir(file);
   }
 
-  async start(): Promise<UpdateResult> {
+  public async start(): Promise<UpdateResult> {
     const oldContent = await this.getOldContent(this.file);
     const diff = await this.getDiff(this.file);
     const updatedContent = await this.getUpdatedContent(diff);
@@ -311,7 +311,7 @@ class Watcher extends Base {
 
   private async getDiff(file: WatchedFile): Promise<GitDiff | undefined> {
     const repo = await git.open(`${process.cwd()}/.git`);
-    const diffs: GitDiff[] = await git.diff(repo);
+    const diffs: Array<GitDiff> = await git.diff(repo);
     return diffs.find(item => {
       const status = item.status;
       const statusValid = status === "modified" || status === "untracked";
@@ -333,7 +333,10 @@ class Watcher extends Base {
     const reg = /(?<=[\r\n])[+-]{1}.+(?=[\r\n])/g;
     const result = yamlDiff.hunks
       .reduce(
-        (acc: string[], cur: string) => [...acc, ...(cur.match(reg) || [])],
+        (acc: Array<string>, cur: string) => [
+          ...acc,
+          ...(cur.match(reg) || [])
+        ],
         []
       )
       .map(hunk => this.replaceHunkFlag(hunk));
@@ -351,7 +354,7 @@ class Watcher extends Base {
   ): Promise<UpdateResult> {
     const oldArchive = this.toArchive(old);
     const newArchive = this.toArchive(target);
-    const handle = this.combine<Archive[]>(
+    const handle = this.combine<Array<Archive>>(
       this.updateArchive,
       this.removeDeleted,
       this.sortArchives
@@ -382,7 +385,7 @@ function check({
   source,
   output,
   monitorLanguages
-}: Config): Promise<WatchedFile[]> {
+}: Config): Promise<Array<WatchedFile>> {
   const sourcePath = resolve(source);
   const outputPath = resolve(output);
 
@@ -397,7 +400,10 @@ function check({
         const files = data
           .filter(item => item.isFile() && item.name.endsWith("yaml"))
           .map(file => file.name);
-        const targetFiles: { name: string; lan: Language }[] = monitorLanguages
+        const targetFiles: Array<{
+          name: string;
+          lan: Language;
+        }> = monitorLanguages
           .map(lan => {
             const name = files.find(item => item.startsWith(lan)) || "";
 
