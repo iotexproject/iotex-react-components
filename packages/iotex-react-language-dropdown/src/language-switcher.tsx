@@ -53,7 +53,7 @@ export class LanguageSwitcher extends Component<Props, State> {
     HTMLUListElement
   >();
 
-  private noClickHappen = true;
+  private noClickHappen: boolean = true;
 
   constructor(props: Props) {
     super(props);
@@ -110,6 +110,32 @@ export class LanguageSwitcher extends Component<Props, State> {
       return colors.deltaUp;
     }
     return "white";
+  };
+
+  private readonly toggleTranslationMenu = (state?: boolean) => (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.persist();
+    const isDisplay =
+      typeof state === "boolean" ? state : !this.state.displayTranslationMenu;
+
+    this.setState({
+      displayTranslationMenu: isDisplay
+    });
+    // adjust list position;
+    if (isDisplay) {
+      const toBottomHeight = window.innerHeight - event.clientY;
+      const ele: HTMLUListElement = this.menuListElement
+        .current as HTMLUListElement;
+
+      setTimeout(() => {
+        if (ele.clientHeight > toBottomHeight) {
+          ele.style.bottom = `${toBottomHeight}px`;
+        }
+      }, 100);
+    }
+
+    this.noClickHappen = true;
   };
 
   /**
@@ -187,46 +213,20 @@ export class LanguageSwitcher extends Component<Props, State> {
         </LanguageMenu>
       </div>
     );
-
-    const toggleTranslationMenu = (state?: boolean) => (
-      event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-    ) => {
-      event.persist();
-      const isDisplay =
-        typeof state === "boolean" ? state : !this.state.displayTranslationMenu;
-
-      this.setState({
-        displayTranslationMenu: isDisplay
-      });
-      // adjust list position;
-      if (isDisplay) {
-        const toBottomHeight = window.innerHeight - event.clientY;
-        const ele: HTMLUListElement = this.menuListElement
-          .current as HTMLUListElement;
-
-        setTimeout(() => {
-          if (ele.clientHeight > toBottomHeight) {
-            ele.style.bottom = `${toBottomHeight}px`;
-          }
-        }, 100);
-      }
-
-      this.noClickHappen = true;
-    };
     return (
       <Wrapper>
         <LanguageSwitchButton
           onMouseEnter={event => {
             this.canRun().then(can => {
               if (can) {
-                toggleTranslationMenu(true)(event);
+                this.toggleTranslationMenu(true)(event);
               }
             });
           }}
-          onMouseLeave={toggleTranslationMenu(false)}
+          onMouseLeave={this.toggleTranslationMenu(false)}
           onClick={event => {
             this.noClickHappen = false;
-            toggleTranslationMenu()(event);
+            this.toggleTranslationMenu()(event);
           }}
         >
           <TranslationIcon style={style} />
