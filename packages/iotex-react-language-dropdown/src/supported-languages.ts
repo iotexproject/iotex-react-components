@@ -9,7 +9,9 @@ export type Language =
   | "it"
   | "es"
   | "de"
-  | "vi";
+  | "vi"
+  | "pt"
+  | "tu";
 
 export enum Languages {
   EN = "en",
@@ -22,5 +24,7 @@ export enum Languages {
   IT = "it",
   ES = "es",
   DE = "de",
-  VI = "vi"
+  VI = "vi",
+  PT = "pt",
+  TU = "tu"
 }
