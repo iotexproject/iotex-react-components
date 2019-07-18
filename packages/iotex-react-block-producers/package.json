@@ -1,7 +1,7 @@
 {
   "name": "iotex-react-block-producers",
   "license": "MIT",
-  "version": "2.2.3",
+  "version": "2.3.2",
   "description": "block producer table",
   "main": "./lib/index.js",
   "files": [
@@ -54,22 +54,22 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/puncsky/template_website.git"
+    "url": "git+ssh://git@github.com:iotexproject/iotex-react-components.git"
   },
   "keywords": [],
   "author": "field_author",
   "bugs": {
-    "url": "https://github.com/puncsky/template_website/issues"
+    "url": "https://github.com/iotexproject/iotex-react-components/issues"
   },
-  "homepage": "https://github.com/puncsky/template_website#readme",
+  "homepage": "https://github.com/iotexproject/iotex-react-components",
   "devDependencies": {
-    "@babel/cli": "7.4.4",
-    "@babel/core": "7.4.5",
-    "@babel/plugin-proposal-class-properties": "7.4.4",
-    "@babel/preset-env": "7.4.5",
+    "@babel/cli": "7.5.5",
+    "@babel/core": "7.5.5",
+    "@babel/plugin-proposal-class-properties": "7.5.5",
+    "@babel/preset-env": "7.5.5",
     "@babel/preset-react": "7.0.0",
     "@babel/preset-typescript": "7.3.3",
-    "@babel/register": "7.4.4",
+    "@babel/register": "7.5.5",
     "@types/graphql": "14.2.1",
     "@types/node": "11.13.8",
     "@types/node-fetch": "2.3.5",
@@ -81,7 +81,7 @@
     "apollo-link-http": "1.5.15",
     "ava": "2.1.0",
     "awesome-typescript-loader": "5.2.1",
-    "babel-loader": "8.0.5",
+    "babel-loader": "8.0.6",
     "babel-plugin-module-resolver": "3.2.0",
     "babel-plugin-react-require": "3.1.1",
     "babel-plugin-transform-class-properties": "6.24.1",
@@ -111,7 +111,7 @@
     "tslint-require-connnect-typing": "1.0.1",
     "typescript": "3.4.4",
     "uglifyjs-webpack-plugin": "2.1.2",
-    "webpack": "4.33.0",
+    "webpack": "4.36.1",
     "webpack-bundle-analyzer": "3.3.2",
     "webpack-cli": "3.3.3",
     "webpack-dev-server": "3.4.1"
@@ -133,5 +133,6 @@
   "dependencies": {
     "react-jss": "^8.6.1",
     "safe-json-globals": "^2.1.0"
-  }
+  },
+  "gitHead": "0f8468adb54e8a6657ad5c27e6a8c8e9783d8d3b"
 }

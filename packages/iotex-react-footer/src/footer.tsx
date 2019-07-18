@@ -245,7 +245,7 @@ const FooterWrapper = styled("div", {
   ...contentPadding,
   paddingTop: "32px",
   paddingBottom: "32px",
-  height: `${FOOTER_HEIGHT}px`,
+  minHeight: `${FOOTER_HEIGHT}px`,
   backgroundColor: colors.nav02,
   color: colors.white,
   display: "flex",
