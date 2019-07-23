@@ -1,7 +1,7 @@
 {
   "name": "iotex-react-footer",
   "license": "MIT",
-  "version": "2.3.2",
+  "version": "2.4.0",
   "description": "field_description",
   "main": "./lib/index.js",
   "files": [
