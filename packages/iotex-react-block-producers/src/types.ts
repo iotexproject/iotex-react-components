@@ -25,14 +25,36 @@ export type DelegateCategory =
   | "DELEGATE"
   | "DELEGATE_CANDIDATE";
 
+export type DelegateStatus = "ELECTED" | "NOT_ELECTED" | "UNQUALIFIED";
+
+export type DelegateServerStatus = "ONLINE" | "OFFLINE" | "NOT_EQUIPPED";
+
+export enum DCategory {
+  CONSENSUS_DELEGATE = "CONSENSUS_DELEGATE",
+  DELEGATE = "DELEGATE",
+  DELEGATE_CANDIDATE = "DELEGATE_CANDIDATE"
+}
+
+export enum DStatus {
+  ELECTED = "ELECTED",
+  NOT_ELECTED = "NOT_ELECTED",
+  UNQUALIFIED = "UNQUALIFIED"
+}
+
+export enum DServerStatus {
+  ONLINE = "ONLINE",
+  OFFLINE = "OFFLINE",
+  NOT_EQUIPPED = "NOT_EQUIPPED"
+}
+
 export type TBpCandidate = TNewBpCandidate & {
   rank: string;
   registeredName: string;
   liveVotes: string;
   liveVotesDelta: string;
-  status: "ELECTED" | "NOT_ELECTED" | "UNQUALIFIED";
+  status: DelegateStatus;
   category: DelegateCategory;
-  serverStatus: "ONLINE" | "OFFLINE" | "NOT_EQUIPPED";
+  serverStatus: DelegateServerStatus;
   percent: string;
   productivity: number;
   productivityBase: number;
