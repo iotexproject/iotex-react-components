@@ -162,7 +162,7 @@ export function renderProductivity(
     <div style={{ display: "flex", flexDirection: "row" }}>
       <div style={{ position: "relative", marginRight: "0.5rem" }}>
         <Progress type="circle" percent={percent} showInfo={false} width={20} />
-        {exceedPercent && (
+        {!!exceedPercent && (
           <Progress
             type="circle"
             percent={exceedPercent}

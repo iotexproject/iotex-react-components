@@ -4,12 +4,10 @@ import { IconProps } from "antd/lib/icon";
 import document from "global/document";
 // @ts-ignore
 import window from "global/window";
-import React, { Component, PropsWithChildren } from "react";
+import React, { Component, PropsWithChildren, RefObject } from "react";
 import { connect } from "react-redux";
 import { colors } from "./style-color";
 import { Language, Languages } from "./supported-languages";
-
-const MEDIA_DROPDOWN_MENU = `@media only screen and (maxWidth: 900px)`;
 
 const GOTO_TRANS = "GOTO_TRANS";
 const GOOGLE_TRANSLATE = "GOOGLE_TRANSLATE";
@@ -53,6 +51,12 @@ interface Props extends React.Props<any> {
 }
 
 export class LanguageSwitcher extends Component<Props, State> {
+  public menuListElement: RefObject<HTMLUListElement> = React.createRef<
+    HTMLUListElement
+  >();
+
+  private noClickHappen: boolean = true;
+
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -110,6 +114,45 @@ export class LanguageSwitcher extends Component<Props, State> {
     return "white";
   };
 
+  private readonly toggleTranslationMenu = (state?: boolean) => (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.persist();
+    const isDisplay =
+      typeof state === "boolean" ? state : !this.state.displayTranslationMenu;
+
+    this.setState({
+      displayTranslationMenu: isDisplay
+    });
+    // adjust list position;
+    if (isDisplay) {
+      const toBottomHeight = window.innerHeight - event.clientY;
+      const ele: HTMLUListElement = this.menuListElement
+        .current as HTMLUListElement;
+
+      setTimeout(() => {
+        if (ele.clientHeight > toBottomHeight) {
+          ele.style.bottom = `${toBottomHeight}px`;
+        }
+      }, 100);
+    }
+
+    this.noClickHappen = true;
+  };
+
+  /**
+   * @description Since mouseEnter and click event may happened in a short interval, this cause the first
+   * click has no effect, user must to click the button again to see the list.
+   *
+   * This function used for prevent toggleTranslationMenu run which triggered by mouseEvent event,
+   * if a click event occur immediately.
+   */
+  private canRun(): Promise<boolean> {
+    return new Promise(resolve => {
+      setTimeout(() => resolve(this.noClickHappen), 100);
+    });
+  }
+
   public render(): JSX.Element {
     let uri = "";
     if (window.location) {
@@ -125,7 +168,7 @@ export class LanguageSwitcher extends Component<Props, State> {
           display: this.state.displayTranslationMenu ? "block" : "none"
         }}
       >
-        <LanguageMenu>
+        <LanguageMenu ref={this.menuListElement}>
           {languages.map((o, i) => {
             if (o.value.toLowerCase() === GOTO_TRANS.toLowerCase()) {
               return (
@@ -172,26 +215,20 @@ export class LanguageSwitcher extends Component<Props, State> {
         </LanguageMenu>
       </div>
     );
-
-    const hideTranslationMenu = () => {
-      this.setState({
-        displayTranslationMenu: false
-      });
-    };
-
     return (
       <Wrapper>
         <LanguageSwitchButton
-          onMouseOver={() =>
-            this.setState({
-              displayTranslationMenu: true
-            })
-          }
-          onMouseLeave={() => {
-            hideTranslationMenu();
+          onMouseEnter={event => {
+            this.canRun().then(can => {
+              if (can) {
+                this.toggleTranslationMenu(true)(event);
+              }
+            });
           }}
-          onClick={() => {
-            hideTranslationMenu();
+          onMouseLeave={this.toggleTranslationMenu(false)}
+          onClick={event => {
+            this.noClickHappen = false;
+            this.toggleTranslationMenu()(event);
           }}
         >
           <TranslationIcon style={style} />
@@ -207,16 +244,7 @@ const Wrapper = ({ children }: React.Props<any>) => {
     <div
       style={{
         display: "flex",
-        alignSelf: "center",
-        [MEDIA_DROPDOWN_MENU]: {
-          boxSizing: "border-box",
-          width: "100%",
-          padding: "0",
-          lineHeight: "50px",
-          height: "50px",
-          margin: "2px 0",
-          borderBottom: "1px #EDEDED solid"
-        }
+        alignSelf: "center"
       }}
     >
       {children}
@@ -267,43 +295,40 @@ const GoogleTranslateButton = ({ ...props }) => {
         lineHeight: "7px",
         height: "38px",
         padding: "5px 0px 10px 0px",
-        marginBottom: "10px",
-        [MEDIA_DROPDOWN_MENU]: {
-          display: "none"
-        }
+        marginBottom: "10px"
       }}
     />
   );
 };
 
-const LanguageMenu = ({ children }: React.Props<any>) => {
-  return (
-    <ul
-      style={{
-        position: "fixed",
-        marginLeft: "-10px",
-        lineHeight: "32px",
-        backgroundColor: colors.nav01,
-        width: "120px",
-        marginTop: "0",
-        listStyle: "none inside",
-        padding: "5px 0 5px 20px",
-        textAlign: "left",
-        opacity: 0.96,
-        [MEDIA_DROPDOWN_MENU]: {
-          backgroundColor: "#fff"
-        }
-      }}
-    >
-      {children}
-    </ul>
-  );
-};
+const LanguageMenu = React.forwardRef(
+  ({ children }: React.Props<any>, ref: React.Ref<HTMLUListElement>) => {
+    return (
+      <ul
+        style={{
+          position: "fixed",
+          marginLeft: "-10px",
+          lineHeight: "32px",
+          backgroundColor: colors.nav01,
+          width: "120px",
+          marginTop: "0",
+          listStyle: "none inside",
+          padding: "5px 0 5px 20px",
+          textAlign: "left",
+          opacity: 0.96
+        }}
+        ref={ref}
+      >
+        {children}
+      </ul>
+    );
+  }
+);
 
 interface LanguageSwitchButtonProps {
-  onMouseLeave(): void;
-  onMouseOver(): void;
-  onClick(): void;
+  onMouseLeave(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
+  onMouseEnter(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
+  onClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
 }
 
 const LanguageSwitchButton = ({
@@ -318,9 +343,7 @@ const LanguageSwitchButton = ({
         backgroundColor: "transparent",
         borderStyle: "none",
         cursor: "pointer",
-        ":focus": {
-          outline: 0
-        }
+        outline: "none"
       }}
     >
       {children}
