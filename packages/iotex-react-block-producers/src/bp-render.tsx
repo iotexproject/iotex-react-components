@@ -12,7 +12,7 @@ import React from "react";
 import { CustomTBpCandidate } from "./block-producers-list";
 import { Circle } from "./circle";
 import { colors } from "./style-color";
-import { DelegateCategory, TBpCandidate } from "./types";
+import { DelegateCategory, DServerStatus, TBpCandidate } from "./types";
 
 export const ASSET_URL = "https://member.iotex.io";
 export function renderDelegateName(
@@ -23,7 +23,9 @@ export function renderDelegateName(
     <a href={`/delegate/${record.id}`}>
       <div style={{ display: "flex", alignItems: "center" }}>
         <div>
-          <Circle color={colors[record.serverStatus]} />
+          {record.serverStatus !== DServerStatus.NOT_EQUIPPED && (
+            <Circle color={colors[record.serverStatus]} />
+          )}
         </div>
         <div
           style={{
