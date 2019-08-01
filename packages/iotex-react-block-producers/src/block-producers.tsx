@@ -24,7 +24,7 @@ import {
 } from "./bp-render";
 import { getClassifyDelegate } from "./partition-help";
 import { SpinPreloader } from "./spin-preloader";
-import { TBpCandidate, DelegatesOfMonth } from "./types";
+import { DelegatesOfMonth, TBpCandidate } from "./types";
 
 // @ts-ignore
 import withStyles, { WithStyles } from "react-jss";
@@ -176,19 +176,21 @@ export class BlockProducers extends Component<Props, State> {
         dataIndex: "badges",
         key: "badges",
         render: (text: number) => {
-          const count = typeof text === "number" ? text : parseInt(text);
+          const count = typeof text === "number" ? text : parseInt(text, 10);
 
           return (
             !!count && (
               <div style={{ display: "flex", alignItems: "center" }}>
-                {new Array(count).fill("").map((_, idx: number) => (
-                  <img
-                    src={badgeImg}
-                    key={idx}
-                    style={{ marginRight: "6px", width: "30px" }}
-                    alt=""
-                  />
-                ))}
+                {Array(count)
+                  .fill("")
+                  .map((_, idx: number) => (
+                    <img
+                      src={badgeImg}
+                      key={idx}
+                      style={{ marginRight: "6px", width: "30px" }}
+                      alt="badges"
+                    />
+                  ))}
               </div>
             )
           );
@@ -216,11 +218,13 @@ export class BlockProducers extends Component<Props, State> {
     ];
   }
 
-  public render(): JSX.Element {
+  private getList(
+    dataSource: Array<CustomTBpCandidate>,
+    sectionRow: Array<number>
+  ): JSX.Element {
     const { displayMobileList } = this.state;
     const {
       extraMobileComponents,
-      apolloClient,
       height = "calc(100vh - 100px)"
     } = this.props;
     const columns = this.getColumns();
@@ -229,6 +233,32 @@ export class BlockProducers extends Component<Props, State> {
       i.render = renderHook(i.render, i.customRender);
       return i;
     });
+
+    return displayMobileList ? (
+      <BlockProducersList
+        dataSource={dataSource}
+        extraComponents={extraMobileComponents}
+      />
+    ) : (
+      <BpTableContainer height={height}>
+        <Table
+          // @ts-ignore
+          rowClassName={(record, index) =>
+            // @ts-ignore
+            sectionRow.includes(index) ? "ant-table-section-row " : ""
+          }
+          pagination={false}
+          dataSource={dataSource}
+          columns={columns}
+          rowKey={"rank"}
+        />
+      </BpTableContainer>
+    );
+  }
+
+  public render(): JSX.Element {
+    const { displayMobileList } = this.state;
+    const { apolloClient } = this.props;
 
     return (
       <Query
@@ -256,7 +286,7 @@ export class BlockProducers extends Component<Props, State> {
             false
           );
 
-          const SectionRow = dataSource.reduce(
+          const sectionRow = dataSource.reduce(
             // @ts-ignore
             (r, v, i) => r.concat(v.custom ? i : []),
             []
@@ -302,28 +332,7 @@ export class BlockProducers extends Component<Props, State> {
                       }
                     });
 
-                    return displayMobileList ? (
-                      <BlockProducersList
-                        dataSource={dataSource}
-                        extraComponents={extraMobileComponents}
-                      />
-                    ) : (
-                      <BpTableContainer height={height}>
-                        <Table
-                          // @ts-ignore
-                          rowClassName={(record, index) =>
-                            // @ts-ignore
-                            SectionRow.includes(index)
-                              ? "ant-table-section-row "
-                              : ""
-                          }
-                          pagination={false}
-                          dataSource={dataSource}
-                          columns={columns}
-                          rowKey={"rank"}
-                        />
-                      </BpTableContainer>
-                    );
+                    return this.getList(dataSource, sectionRow);
                   }}
                 </Query>
               </SpinPreloader>

@@ -67,5 +67,5 @@ export type TBpCandidate = TNewBpCandidate & {
 export type DelegatesOfMonth = {
   month: string;
   enable: boolean;
-  delegates: TBpCandidate[];
+  delegates: Array<TBpCandidate>;
 };
