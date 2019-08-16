@@ -105,7 +105,7 @@
   "peerDependencies": {
     "@types/react": "^16.8.11",
     "antd": "3.16.6",
-    "onefx": "1.4.10",
+    "onefx": "1.5.3",
     "react": "^16.8.6",
     "styletron-engine-atomic": "^1.1.0"
   },
