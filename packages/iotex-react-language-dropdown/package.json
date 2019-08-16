@@ -111,7 +111,7 @@
     "@types/react-redux": "^7.0.7",
     "antd": "3.16.6",
     "global": "^4.3.2",
-    "onefx": "1.4.10",
+    "onefx": "1.5.3",
     "react": "^16.8.6",
     "shader": "1.0.0"
   },
