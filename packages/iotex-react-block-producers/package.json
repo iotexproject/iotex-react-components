@@ -95,7 +95,7 @@
     "isomorphic-unfetch": "3.0.0",
     "lodash.partition": "4.6.0",
     "nyc": "14.1.1",
-    "onefx": "^1.5.3",
+    "onefx": "1.5.3",
     "prettier": "1.18.2",
     "pretty-quick": "1.11.1",
     "react": "16.8.6",
