@@ -24,7 +24,7 @@ import {
 } from "./bp-render";
 import { getClassifyDelegate } from "./partition-help";
 import { SpinPreloader } from "./spin-preloader";
-import { TBpCandidate } from "./types";
+import { DelegatesOfMonth, TBpCandidate } from "./types";
 
 // @ts-ignore
 import withStyles, { WithStyles } from "react-jss";
@@ -49,6 +49,12 @@ export const GET_BP_CANDIDATES = gql`
       productivity
       productivityBase
     }
+  }
+`;
+
+export const GET_ADMIN_SETTING = gql`
+  query adminSetting($key: String!) {
+    adminSetting(key: $key)
   }
 `;
 
@@ -104,6 +110,7 @@ type Props = {
   extraColumns?: Array<object>;
   extraMobileComponents?: Array<RenderDelegateComponent>;
   apolloClient: ApolloClient<{}>;
+  badgeImg: string;
   height?: string;
 };
 
@@ -141,7 +148,7 @@ export class BlockProducers extends Component<Props, State> {
   }
 
   public getColumns(): Array<object> {
-    const { extraColumns = [] } = this.props;
+    const { badgeImg, extraColumns = [] } = this.props;
 
     return [
       {
@@ -165,6 +172,31 @@ export class BlockProducers extends Component<Props, State> {
         customRender: (text: string) => <b>{text}</b>
       },
       {
+        title: t("candidate.delegate_badges"),
+        dataIndex: "badges",
+        key: "badges",
+        render: (text: number) => {
+          const count = typeof text === "number" ? text : parseInt(text, 10);
+
+          return (
+            !!count && (
+              <div style={{ display: "flex", alignItems: "center" }}>
+                {Array(count)
+                  .fill("")
+                  .map((_, idx: number) => (
+                    <img
+                      src={badgeImg}
+                      key={idx}
+                      style={{ marginRight: "6px", width: "30px" }}
+                      alt="badges"
+                    />
+                  ))}
+              </div>
+            )
+          );
+        }
+      },
+      {
         title: t("candidate.live_votes"),
         dataIndex: "liveVotes",
         key: "liveVotes",
@@ -186,11 +218,13 @@ export class BlockProducers extends Component<Props, State> {
     ];
   }
 
-  public render(): JSX.Element {
+  private getList(
+    dataSource: Array<CustomTBpCandidate>,
+    sectionRow: Array<number>
+  ): JSX.Element {
     const { displayMobileList } = this.state;
     const {
       extraMobileComponents,
-      apolloClient,
       height = "calc(100vh - 100px)"
     } = this.props;
     const columns = this.getColumns();
@@ -199,6 +233,32 @@ export class BlockProducers extends Component<Props, State> {
       i.render = renderHook(i.render, i.customRender);
       return i;
     });
+
+    return displayMobileList ? (
+      <BlockProducersList
+        dataSource={dataSource}
+        extraComponents={extraMobileComponents}
+      />
+    ) : (
+      <BpTableContainer height={height}>
+        <Table
+          // @ts-ignore
+          rowClassName={(record, index) =>
+            // @ts-ignore
+            sectionRow.includes(index) ? "ant-table-section-row " : ""
+          }
+          pagination={false}
+          dataSource={dataSource}
+          columns={columns}
+          rowKey={"rank"}
+        />
+      </BpTableContainer>
+    );
+  }
+
+  public render(): JSX.Element {
+    const { displayMobileList } = this.state;
+    const { apolloClient } = this.props;
 
     return (
       <Query
@@ -226,7 +286,7 @@ export class BlockProducers extends Component<Props, State> {
             false
           );
 
-          const SectionRow = dataSource.reduce(
+          const sectionRow = dataSource.reduce(
             // @ts-ignore
             (r, v, i) => r.concat(v.custom ? i : []),
             []
@@ -241,32 +301,40 @@ export class BlockProducers extends Component<Props, State> {
                 borderRadius: "5px"
               };
 
-          const renderComponent = displayMobileList ? (
-            <BlockProducersList
-              dataSource={dataSource}
-              extraComponents={extraMobileComponents}
-            />
-          ) : (
-            <BpTableContainer height={height}>
-              <Table
-                // @ts-ignore
-                rowClassName={(record, index) =>
-                  // @ts-ignore
-                  SectionRow.includes(index) ? "ant-table-section-row " : ""
-                }
-                pagination={false}
-                dataSource={dataSource}
-                columns={columns}
-                rowKey={"rank"}
-              />
-            </BpTableContainer>
-          );
-
           return (
             <div className={"table-list"} style={containerStyles}>
               <SpinPreloader spinning={loading}>
                 {tableAppendix(displayMobileList)}
-                {renderComponent}
+                <Query
+                  client={apolloClient}
+                  query={GET_ADMIN_SETTING}
+                  variables={{ key: "delegatesOfMonth" }}
+                  ssr={false}
+                  fetchPolicy="network-only"
+                >
+                  {({
+                    loading,
+                    error,
+                    data
+                  }: QueryResult<{ adminSetting: DelegatesOfMonth }>) => {
+                    if (!loading && error) {
+                      return null;
+                    }
+
+                    const { delegates } = (data && data.adminSetting) || {
+                      delegates: []
+                    };
+
+                    delegates.forEach(({ id, badges }: TBpCandidate) => {
+                      const target = dataSource.find(item => item.id === id);
+                      if (target) {
+                        target.badges = badges;
+                      }
+                    });
+
+                    return this.getList(dataSource, sectionRow);
+                  }}
+                </Query>
               </SpinPreloader>
             </div>
           );

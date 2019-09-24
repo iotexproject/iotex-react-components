@@ -18,6 +18,7 @@ export type TNewBpCandidate = {
   email: string;
 
   tempEthAddress?: string;
+  badges?: number;
 };
 
 export type DelegateCategory =
@@ -61,4 +62,10 @@ export type TBpCandidate = TNewBpCandidate & {
 
   createAt: string;
   updateAt: string;
+};
+
+export type DelegatesOfMonth = {
+  month: string;
+  enable: boolean;
+  delegates: Array<TBpCandidate>;
 };
