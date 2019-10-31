@@ -91,17 +91,8 @@ interface IProps extends WithStyles<typeof styles> {
 }
 
 // @ts-ignore
-const Div: React.FunctionComponent<IProps> = ({
-  classes,
-  children,
-  height
-}) => (
-  <div
-    className={classes.BpTableContainer}
-    style={{ height, overflowY: "scroll" }}
-  >
-    {children}
-  </div>
+const Div: React.FunctionComponent<IProps> = ({ classes, children }) => (
+  <div className={classes.BpTableContainer}>{children}</div>
 );
 
 const BpTableContainer = withStyles(styles)(Div);
@@ -223,10 +214,7 @@ export class BlockProducers extends Component<Props, State> {
     sectionRow: Array<number>
   ): JSX.Element {
     const { displayMobileList } = this.state;
-    const {
-      extraMobileComponents,
-      height = "calc(100vh - 100px)"
-    } = this.props;
+    const { extraMobileComponents } = this.props;
     const columns = this.getColumns();
     columns.map(i => {
       // @ts-ignore
@@ -240,7 +228,7 @@ export class BlockProducers extends Component<Props, State> {
         extraComponents={extraMobileComponents}
       />
     ) : (
-      <BpTableContainer height={height}>
+      <BpTableContainer>
         <Table
           // @ts-ignore
           rowClassName={(record, index) =>
