@@ -75,7 +75,7 @@
     "@types/react-redux": "7.0.8",
     "@types/react-test-renderer": "16.8.1",
     "antd": "3.16.6",
-    "ava": "2.1.0",
+    "ava": "2.4.0",
     "awesome-typescript-loader": "5.2.1",
     "babel-loader": "8.0.6",
     "babel-plugin-module-resolver": "3.2.0",
@@ -116,7 +116,7 @@
     "shader": "1.0.0"
   },
   "engines": {
-    "node": "10.16.0",
+    "node": "10.17.0",
     "npm": "6.9.0"
   },
   "gitHead": "0f8468adb54e8a6657ad5c27e6a8c8e9783d8d3b"
