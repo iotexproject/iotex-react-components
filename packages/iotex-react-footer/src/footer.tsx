@@ -129,8 +129,10 @@ export function Footer(): JSX.Element {
             </LinkWrapper>
           ))}
           <FooterRight>
-            <FooterInput placeholder={t("footer.enter_email")} />
-            <FooterButton>{t("footer.subscribe")}</FooterButton>
+            <FooterButtonWrap>
+              <FooterInput placeholder={t("footer.enter_email")} />
+              <FooterButton>{t("footer.subscribe")}</FooterButton>
+            </FooterButtonWrap>
             <FooterImages>
               {images.map((image, index) => (
                 <a key={index} href={image.href}>
@@ -170,20 +172,33 @@ const LinkWrapper = styled("div", {
   [media.media1024]: { marginRight: 0 }
 });
 
+const FooterButtonWrap = styled("div", {
+  display: "flex",
+  alignItems: "center"
+});
+
 const FooterInput = styled(Input, {
   backgroundColor: colors.nav02,
-  width: "220px",
+  width: "250px",
   height: "48px",
   color: "#dbdbdb",
   borderColor: "#fff",
-  borderRadius: 0
+  borderRadius: 0,
+  boxSizing: "border-box",
+  ":hover": {
+    borderColor: colors.white
+  },
+  ":focus": {
+    borderColor: colors.white
+  }
 });
 
 const FooterAvatar = styled(Avatar, {
   backgroundColor: colors.nav02,
   width: "40px",
   height: "40px",
-  marginLeft: "10px",
+  marginLeft: 0,
+  marginRight: "10px",
   [media.media1024]: {
     marginLeft: 0,
     marginRight: "10px",
@@ -216,9 +231,15 @@ const FooterButton = styled(Button, {
   color: "#dbdbdb",
   borderColor: "#fff",
   borderRadius: 0,
-  marginLeft: "8px",
+  marginLeft: "0",
+  borderLeft: "none",
   ":hover": {
-    color: colors.nav02
+    borderColor: colors.white,
+    color: colors.black
+  },
+  ":focus": {
+    color: colors.black,
+    borderColor: colors.white
   }
 });
 
@@ -226,6 +247,7 @@ const Title = styled("div", {
   fontSize: "16px",
   lineHeight: 2,
   color: "#dbdbdb",
+  marginBottom: "40px",
   [media.media1024]: { lineHeight: 1.5 }
 });
 
@@ -238,6 +260,7 @@ const Link = styled("a", {
 
 const FooterImages = styled("div", {
   marginTop: "32px",
+  textAlign: "left",
   [media.media1024]: { marginTop: "10px" }
 });
 
