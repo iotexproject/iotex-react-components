@@ -26,6 +26,7 @@ export type RenderDelegateComponent = (
 type Props = {
   dataSource: Array<CustomTBpCandidate>;
   extraComponents?: Array<RenderDelegateComponent>;
+  hideColumns?: Boolean;
 };
 
 // @ts-ignore
@@ -149,7 +150,7 @@ const TableContent = withStyles(styles)(Div);
 
 export class BlockProducersList extends Component<Props> {
   public render(): JSX.Element {
-    const { dataSource, extraComponents } = this.props;
+    const { dataSource, extraComponents, hideColumns } = this.props;
     const components = extraComponents || [];
     const columns = [
       {
@@ -170,7 +171,14 @@ export class BlockProducersList extends Component<Props> {
         render: renderProductivity
       }
     ];
-
+    if (hideColumns) {
+      columns.push({
+        title: t("candidate.node_version"),
+        key: "nodeVersion",
+        dataIndex: "nodeVersion",
+        render: (text?: any) => `${text || ""}`
+      });
+    }
     return (
       <div className="mobile-delegate-list">
         {dataSource.map((delegate, index) => {

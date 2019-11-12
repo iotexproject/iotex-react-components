@@ -30,6 +30,7 @@ import { DelegatesOfMonth, TBpCandidate } from "./types";
 import withStyles, { WithStyles } from "react-jss";
 
 export const PALM_WIDTH = 575;
+export const media960 = 960;
 
 export const GET_BP_CANDIDATES = gql`
   query bpCandidates {
@@ -107,6 +108,7 @@ type Props = {
 
 type State = {
   displayMobileList: boolean;
+  hideColumns: boolean;
   currentPage: number;
 };
 
@@ -115,6 +117,7 @@ export class BlockProducers extends Component<Props, State> {
     super(props);
     this.state = {
       displayMobileList: false,
+      hideColumns: false,
       currentPage: 1
     };
   }
@@ -122,18 +125,24 @@ export class BlockProducers extends Component<Props, State> {
   public componentDidMount(): void {
     if (
       document.documentElement &&
-      document.documentElement.clientWidth <= PALM_WIDTH
+      document.documentElement.clientWidth <= media960
     ) {
       this.setState({ displayMobileList: true });
+      if (document.documentElement.clientWidth <= PALM_WIDTH) {
+        this.setState({ hideColumns: true });
+      }
     }
     window.addEventListener("resize", () => {
       if (
         document.documentElement &&
-        document.documentElement.clientWidth > PALM_WIDTH
+        document.documentElement.clientWidth > media960
       ) {
-        this.setState({ displayMobileList: false });
+        this.setState({ displayMobileList: false, hideColumns: false });
       } else {
         this.setState({ displayMobileList: true });
+        if (document.documentElement.clientWidth <= PALM_WIDTH) {
+          this.setState({ hideColumns: true });
+        }
       }
     });
   }
@@ -213,7 +222,7 @@ export class BlockProducers extends Component<Props, State> {
     dataSource: Array<CustomTBpCandidate>,
     sectionRow: Array<number>
   ): JSX.Element {
-    const { displayMobileList } = this.state;
+    const { displayMobileList, hideColumns } = this.state;
     const { extraMobileComponents } = this.props;
     const columns = this.getColumns();
     columns.map(i => {
@@ -225,6 +234,7 @@ export class BlockProducers extends Component<Props, State> {
     return displayMobileList ? (
       <BlockProducersList
         dataSource={dataSource}
+        hideColumns={hideColumns}
         extraComponents={extraMobileComponents}
       />
     ) : (
