@@ -171,7 +171,7 @@ export class BlockProducersList extends Component<Props> {
         render: renderProductivity
       }
     ];
-    if (hideColumns) {
+    if (!hideColumns) {
       columns.push({
         title: t("candidate.node_version"),
         key: "nodeVersion",
