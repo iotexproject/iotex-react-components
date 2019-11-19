@@ -135,14 +135,14 @@ export class BlockProducers extends Component<Props, State> {
     window.addEventListener("resize", () => {
       if (
         document.documentElement &&
-        document.documentElement.clientWidth > media960
+        document.documentElement.clientWidth > PALM_WIDTH
       ) {
-        this.setState({ displayMobileList: false, hideColumns: false });
-      } else {
-        this.setState({ displayMobileList: true });
-        if (document.documentElement.clientWidth <= PALM_WIDTH) {
-          this.setState({ hideColumns: true });
+        this.setState({ hideColumns: false });
+        if (document.documentElement.clientWidth > media960) {
+          this.setState({ displayMobileList: false });
         }
+      } else {
+        this.setState({ displayMobileList: true, hideColumns: true });
       }
     });
   }
