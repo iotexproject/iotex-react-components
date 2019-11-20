@@ -142,7 +142,7 @@ export class BlockProducers extends Component<Props, State> {
         document.documentElement &&
         document.documentElement.clientWidth > PALM_WIDTH
       ) {
-        this.setState({ hideColumns: false });
+        this.setState({ hideColumns: false, displayMobileList: true });
         if (document.documentElement.clientWidth > media960) {
           this.setState({ displayMobileList: false });
         }
