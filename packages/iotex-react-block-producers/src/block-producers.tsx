@@ -40,15 +40,18 @@ export const GET_BP_CANDIDATES = gql`
       logo
       name
       status
-      category
       serverStatus
       liveVotes
       liveVotesDelta
+      nodeVersion
       percent
       registeredName
       socialMedia
       productivity
-      productivityBase
+      blockRewardPortion
+      epochRewardPortion
+      foundationRewardPortion
+      rewardPlan
     }
   }
 `;
