@@ -40,6 +40,7 @@ export const GET_BP_CANDIDATES = gql`
       logo
       name
       status
+      category
       serverStatus
       liveVotes
       liveVotesDelta
@@ -48,6 +49,7 @@ export const GET_BP_CANDIDATES = gql`
       registeredName
       socialMedia
       productivity
+      productivityBase
       blockRewardPortion
       epochRewardPortion
       foundationRewardPortion
