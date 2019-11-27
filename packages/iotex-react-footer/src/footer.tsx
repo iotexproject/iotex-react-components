@@ -1,19 +1,17 @@
-// tslint:disable:no-any
 import Avatar from "antd/lib/avatar";
-import Button from "antd/lib/button";
 import Input from "antd/lib/input";
+import Form from "antd/lib/form";
 // @ts-ignore
 import { assetURL } from "onefx/lib/asset-url";
 // @ts-ignore
 import { t } from "onefx/lib/iso-i18n";
 // @ts-ignore
 import { styled } from "onefx/lib/styletron-react";
-import React from "react";
 import { colors } from "./style-color";
 import { media } from "./style-media";
-import { contentPadding } from "./style-padding";
+import React from "react";
 
-export const FOOTER_HEIGHT = 325;
+export const FOOTER_HEIGHT = 375;
 
 const images = [
   {
@@ -52,24 +50,32 @@ const links = [
     name: "footer.resource",
     value: [
       {
-        name: "footer.launch",
-        href: "https://www.launch.iotex.io/"
+        name: "Ecosystem",
+        href: "https://www.iotex.io/ecosystem"
       },
       {
-        name: "footer.research_paper",
-        href: "https://iotex.io/academics"
+        name: "​Secure Hardware",
+        href: "https://www.iotex.io/securehardware"
       },
       {
-        name: "footer.announcemenets",
-        href: "https://iotex.io/feed"
+        name: "Community Resources",
+        href: "https://www.iotex.io/community-resources"
       },
       {
-        name: "footer.delegates_program",
+        name: "Research Papers",
+        href: "https://www.iotex.io/research-paper"
+      },
+      {
+        name: "Delegate Program",
         href: "https://member.iotex.io/"
       },
       {
-        name: "footer.charity_program",
-        href: "https://iotex.io/charity"
+        name: "Charity Program",
+        href: "https://www.iotex.io/charity"
+      },
+      {
+        name: "Global Network",
+        href: "https://www.iotex.io/"
       }
     ]
   },
@@ -85,61 +91,78 @@ const links = [
         href: "https://docs.iotex.io/"
       },
       {
-        name: "footer.libraries_tools",
-        href: "https://docs.iotex.io/docs/libraries-and-tools.html"
-      },
-      {
         name: "footer.explorer",
         href: "https://iotexscan.io/"
       },
       {
         name: "footer.wallet",
         href: "https://iotexscan.io/wallet"
+      },
+      {
+        name: "footer.libraries_tools",
+        href: "https://docs.iotex.io/docs/libraries-and-tools.html"
       }
     ]
   },
   {
-    name: t("footer.about_us"),
+    name: "footer.about_us",
     value: [
       {
-        name: t("footer.forum"),
+        name: "footer.team",
+        href: "https://www.iotex.io/about-us"
+      },
+      {
+        name: "Brand Ambassador",
+        href: "https://www.iotex.io/brand-ambassador"
+      },
+      {
+        name: "footer.forum",
         href: "https://forum.iotex.io/"
       },
       {
-        name: t("footer.support"),
+        name: "footer.support",
         href: "https://iotex.zendesk.com/hc/en-us"
       }
     ]
   }
 ];
 
+const linkPx: Array<string> = ["40px", "240px", "413px"];
+
 export function Footer(): JSX.Element {
   return (
     <FooterWrapper>
       <Align>
-        <Flex>
-          {links.map((link, i) => (
-            <LinkWrapper key={i}>
-              <Title>{t(link.name)}</Title>
+        {links.map((link, i) => (
+          <LinkWrapper key={i} style={{ left: linkPx[i] }}>
+            <Title>{t(link.name)}</Title>
+            <TitleValue>
               {link.value.map((res, j) => (
-                <div key={`${i}-${j}`}>
-                  <Link href={res.href}>{t(res.name)}</Link>
-                </div>
+                <LinkP key={`${i}-${j}`}>
+                  <LinkSpan>
+                    <Link href={res.href}>{t(res.name)}</Link>
+                  </LinkSpan>
+                </LinkP>
               ))}
-            </LinkWrapper>
-          ))}
-          <FooterRight>
-            <FooterInput placeholder={t("footer.enter_email")} />
-            <FooterButton>{t("footer.subscribe")}</FooterButton>
-            <FooterImages>
-              {images.map((image, index) => (
-                <a key={index} href={image.href}>
-                  <FooterAvatar src={assetURL(image.src)} />
-                </a>
-              ))}
-            </FooterImages>
-          </FooterRight>
-        </Flex>
+            </TitleValue>
+          </LinkWrapper>
+        ))}
+        <FooterRight>
+          <Form>
+            <FooterInput
+              type="email"
+              placeholder={`${t("footer.enter_email")}`}
+            />
+            <FooterSubmit type="submit" value={`${t("footer.subscribe")}`} />
+          </Form>
+          <FooterImages>
+            {images.map((image, index) => (
+              <a key={index} href={image.href}>
+                <FooterAvatar src={assetURL(image.src)} />
+              </a>
+            ))}
+          </FooterImages>
+        </FooterRight>
       </Align>
       <FooterBottom>
         <span>
@@ -151,14 +174,6 @@ export function Footer(): JSX.Element {
   );
 }
 
-const Flex = styled("div", {
-  display: "flex",
-  alignItems: "top",
-  width: "100%",
-  justifyContent: "space-between",
-  flexWrap: "wrap"
-});
-
 const Team = styled("a", {
   marginLeft: "50px",
   textDecoration: "underline",
@@ -166,7 +181,7 @@ const Team = styled("a", {
 });
 
 const LinkWrapper = styled("div", {
-  marginRight: "20px",
+  flex: 0,
   [media.media1024]: { marginRight: 0 }
 });
 
@@ -175,15 +190,23 @@ const FooterInput = styled(Input, {
   width: "220px",
   height: "48px",
   color: "#dbdbdb",
-  borderColor: "#fff",
-  borderRadius: 0
+  borderRadius: 0,
+  borderColor: "#dbdbdb",
+  ":focus": {
+    color: "#dbdbdb",
+    backgroundColor: colors.nav02,
+    borderColor: "#dbdbdb"
+  },
+  ":hover": {
+    borderColor: "#dbdbdb"
+  }
 });
 
 const FooterAvatar = styled(Avatar, {
   backgroundColor: colors.nav02,
   width: "40px",
   height: "40px",
-  marginLeft: "10px",
+  marginLeft: "7px",
   [media.media1024]: {
     marginLeft: 0,
     marginRight: "10px",
@@ -193,8 +216,8 @@ const FooterAvatar = styled(Avatar, {
 });
 
 const FooterRight = styled("div", {
-  flex: "none",
   textAlign: "right",
+  margin: "48px 0px 13px 40px",
   [media.media1024]: {
     width: "100%",
     marginTop: "16px",
@@ -206,34 +229,61 @@ const FooterRight = styled("div", {
 
 const FooterBottom = styled("div", {
   textAlign: "center",
-  color: "#dbdbdb"
+  color: "#dbdbdb",
+  position: "relative",
+  margin: "0px 0px 18px calc((100% - 980px) * 0.87)",
+  width: "500px",
+  minHeight: "auto"
 });
 
-const FooterButton = styled(Button, {
+const FooterSubmit = styled(Input, {
   backgroundColor: colors.nav02,
   width: "90px",
   height: "48px",
   color: "#dbdbdb",
-  borderColor: "#fff",
   borderRadius: 0,
   marginLeft: "8px",
   ":hover": {
-    color: colors.nav02
+    color: colors.nav02,
+    backgroundColor: "#dbdbdb",
+    cursor: "pointer",
+    borderColor: colors.nav02
   }
 });
 
 const Title = styled("div", {
-  fontSize: "16px",
+  width: "91px",
+  height: "auto",
   lineHeight: 2,
   color: "#dbdbdb",
+  position: "relative",
+  left: "40px",
+  margin: "48px 0px 13px 0px",
   [media.media1024]: { lineHeight: 1.5 }
 });
 
-const Link = styled("a", {
+const TitleValue = styled("div", {
+  width: "192px",
+  height: "auto",
+  position: "relative",
+  left: "40px",
+  margin: "0px 0px 50px 0px"
+});
+
+const LinkP = styled("p", {
   fontSize: "14px",
   lineHeight: 2,
-  color: "#0fcdc9",
-  [media.media1024]: { lineHeight: 1.5 }
+  color: "#333435",
+  margin: "0px"
+});
+
+const LinkSpan = styled("span", {
+  color: "#0fcdc9"
+});
+
+const Link = styled("a", {
+  target: "_blank",
+  padding: "0px"
 });
 
 const FooterImages = styled("div", {
@@ -242,26 +292,20 @@ const FooterImages = styled("div", {
 });
 
 const FooterWrapper = styled("div", {
-  ...contentPadding,
-  paddingTop: "32px",
-  paddingBottom: "32px",
   minHeight: `${FOOTER_HEIGHT}px`,
-  backgroundColor: colors.nav02,
+  backgroundColor: "rgba(0, 0, 0, 0.82)",
   color: colors.white,
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "space-between",
+  minWidth: "980px",
   width: "100%",
-  [media.media1024]: {
-    minWidth: 0,
-    paddingTop: "16px",
-    paddingBottom: "16px"
-  }
+  position: "static"
 });
+
 const Align = styled("div", {
   display: "flex",
   flexDirection: "row",
-  alignItems: "center",
-  justifyContent: "space-between",
-  width: "100%"
+  alignItems: "flex-start",
+  justifyContent: "flex-start",
+  width: "100%",
+  minWidth: "980px",
+  margin: "0px 0px 0px calc((100% - 980px) * 0.5)"
 });

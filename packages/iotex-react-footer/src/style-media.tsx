@@ -16,7 +16,8 @@ export const media = {
   media1440: "@media only screen and (min-width: 1440px)",
   media700: "@media only screen and (max-width: 700px)",
   media1100: "@media only screen and (max-width: 1100px)",
-  media1024: "@media only screen and (max-width: 1024px)"
+  media1024: "@media only screen and (max-width: 1024px)",
+  media960: "@media only screen and (max-width: 960px)"
 };
 
 export const flexOnPalm = {
