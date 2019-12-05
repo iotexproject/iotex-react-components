@@ -50,31 +50,31 @@ const links = [
     name: "footer.resource",
     value: [
       {
-        name: "Ecosystem",
+        name: "fotter.ecosystem",
         href: "https://www.iotex.io/ecosystem"
       },
       {
-        name: "​Secure Hardware",
+        name: "​fotter.secure_hardware",
         href: "https://www.iotex.io/securehardware"
       },
       {
-        name: "Community Resources",
+        name: "fotter.community_resource",
         href: "https://www.iotex.io/community-resources"
       },
       {
-        name: "Research Papers",
+        name: "footer.research_paper",
         href: "https://www.iotex.io/research-paper"
       },
       {
-        name: "Delegate Program",
+        name: "footer.delegates_program",
         href: "https://member.iotex.io/"
       },
       {
-        name: "Charity Program",
+        name: "footer.charity_program",
         href: "https://www.iotex.io/charity"
       },
       {
-        name: "Global Network",
+        name: "fotter.global_network",
         href: "https://www.iotex.io/"
       }
     ]
@@ -112,7 +112,7 @@ const links = [
         href: "https://www.iotex.io/about-us"
       },
       {
-        name: "Brand Ambassador",
+        name: "fotter.brand_ambassador",
         href: "https://www.iotex.io/brand-ambassador"
       },
       {
