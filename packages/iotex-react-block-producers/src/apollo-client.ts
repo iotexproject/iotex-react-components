@@ -8,12 +8,13 @@ import JsonGlobal from "safe-json-globals/get";
 
 const state = isBrowser && JsonGlobal("state");
 
-export const createWebBpApolloClient = (uri: string) =>
+export const createWebBpApolloClient = (uri: string, clientId: string = "") =>
   new ApolloClient({
     ssrMode: !isBrowser,
     link: new HttpLink({
       uri,
-      fetch
+      fetch,
+      headers: { "x-iotex-client-id": clientId }
     }),
     cache: isBrowser
       ? new InMemoryCache().restore(state.webBpApolloState)
