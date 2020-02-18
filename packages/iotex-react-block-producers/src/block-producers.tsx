@@ -54,6 +54,7 @@ export const GET_BP_CANDIDATES = gql`
       epochRewardPortion
       foundationRewardPortion
       rewardPlan
+      badges
     }
   }
 `;
@@ -192,7 +193,7 @@ export class BlockProducers extends Component<Props, State> {
                     <img
                       src={badgeImg}
                       key={idx}
-                      style={{ marginRight: "6px", width: "30px" }}
+                      style={{ marginRight: "6px", width: "24px" }}
                       alt="badges"
                     />
                   ))}
