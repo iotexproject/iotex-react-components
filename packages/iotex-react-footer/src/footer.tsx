@@ -143,7 +143,7 @@ export function Footer(): JSX.Element {
       </Align>
       <FooterBottom>
         <span>
-          <span>© 2019 IoTeX</span>
+          <span>{`© ${new Date().getFullYear()} IoTeX`}</span>
           <Team href={"https://iotex.io/policy"}>{t("footer.policy")}</Team>
         </span>
       </FooterBottom>
