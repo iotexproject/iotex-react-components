@@ -25,7 +25,6 @@ import {
 import { getClassifyDelegate } from "./partition-help";
 import { SpinPreloader } from "./spin-preloader";
 import { DelegatesOfMonth, TBpCandidate } from "./types";
-
 // @ts-ignore
 import withStyles, { WithStyles } from "react-jss";
 
@@ -88,6 +87,9 @@ const styles = {
       top: 0,
       zIndex: 1
     }
+  },
+  kickout: {
+    backgroundColor: "#eee"
   }
 };
 
@@ -237,27 +239,44 @@ export class BlockProducers extends Component<Props, State> {
       return i;
     });
 
-    return displayMobileList ? (
-      <BlockProducersList
-        dataSource={dataSource}
-        hideColumns={hideColumns}
-        extraComponents={extraMobileComponents}
-      />
-    ) : (
-      <BpTableContainer>
+    if (displayMobileList) {
+      return (
+        <BlockProducersList
+          dataSource={dataSource}
+          hideColumns={hideColumns}
+          extraComponents={extraMobileComponents}
+        />
+      );
+    } else {
+      const StyleTable: React.FunctionComponent<IProps> = ({
+        classes,
+        children
+      }) => (
         <Table
           // @ts-ignore
-          rowClassName={(record, index) =>
+          rowClassName={(record, index) => {
+            record.kickout = index % 2 == 1;
+            const subClass = record.kickout ? classes.kickout : "";
             // @ts-ignore
-            sectionRow.includes(index) ? "ant-table-section-row " : ""
-          }
+            return sectionRow.includes(index)
+              ? `ant-table-section-row ${subClass}`
+              : `${subClass}`;
+          }}
           pagination={false}
           dataSource={dataSource}
           columns={columns}
           rowKey={"rank"}
-        />
-      </BpTableContainer>
-    );
+        >
+          {children}
+        </Table>
+      );
+      const StyleTableInner = withStyles(styles)(StyleTable);
+      return (
+        <BpTableContainer>
+          <StyleTableInner />
+        </BpTableContainer>
+      );
+    }
   }
 
   public render(): JSX.Element {
