@@ -174,6 +174,7 @@ const FooterInput = styled(Input, {
   backgroundColor: colors.nav02,
   width: "220px",
   height: "48px",
+  lineHeight: "48px !important",
   color: "#dbdbdb",
   borderColor: "#fff",
   borderRadius: 0
@@ -216,7 +217,8 @@ const FooterButton = styled(Button, {
   color: "#dbdbdb",
   borderColor: "#fff",
   borderRadius: 0,
-  marginLeft: "8px",
+  marginLeft: "0px",
+  borderLeftWidth: "0px",
   ":hover": {
     color: colors.nav02
   }
