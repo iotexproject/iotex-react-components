@@ -269,7 +269,7 @@ export class BlockProducers extends Component<Props, State> {
         client={apolloClient}
         query={GET_BP_CANDIDATES}
         ssr={false}
-        fetchPolicy="network-only"
+        fetchPolicy="no-cache"
       >
         {({
           loading,
@@ -314,7 +314,7 @@ export class BlockProducers extends Component<Props, State> {
                   query={GET_ADMIN_SETTING}
                   variables={{ key: "delegatesOfMonth" }}
                   ssr={false}
-                  fetchPolicy="network-only"
+                  fetchPolicy="no-cache"
                 >
                   {({
                     loading,
