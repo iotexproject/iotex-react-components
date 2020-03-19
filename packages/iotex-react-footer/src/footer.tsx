@@ -17,31 +17,31 @@ export const FOOTER_HEIGHT = 325;
 
 const images = () => [
   {
-    src: assetURL("footer/twitter.png"),
+    src: "footer/twitter.png",
     href: "https://twitter.com/iotex_io"
   },
   {
-    src: assetURL("footer/t.me.png"),
+    src: "footer/t.me.png",
     href: "https://t.me/IoTeXGroup"
   },
   {
-    src: assetURL("footer/reddit.png"),
+    src: "footer/reddit.png",
     href: "https://www.reddit.com/r/IoTeX/"
   },
   {
-    src: assetURL("footer/medium.png"),
+    src: "footer/medium.png",
     href: "https://medium.com/iotex"
   },
   {
-    src: assetURL("footer/youtube.png"),
+    src: "footer/youtube.png",
     href: "https://www.youtube.com/channel/UCdj3xY3LCktuamvuFusWOZw"
   },
   {
-    src: assetURL("footer/facebook.png"),
+    src: "footer/facebook.png",
     href: "https://www.facebook.com/iotex.io/"
   },
   {
-    src: assetURL("footer/instagram.png"),
+    src: "footer/instagram.png",
     href:
       "https://instagram.com/iotexproject?utm_source=ig_profile_share&igshid=n1x5vxo61e00"
   }
