@@ -15,33 +15,33 @@ import { contentPadding } from "./style-padding";
 
 export const FOOTER_HEIGHT = 325;
 
-const images = [
+const images = () => [
   {
-    src: "/footer/twitter.png",
+    src: assetURL("footer/twitter.png"),
     href: "https://twitter.com/iotex_io"
   },
   {
-    src: "/footer/t.me.png",
+    src: assetURL("footer/t.me.png"),
     href: "https://t.me/IoTeXGroup"
   },
   {
-    src: "/footer/reddit.png",
+    src: assetURL("footer/reddit.png"),
     href: "https://www.reddit.com/r/IoTeX/"
   },
   {
-    src: "/footer/medium.png",
+    src: assetURL("footer/medium.png"),
     href: "https://medium.com/iotex"
   },
   {
-    src: "/footer/youtube.png",
+    src: assetURL("footer/youtube.png"),
     href: "https://www.youtube.com/channel/UCdj3xY3LCktuamvuFusWOZw"
   },
   {
-    src: "/footer/facebook.png",
+    src: assetURL("footer/facebook.png"),
     href: "https://www.facebook.com/iotex.io/"
   },
   {
-    src: "/footer/instagram.png",
+    src: assetURL("footer/instagram.png"),
     href:
       "https://instagram.com/iotexproject?utm_source=ig_profile_share&igshid=n1x5vxo61e00"
   }
@@ -132,7 +132,7 @@ export function Footer(): JSX.Element {
             <FooterInput placeholder={t("footer.enter_email")} />
             <FooterButton>{t("footer.subscribe")}</FooterButton>
             <FooterImages>
-              {images.map((image, index) => (
+              {images().map((image, index) => (
                 <a key={index} href={image.href}>
                   <FooterAvatar src={assetURL(image.src)} />
                 </a>
