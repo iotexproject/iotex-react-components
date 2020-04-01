@@ -54,6 +54,9 @@ export const GET_BP_CANDIDATES = gql`
       foundationRewardPortion
       rewardPlan
       badges
+      probation {
+        count
+      }
     }
   }
 `;
@@ -88,7 +91,7 @@ const styles = {
       zIndex: 1
     }
   },
-  kickout: {
+  probation: {
     backgroundColor: "#eee"
   }
 };
@@ -255,8 +258,9 @@ export class BlockProducers extends Component<Props, State> {
         <Table
           // @ts-ignore
           rowClassName={(record, index) => {
-            record.kickout = index % 2 == 1;
-            const subClass = record.kickout ? classes.kickout : "";
+            const probation =
+              record.probation !== undefined && record.probation !== null;
+            const subClass = probation ? classes.probation : "";
             // @ts-ignore
             return sectionRow.includes(index)
               ? `ant-table-section-row ${subClass}`
