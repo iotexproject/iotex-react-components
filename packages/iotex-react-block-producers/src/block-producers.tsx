@@ -183,7 +183,7 @@ export class BlockProducers extends Component<Props, State> {
         key: "badges",
         render: (badges: any) => {
           return (
-            badges.length && (
+            !!badges.length && (
               <div style={{ display: "flex", alignItems: "center" }}>
                 {badges.map((badge: string, idx: number) => {
                   const src = badge === "hermes" ? badgeImg : badge;
