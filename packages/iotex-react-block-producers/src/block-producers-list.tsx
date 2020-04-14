@@ -16,6 +16,7 @@ import { TBpCandidate } from "./types";
 
 // @ts-ignore
 import withStyles, { WithStyles } from "react-jss";
+import { isProbation } from "./partition-help";
 
 export type CustomTBpCandidate = TBpCandidate & { custom: boolean };
 
@@ -133,6 +134,14 @@ const styles = {
     "& .ant-table-thead > tr > th": {
       padding: "16px 10px !important"
     }
+  },
+  probation: {
+    backgroundColor: "#eee"
+  },
+  tableCSS: {
+    "& thead > tr > th": {
+      backgroundColor: "#eee !important"
+    }
   }
 };
 
@@ -186,42 +195,64 @@ export class BlockProducersList extends Component<Props> {
           const justifyContent = components.length > 0 ? "space-between" : "";
           const sizes = components.length > 0 ? { width: "40%" } : {};
 
-          return delegate.custom ? (
-            <CategoryTitle key={index}>
-              <IconWrapper>
-                <Avatar
-                  shape="square"
-                  size={14}
-                  src={assetURL(
-                    `https://member.iotex.io/bpStatus/${delegate.rank}.png`
-                  )}
-                />
-              </IconWrapper>
-              <span style={{ fontWeight: "bold", fontSize: "16px" }}>
-                {delegate.name}
-              </span>
-            </CategoryTitle>
-          ) : (
-            <Item key={index}>
-              <Title justifyContent={justifyContent}>
-                {consensusIcon(delegate.rank, rate, 43, 57, "")}
-                <div style={{ margin: "0 14px", ...sizes }}>
-                  {renderDelegateName(delegate.name, delegate)}
-                </div>
-                {components.map((renderComponent, index) => {
-                  return <div key={index}>{renderComponent(delegate)}</div>;
-                })}
-              </Title>
-              <TableContent>
-                <Table
-                  dataSource={[delegate]}
-                  columns={columns}
-                  rowKey={"id"}
-                  pagination={false}
-                />
-              </TableContent>
-            </Item>
-          );
+          if (delegate.custom) {
+            return (
+              <CategoryTitle>
+                <IconWrapper>
+                  <Avatar
+                    shape="square"
+                    size={14}
+                    src={assetURL(
+                      `https://member.iotex.io/bpStatus/${delegate.rank}.png`
+                    )}
+                  />
+                </IconWrapper>
+                <span style={{ fontWeight: "bold", fontSize: "16px" }}>
+                  {delegate.name}
+                </span>
+              </CategoryTitle>
+            );
+          }
+
+          const probation = isProbation(delegate);
+          const probationStyles = probation ? { backgroundColor: "#eee" } : {};
+          const StyleTable: React.FunctionComponent<IProps> = ({
+            classes,
+            children
+          }) => {
+            const className = probation ? classes.tableCSS : "";
+            return (
+              <Item>
+                <Title justifyContent={justifyContent} {...probationStyles}>
+                  {consensusIcon(delegate.rank, rate, 43, 57, "")}
+                  <div style={{ margin: "0 14px", ...sizes }}>
+                    {renderDelegateName(delegate.name, delegate)}
+                  </div>
+                  {components.map((renderComponent, index) => {
+                    return <div key={index}>{renderComponent(delegate)}</div>;
+                  })}
+                </Title>
+                <TableContent>
+                  <Table
+                    // @ts-ignore
+                    rowClassName={(record, index) => {
+                      const probation = isProbation(record);
+                      return probation ? classes.probation : "";
+                    }}
+                    className={className}
+                    dataSource={[delegate]}
+                    columns={columns}
+                    rowKey={"id"}
+                    pagination={false}
+                  >
+                    {children}
+                  </Table>
+                </TableContent>
+              </Item>
+            );
+          };
+          const StyleTableInner = withStyles(styles)(StyleTable);
+          return <StyleTableInner key={index} />;
         })}
       </div>
     );

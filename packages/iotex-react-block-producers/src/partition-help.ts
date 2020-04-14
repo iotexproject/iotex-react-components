@@ -55,3 +55,7 @@ export function getClassifyDelegate(
     ...candidates
   ];
 }
+
+export function isProbation(record: CustomTBpCandidate): boolean {
+  return record.probation !== undefined && record.probation !== null;
+}

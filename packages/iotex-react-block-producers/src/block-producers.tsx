@@ -10,6 +10,8 @@ import { assetURL } from "onefx/lib/asset-url";
 import { t } from "onefx/lib/iso-i18n";
 import React, { Component } from "react";
 import { Query, QueryResult } from "react-apollo";
+// @ts-ignore
+import withStyles, { WithStyles } from "react-jss";
 import {
   BlockProducersList,
   CustomTBpCandidate,
@@ -22,11 +24,9 @@ import {
   renderRank,
   tableAppendix
 } from "./bp-render";
-import { getClassifyDelegate } from "./partition-help";
+import { getClassifyDelegate, isProbation } from "./partition-help";
 import { SpinPreloader } from "./spin-preloader";
 import { DelegatesOfMonth, TBpCandidate } from "./types";
-// @ts-ignore
-import withStyles, { WithStyles } from "react-jss";
 
 export const PALM_WIDTH = 575;
 export const media960 = 960;
@@ -258,8 +258,7 @@ export class BlockProducers extends Component<Props, State> {
         <Table
           // @ts-ignore
           rowClassName={(record, index) => {
-            const probation =
-              record.probation !== undefined && record.probation !== null;
+            const probation = isProbation(record);
             const subClass = probation ? classes.probation : "";
             // @ts-ignore
             return sectionRow.includes(index)
