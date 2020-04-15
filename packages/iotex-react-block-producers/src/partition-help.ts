@@ -55,3 +55,7 @@ export function getClassifyDelegate(
     ...candidates
   ];
 }
+
+export function isProbation(record: TBpCandidate): boolean {
+  return Boolean(record.probation);
+}

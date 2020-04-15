@@ -10,6 +10,8 @@ import { assetURL } from "onefx/lib/asset-url";
 import { t } from "onefx/lib/iso-i18n";
 import React, { Component } from "react";
 import { Query, QueryResult } from "react-apollo";
+// @ts-ignore
+import withStyles, { WithStyles } from "react-jss";
 import {
   BlockProducersList,
   CustomTBpCandidate,
@@ -22,12 +24,9 @@ import {
   renderRank,
   tableAppendix
 } from "./bp-render";
-import { getClassifyDelegate } from "./partition-help";
+import { getClassifyDelegate, isProbation } from "./partition-help";
 import { SpinPreloader } from "./spin-preloader";
 import { DelegatesOfMonth, TBpCandidate } from "./types";
-
-// @ts-ignore
-import withStyles, { WithStyles } from "react-jss";
 
 export const PALM_WIDTH = 575;
 export const media960 = 960;
@@ -55,6 +54,9 @@ export const GET_BP_CANDIDATES = gql`
       foundationRewardPortion
       rewardPlan
       badges
+      probation {
+        count
+      }
     }
   }
 `;
@@ -88,7 +90,8 @@ const styles = {
       top: 0,
       zIndex: 1
     }
-  }
+  },
+  probation: {}
 };
 
 interface IProps extends WithStyles<typeof styles> {
@@ -236,27 +239,44 @@ export class BlockProducers extends Component<Props, State> {
       return i;
     });
 
-    return displayMobileList ? (
-      <BlockProducersList
-        dataSource={dataSource}
-        hideColumns={hideColumns}
-        extraComponents={extraMobileComponents}
-      />
-    ) : (
-      <BpTableContainer>
+    if (displayMobileList) {
+      return (
+        <BlockProducersList
+          dataSource={dataSource}
+          hideColumns={hideColumns}
+          extraComponents={extraMobileComponents}
+        />
+      );
+    } else {
+      const StyleTable: React.FunctionComponent<IProps> = ({
+        classes,
+        children
+      }) => (
         <Table
           // @ts-ignore
-          rowClassName={(record, index) =>
+          rowClassName={(record, index) => {
+            const probation = isProbation(record);
+            const subClass = probation ? classes.probation : "";
             // @ts-ignore
-            sectionRow.includes(index) ? "ant-table-section-row " : ""
-          }
+            return sectionRow.includes(index)
+              ? `ant-table-section-row ${subClass}`
+              : `${subClass}`;
+          }}
           pagination={false}
           dataSource={dataSource}
           columns={columns}
           rowKey={"rank"}
-        />
-      </BpTableContainer>
-    );
+        >
+          {children}
+        </Table>
+      );
+      const StyleTableInner = withStyles(styles)(StyleTable);
+      return (
+        <BpTableContainer>
+          <StyleTableInner />
+        </BpTableContainer>
+      );
+    }
   }
 
   public render(): JSX.Element {

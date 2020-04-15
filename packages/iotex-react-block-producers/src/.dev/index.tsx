@@ -10,7 +10,8 @@ clientReactRender({
   VDom: (
     <Component
       apolloClient={createWebBpApolloClient(
-        "https://member.iotex.io/api-gateway/"
+        "https://member.iotex.io/api-gateway/",
+        "web-bp"
       )}
       badgeImg={trophy}
     />

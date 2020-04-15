@@ -62,10 +62,16 @@ export type TBpCandidate = TNewBpCandidate & {
 
   createAt: string;
   updateAt: string;
+  probation: Info;
 };
 
 export type DelegatesOfMonth = {
   month: string;
   enable: boolean;
   delegates: Array<TBpCandidate>;
+};
+
+export type Info = {
+  address: string;
+  count: number;
 };

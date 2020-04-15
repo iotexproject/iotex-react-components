@@ -13,7 +13,8 @@ test("Component snapshot", async t => {
       <TestRoot>
         <Component
           apolloClient={createWebBpApolloClient(
-            "https://member.iotex.io/api-gateway/"
+            "https://member.iotex.io/api-gateway/",
+            "web-bp"
           )}
           badgeImg={
             "https://user-images.githubusercontent.com/38968374/61657311-7e350380-ac77-11e9-86ea-0e87869e7962.png"
