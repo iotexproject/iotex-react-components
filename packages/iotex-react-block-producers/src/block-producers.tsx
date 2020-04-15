@@ -184,22 +184,21 @@ export class BlockProducers extends Component<Props, State> {
         title: t("candidate.delegate_badges"),
         dataIndex: "badges",
         key: "badges",
-        render: (text: number) => {
-          const count = typeof text === "number" ? text : parseInt(text, 10);
-
+        render: (badges: any) => {
           return (
-            !!count && (
+            badges.length && (
               <div style={{ display: "flex", alignItems: "center" }}>
-                {Array(count)
-                  .fill("")
-                  .map((_, idx: number) => (
+                {badges.map((badge: string, idx: number) => {
+                  const src = badge === "hermes" ? badgeImg : badge;
+                  return (
                     <img
-                      src={badgeImg}
+                      src={src}
                       key={idx}
                       style={{ marginRight: "6px", width: "24px" }}
                       alt="badges"
                     />
-                  ))}
+                  );
+                })}
               </div>
             )
           );
@@ -289,7 +288,7 @@ export class BlockProducers extends Component<Props, State> {
         client={apolloClient}
         query={GET_BP_CANDIDATES}
         ssr={false}
-        fetchPolicy="network-only"
+        fetchPolicy="no-cache"
       >
         {({
           loading,
@@ -334,7 +333,7 @@ export class BlockProducers extends Component<Props, State> {
                   query={GET_ADMIN_SETTING}
                   variables={{ key: "delegatesOfMonth" }}
                   ssr={false}
-                  fetchPolicy="network-only"
+                  fetchPolicy="no-cache"
                 >
                   {({
                     loading,
