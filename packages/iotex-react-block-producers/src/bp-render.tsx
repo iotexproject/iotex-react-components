@@ -11,6 +11,7 @@ import { t } from "onefx/lib/iso-i18n";
 import React from "react";
 import { CustomTBpCandidate } from "./block-producers-list";
 import { Circle } from "./circle";
+import { isProbation } from "./partition-help";
 import { colors } from "./style-color";
 import { DelegateCategory, DServerStatus, TBpCandidate } from "./types";
 
@@ -19,12 +20,14 @@ export function renderDelegateName(
   text: string,
   record: TBpCandidate
 ): JSX.Element {
+  const probation = isProbation(record);
+  const color = probation ? colors.PROBATION : colors[record.serverStatus];
   return (
     <a href={`/delegate/${record.id}`}>
       <div style={{ display: "flex", alignItems: "center" }}>
         <div>
           {record.serverStatus !== DServerStatus.NOT_EQUIPPED && (
-            <Circle color={colors[record.serverStatus]} />
+            <Circle color={color} />
           )}
         </div>
         <div
@@ -466,6 +469,12 @@ export function tableAppendix(isMobile: boolean): JSX.Element {
             marginRight={marginRight}
             text="candidates.election.NOT_EQUIPPED"
             color={colors.NOT_EQUIPPED}
+          />
+
+          <CircleAppendix
+            marginRight={marginRight}
+            text="candidates.election.PROBATION"
+            color={colors.PROBATION}
           />
         </div>
       </div>

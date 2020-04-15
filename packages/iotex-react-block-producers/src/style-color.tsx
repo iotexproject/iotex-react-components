@@ -31,5 +31,6 @@ export const colors = {
   deltaUp: "#00b4a0",
   ONLINE: "#06a35a",
   OFFLINE: "#cccccc",
-  NOT_EQUIPPED: "#e54937"
+  NOT_EQUIPPED: "#e54937",
+  PROBATION: "#FFA000"
 };

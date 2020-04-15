@@ -135,13 +135,9 @@ const styles = {
       padding: "16px 10px !important"
     }
   },
-  probation: {
-    backgroundColor: "#eee"
-  },
+  probation: {},
   tableCSS: {
-    "& thead > tr > th": {
-      backgroundColor: "#eee !important"
-    }
+    "& thead > tr > th": {}
   }
 };
 
@@ -215,7 +211,7 @@ export class BlockProducersList extends Component<Props> {
           }
 
           const probation = isProbation(delegate);
-          const probationStyles = probation ? { backgroundColor: "#eee" } : {};
+          const probationStyles = probation ? {} : {};
           const StyleTable: React.FunctionComponent<IProps> = ({
             classes,
             children

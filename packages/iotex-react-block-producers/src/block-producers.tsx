@@ -91,9 +91,7 @@ const styles = {
       zIndex: 1
     }
   },
-  probation: {
-    backgroundColor: "#eee"
-  }
+  probation: {}
 };
 
 interface IProps extends WithStyles<typeof styles> {
