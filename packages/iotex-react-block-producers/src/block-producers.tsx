@@ -1,6 +1,7 @@
 // tslint:disable:no-any
 import Avatar from "antd/lib/avatar";
 import notification from "antd/lib/notification";
+import Popover from "antd/lib/popover";
 import Table from "antd/lib/table";
 import { ApolloClient } from "apollo-client";
 import gql from "graphql-tag";
@@ -158,7 +159,22 @@ export class BlockProducers extends Component<Props, State> {
 
   public getColumns(): Array<object> {
     const { badgeImg, extraColumns = [] } = this.props;
-
+    const getBadgesTitle = (badges: String) => {
+      if (badges === "hermes") {
+        return t("candidates.badge_info.hermes.title");
+      } else if (badges.indexOf("genesis")) {
+        return t("candidates.badge_info.genesis.title");
+      }
+      return t("candidates.badge_info.ambassador.title");
+    };
+    const getBadgeContent = (badges: String) => {
+      if (badges === "hermes") {
+        return t("candidates.badge_info.hermes.content");
+      } else if (badges.indexOf("genesis")) {
+        return t("candidates.badge_info.genesis.content");
+      }
+      return t("candidates.badge_info.ambassador.content");
+    };
     return [
       {
         title: t("candidates.rank"),
@@ -191,12 +207,18 @@ export class BlockProducers extends Component<Props, State> {
                 {badges.map((badge: string, idx: number) => {
                   const src = badge === "hermes" ? badgeImg : badge;
                   return (
-                    <img
-                      src={src}
-                      key={idx}
-                      style={{ marginRight: "6px", width: "24px" }}
-                      alt="badges"
-                    />
+                    <Popover
+                      placement="bottomLeft"
+                      title={getBadgesTitle(badge)}
+                      content={getBadgeContent(badge)}
+                    >
+                      <img
+                        src={src}
+                        key={idx}
+                        style={{ marginRight: "6px", width: "24px" }}
+                        alt="badges"
+                      />
+                    </Popover>
                   );
                 })}
               </div>
