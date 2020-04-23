@@ -162,7 +162,7 @@ export class BlockProducers extends Component<Props, State> {
     const getBadgesTitle = (badges: String) => {
       if (badges === "hermes") {
         return t("candidates.badge_info.hermes.title");
-      } else if (badges.indexOf("genesis")) {
+      } else if (badges.match("genesis")) {
         return t("candidates.badge_info.genesis.title");
       }
       return t("candidates.badge_info.ambassador.title");
@@ -170,7 +170,7 @@ export class BlockProducers extends Component<Props, State> {
     const getBadgeContent = (badges: String) => {
       if (badges === "hermes") {
         return t("candidates.badge_info.hermes.content");
-      } else if (badges.indexOf("genesis")) {
+      } else if (badges.match("genesis")) {
         return t("candidates.badge_info.genesis.content");
       }
       return t("candidates.badge_info.ambassador.content");
