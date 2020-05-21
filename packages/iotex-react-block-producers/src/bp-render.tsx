@@ -13,7 +13,7 @@ import { CustomTBpCandidate } from "./block-producers-list";
 import { Circle } from "./circle";
 import { isProbation } from "./partition-help";
 import { colors } from "./style-color";
-import { DelegateCategory, DServerStatus, TBpCandidate } from "./types";
+import { DelegateCategory, TBpCandidate } from "./types";
 
 export const ASSET_URL = "https://member.iotex.io";
 export function renderDelegateName(
@@ -26,9 +26,7 @@ export function renderDelegateName(
     <a href={`/delegate/${record.id}`}>
       <div style={{ display: "flex", alignItems: "center" }}>
         <div>
-          {record.serverStatus !== DServerStatus.NOT_EQUIPPED && (
-            <Circle color={color} />
-          )}
+          <Circle color={color} />
         </div>
         <div
           style={{
