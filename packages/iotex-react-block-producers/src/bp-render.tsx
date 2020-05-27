@@ -468,12 +468,6 @@ export function tableAppendix(isMobile: boolean): JSX.Element {
 
           <CircleAppendix
             marginRight={marginRight}
-            text="candidates.election.NOT_EQUIPPED"
-            color={colors.NOT_EQUIPPED}
-          />
-
-          <CircleAppendix
-            marginRight={marginRight}
             text="candidates.election.PROBATION"
             color={colors.PROBATION}
           />
