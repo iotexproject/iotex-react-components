@@ -26,7 +26,8 @@ export function renderDelegateName(
     <a href={`/delegate/${record.id}`}>
       <div style={{ display: "flex", alignItems: "center" }}>
         <div>
-          {record.serverStatus !== DServerStatus.NOT_EQUIPPED && (
+          {(probation ||
+            record.serverStatus !== DServerStatus.NOT_EQUIPPED) && (
             <Circle color={color} />
           )}
         </div>
