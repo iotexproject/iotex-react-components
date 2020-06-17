@@ -19,6 +19,8 @@ import {
   RenderDelegateComponent
 } from "./block-producers-list";
 import {
+  getBadgeContent,
+  getBadgesTitle,
   renderDelegateName,
   renderLiveVotes,
   renderProductivity,
@@ -159,22 +161,6 @@ export class BlockProducers extends Component<Props, State> {
 
   public getColumns(): Array<object> {
     const { badgeImg, extraColumns = [] } = this.props;
-    const getBadgesTitle = (badges: String) => {
-      if (badges === "hermes") {
-        return t("candidates.badge_info.hermes.title");
-      } else if (badges.match("genesis")) {
-        return t("candidates.badge_info.genesis.title");
-      }
-      return t("candidates.badge_info.ambassador.title");
-    };
-    const getBadgeContent = (badges: String) => {
-      if (badges === "hermes") {
-        return t("candidates.badge_info.hermes.content");
-      } else if (badges.match("genesis")) {
-        return t("candidates.badge_info.genesis.content");
-      }
-      return t("candidates.badge_info.ambassador.content");
-    };
     return [
       {
         title: t("candidates.rank"),
@@ -253,7 +239,7 @@ export class BlockProducers extends Component<Props, State> {
     sectionRow: Array<number>
   ): JSX.Element {
     const { displayMobileList, hideColumns } = this.state;
-    const { extraMobileComponents } = this.props;
+    const { badgeImg, extraMobileComponents } = this.props;
     const columns = this.getColumns();
     columns.map(i => {
       // @ts-ignore
@@ -267,6 +253,7 @@ export class BlockProducers extends Component<Props, State> {
           dataSource={dataSource}
           hideColumns={hideColumns}
           extraComponents={extraMobileComponents}
+          badgeImg={badgeImg}
         />
       );
     } else {
