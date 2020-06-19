@@ -8,6 +8,7 @@ import { t } from "onefx/lib/iso-i18n";
 import React, { Component } from "react";
 import {
   consensusIcon,
+  renderBadges,
   renderDelegateName,
   renderLiveVotes,
   renderProductivity
@@ -28,6 +29,7 @@ type Props = {
   dataSource: Array<CustomTBpCandidate>;
   extraComponents?: Array<RenderDelegateComponent>;
   hideColumns?: Boolean;
+  badgeImg: string;
 };
 
 // @ts-ignore
@@ -133,6 +135,9 @@ const styles = {
   tableContent: {
     "& .ant-table-thead > tr > th": {
       padding: "16px 10px !important"
+    },
+    "& .ant-table-footer": {
+      background: "#ffffff"
     }
   },
   probation: {},
@@ -155,7 +160,7 @@ const TableContent = withStyles(styles)(Div);
 
 export class BlockProducersList extends Component<Props> {
   public render(): JSX.Element {
-    const { dataSource, extraComponents, hideColumns } = this.props;
+    const { dataSource, extraComponents, hideColumns, badgeImg } = this.props;
     const components = extraComponents || [];
     const columns = [
       {
@@ -240,6 +245,7 @@ export class BlockProducersList extends Component<Props> {
                     columns={columns}
                     rowKey={"id"}
                     pagination={false}
+                    footer={() => renderBadges(delegate.badges, badgeImg)}
                   >
                     {children}
                   </Table>

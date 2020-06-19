@@ -146,6 +146,48 @@ export function renderLiveVotes(text: number, record: any): JSX.Element {
   );
 }
 
+export function renderBadges(badges: any, badgeImg: string) {
+  return (
+    !!badges.length && (
+      <div style={{ display: "flex", alignItems: "center" }}>
+        {badges.map((badge: string, idx: number) => {
+          const src = badge === "hermes" ? badgeImg : badge;
+          return (
+            <Popover
+              placement="bottomLeft"
+              title={getBadgesTitle(badge)}
+              content={getBadgeContent(badge)}
+            >
+              <img
+                src={src}
+                key={idx}
+                style={{ marginRight: "6px", width: "24px" }}
+                alt="badges"
+              />
+            </Popover>
+          );
+        })}
+      </div>
+    )
+  );
+}
+export function getBadgesTitle(badges: String): string {
+  if (badges === "hermes") {
+    return t("candidates.badge_info.hermes.title");
+  } else if (badges.match("genesis")) {
+    return t("candidates.badge_info.genesis.title");
+  }
+  return t("candidates.badge_info.ambassador.title");
+}
+export function getBadgeContent(badges: String): string {
+  if (badges === "hermes") {
+    return t("candidates.badge_info.hermes.content");
+  } else if (badges.match("genesis")) {
+    return t("candidates.badge_info.genesis.content");
+  }
+  return t("candidates.badge_info.ambassador.content");
+}
+
 export function renderProductivity(
   text: string,
   record: CustomTBpCandidate
