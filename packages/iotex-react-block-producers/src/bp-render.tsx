@@ -179,9 +179,19 @@ export function getBadgesTitle(badges: String): string {
   }
   return t("candidates.badge_info.ambassador.title");
 }
-export function getBadgeContent(badges: String): string {
+export function getBadgeContent(badges: String): string | JSX.Element {
   if (badges === "hermes") {
-    return t("candidates.badge_info.hermes.content");
+    return (
+      <>
+        {
+          <p
+            dangerouslySetInnerHTML={{
+              __html: t("candidates.badge_info.hermes.content")
+            }}
+          />
+        }
+      </>
+    );
   } else if (badges.match("genesis")) {
     return t("candidates.badge_info.genesis.content");
   }
