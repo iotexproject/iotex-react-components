@@ -179,7 +179,7 @@ export function getBadgesTitle(badges: String): string {
   }
   return t("candidates.badge_info.ambassador.title");
 }
-export function getBadgeContent(badges: String): string | JSX.Element {
+export function getBadgeContent(badges: String): JSX.Element {
   if (badges === "hermes") {
     return (
       <p
@@ -189,9 +189,21 @@ export function getBadgeContent(badges: String): string | JSX.Element {
       />
     );
   } else if (badges.match("genesis")) {
-    return t("candidates.badge_info.genesis.content");
+    return (
+      <p
+        dangerouslySetInnerHTML={{
+          __html: t("candidates.badge_info.genesis.content")
+        }}
+      />
+    );
   }
-  return t("candidates.badge_info.ambassador.content");
+  return (
+    <p
+      dangerouslySetInnerHTML={{
+        __html: t("candidates.badge_info.ambassador.content")
+      }}
+    />
+  );
 }
 
 export function renderProductivity(
