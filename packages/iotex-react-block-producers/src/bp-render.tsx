@@ -146,9 +146,12 @@ export function renderLiveVotes(text: number, record: any): JSX.Element {
   );
 }
 
-export function renderBadges(badges: any, badgeImg: string) {
+export function renderBadges(
+  badges: Array<string>,
+  badgeImg: string
+): JSX.Element | null {
   return (
-    !!badges.length && (
+    (!!badges.length && (
       <div style={{ display: "flex", alignItems: "center" }}>
         {badges.map((badge: string, idx: number) => {
           const src = badge === "hermes" ? badgeImg : badge;
@@ -168,7 +171,8 @@ export function renderBadges(badges: any, badgeImg: string) {
           );
         })}
       </div>
-    )
+    )) ||
+    null
   );
 }
 export function getBadgesTitle(badges: String): string {
