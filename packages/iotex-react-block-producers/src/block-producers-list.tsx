@@ -262,7 +262,7 @@ export class BlockProducersList extends Component<Props> {
                     columns={columns}
                     rowKey={"id"}
                     pagination={false}
-                    footer={() => renderBadges(delegate.badges, badgeImg)}
+                    footer={() => renderBadges(delegate.badges || [], badgeImg)}
                   >
                     {children}
                   </Table>
