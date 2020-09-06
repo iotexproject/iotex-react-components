@@ -30,6 +30,7 @@ type Props = {
   extraComponents?: Array<RenderDelegateComponent>;
   hideColumns?: Boolean;
   badgeImg: string;
+  columnsTitleReplace?: Array<{ key: string; title: string }>;
 };
 
 // @ts-ignore
@@ -159,9 +160,8 @@ const Div: React.FunctionComponent<IProps> = ({ classes, children }) => (
 const TableContent = withStyles(styles)(Div);
 
 export class BlockProducersList extends Component<Props> {
-  public render(): JSX.Element {
-    const { dataSource, extraComponents, hideColumns, badgeImg } = this.props;
-    const components = extraComponents || [];
+  public getColumns(): Array<object> {
+    const { hideColumns, columnsTitleReplace } = this.props;
     const columns = [
       {
         title: t("candidate.live_votes"),
@@ -178,6 +178,7 @@ export class BlockProducersList extends Component<Props> {
       {
         title: t("candidate.productivity"),
         dataIndex: "productivity",
+        key: "productivity",
         render: renderProductivity
       }
     ];
@@ -189,6 +190,24 @@ export class BlockProducersList extends Component<Props> {
         render: (text?: any) => `${text || ""}`
       });
     }
+
+    // replace column title
+    if (columnsTitleReplace && columnsTitleReplace.length) {
+      columnsTitleReplace.forEach(col => {
+        const item = columns.find(defaultCol => defaultCol.key === col.key);
+        if (item) {
+          item.title = col.title;
+        }
+      });
+    }
+
+    return columns;
+  }
+
+  public render(): JSX.Element {
+    const { dataSource, extraComponents, badgeImg } = this.props;
+    const components = extraComponents || [];
+    const columns = this.getColumns();
     return (
       <div className="mobile-delegate-list">
         {dataSource.map((delegate, index) => {

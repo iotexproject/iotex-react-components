@@ -116,6 +116,7 @@ type Props = {
   apolloClient: ApolloClient<{}>;
   badgeImg: string;
   height?: string;
+  columnsTitleReplace?: Array<{ key: string; title: string }>;
 };
 
 type State = {
@@ -160,8 +161,8 @@ export class BlockProducers extends Component<Props, State> {
   }
 
   public getColumns(): Array<object> {
-    const { badgeImg, extraColumns = [] } = this.props;
-    return [
+    const { badgeImg, extraColumns = [], columnsTitleReplace } = this.props;
+    const columns: Array<{ [k: string]: any }> = [
       {
         title: t("candidates.rank"),
         key: "index",
@@ -227,11 +228,24 @@ export class BlockProducers extends Component<Props, State> {
       {
         title: t("candidate.productivity"),
         dataIndex: "productivity",
+        key: "productivity",
         render: renderProductivity,
         customRender: (text: number | string) => <b>{text || ""}</b>
       },
       ...extraColumns
     ];
+
+    // replace column title
+    if (columnsTitleReplace && columnsTitleReplace.length) {
+      columnsTitleReplace.forEach(col => {
+        const item = columns.find(defaultCol => defaultCol.key === col.key);
+        if (item) {
+          item.title = col.title;
+        }
+      });
+    }
+
+    return columns;
   }
 
   private getList(
@@ -239,7 +253,11 @@ export class BlockProducers extends Component<Props, State> {
     sectionRow: Array<number>
   ): JSX.Element {
     const { displayMobileList, hideColumns } = this.state;
-    const { badgeImg, extraMobileComponents } = this.props;
+    const {
+      badgeImg,
+      extraMobileComponents,
+      columnsTitleReplace = []
+    } = this.props;
     const columns = this.getColumns();
     columns.map(i => {
       // @ts-ignore
@@ -254,6 +272,7 @@ export class BlockProducers extends Component<Props, State> {
           hideColumns={hideColumns}
           extraComponents={extraMobileComponents}
           badgeImg={badgeImg}
+          columnsTitleReplace={columnsTitleReplace}
         />
       );
     } else {
