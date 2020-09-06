@@ -18,7 +18,7 @@ export type TNewBpCandidate = {
   email: string;
 
   tempEthAddress?: string;
-  badges?: number;
+  badges?: Array<string>;
 };
 
 export type DelegateCategory =
