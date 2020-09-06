@@ -160,15 +160,8 @@ const Div: React.FunctionComponent<IProps> = ({ classes, children }) => (
 const TableContent = withStyles(styles)(Div);
 
 export class BlockProducersList extends Component<Props> {
-  public render(): JSX.Element {
-    const {
-      dataSource,
-      extraComponents,
-      hideColumns,
-      badgeImg,
-      columnsTitleReplace
-    } = this.props;
-    const components = extraComponents || [];
+  public getColumns(): Array<object> {
+    const { hideColumns, columnsTitleReplace } = this.props;
     const columns = [
       {
         title: t("candidate.live_votes"),
@@ -201,11 +194,20 @@ export class BlockProducersList extends Component<Props> {
     // replace column title
     if (columnsTitleReplace && columnsTitleReplace.length) {
       columnsTitleReplace.forEach(col => {
-        const item = columns.find(_col => _col.key === col.key);
-        item && (item.title = col.title);
+        const item = columns.find(defaultCol => defaultCol.key === col.key);
+        if (item) {
+          item.title = col.title;
+        }
       });
     }
 
+    return columns;
+  }
+
+  public render(): JSX.Element {
+    const { dataSource, extraComponents, badgeImg } = this.props;
+    const components = extraComponents || [];
+    const columns = this.getColumns();
     return (
       <div className="mobile-delegate-list">
         {dataSource.map((delegate, index) => {

@@ -238,8 +238,10 @@ export class BlockProducers extends Component<Props, State> {
     // replace column title
     if (columnsTitleReplace && columnsTitleReplace.length) {
       columnsTitleReplace.forEach(col => {
-        const item = columns.find(_col => _col.key === col.key);
-        item && (item.title = col.title);
+        const item = columns.find(defaultCol => defaultCol.key === col.key);
+        if (item) {
+          item.title = col.title;
+        }
       });
     }
 
@@ -251,7 +253,11 @@ export class BlockProducers extends Component<Props, State> {
     sectionRow: Array<number>
   ): JSX.Element {
     const { displayMobileList, hideColumns } = this.state;
-    const { badgeImg, extraMobileComponents, columnsTitleReplace } = this.props;
+    const {
+      badgeImg,
+      extraMobileComponents,
+      columnsTitleReplace = []
+    } = this.props;
     const columns = this.getColumns();
     columns.map(i => {
       // @ts-ignore
@@ -266,7 +272,7 @@ export class BlockProducers extends Component<Props, State> {
           hideColumns={hideColumns}
           extraComponents={extraMobileComponents}
           badgeImg={badgeImg}
-          columnsTitleReplace={columnsTitleReplace || []}
+          columnsTitleReplace={columnsTitleReplace}
         />
       );
     } else {
