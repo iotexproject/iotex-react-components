@@ -176,9 +176,9 @@ export class BlockProducersList extends Component<Props> {
         render: (text: number) => `${Math.abs(text)}%`
       },
       {
-        title: t("candidate.productivity"),
+        title: t("candidate.epoch_progress"),
         dataIndex: "productivity",
-        key: "productivity",
+        key: "epochProgress",
         render: renderProductivity
       }
     ];
