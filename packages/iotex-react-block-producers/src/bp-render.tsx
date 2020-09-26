@@ -183,13 +183,16 @@ export function getBadgesTitle(badges: String): string {
   }
   return t("candidates.badge_info.ambassador.title");
 }
-export function getBadgeContent(badges: String): string {
+export function getBadgeContent(badges: String): JSX.Element {
+  let content = "";
   if (badges === "hermes") {
-    return t("candidates.badge_info.hermes.content");
+    content = t("candidates.badge_info.hermes.content");
   } else if (badges.match("genesis")) {
-    return t("candidates.badge_info.genesis.content");
+    content = t("candidates.badge_info.genesis.content");
+  } else {
+    content = t("candidates.badge_info.ambassador.content");
   }
-  return t("candidates.badge_info.ambassador.content");
+  return <div dangerouslySetInnerHTML={{ __html: content }}></div>;
 }
 
 export function renderProductivity(
