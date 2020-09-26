@@ -19,7 +19,7 @@ export const colors = {
   information: "#5aaafa", //	Information
 
   nav01: "#011627",
-  nav02: "#20232a",
+  nav02: "#2b2b2a",
   nav03: "#151d27",
 
   PRODUCING: "#0b8de3",

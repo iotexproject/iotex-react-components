@@ -57,11 +57,11 @@ const links = [
       },
       {
         name: "footer.research_paper",
-        href: "https://iotex.io/academics"
+        href: "https://www.iotex.io/research"
       },
       {
         name: "footer.announcemenets",
-        href: "https://iotex.io/feed"
+        href: "https://www.iotex.io/blog"
       },
       {
         name: "footer.delegates_program",
@@ -69,7 +69,7 @@ const links = [
       },
       {
         name: "footer.charity_program",
-        href: "https://iotex.io/charity"
+        href: "https://www.iotex.io/charity"
       }
     ]
   },
@@ -174,6 +174,7 @@ const FooterInput = styled(Input, {
   backgroundColor: colors.nav02,
   width: "220px",
   height: "48px",
+  lineHeight: "48px !important",
   color: "#dbdbdb",
   borderColor: "#fff",
   borderRadius: 0
@@ -216,14 +217,15 @@ const FooterButton = styled(Button, {
   color: "#dbdbdb",
   borderColor: "#fff",
   borderRadius: 0,
-  marginLeft: "8px",
+  marginLeft: "0px",
+  borderLeftWidth: "0px",
   ":hover": {
     color: colors.nav02
   }
 });
 
 const Title = styled("div", {
-  fontSize: "16px",
+  fontSize: "14px",
   lineHeight: 2,
   color: "#dbdbdb",
   [media.media1024]: { lineHeight: 1.5 }
@@ -243,8 +245,8 @@ const FooterImages = styled("div", {
 
 const FooterWrapper = styled("div", {
   ...contentPadding,
-  paddingTop: "32px",
-  paddingBottom: "32px",
+  paddingTop: "50px",
+  paddingBottom: "50px",
   minHeight: `${FOOTER_HEIGHT}px`,
   backgroundColor: colors.nav02,
   color: colors.white,
