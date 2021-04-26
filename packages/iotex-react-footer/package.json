@@ -70,7 +70,7 @@
     "@babel/preset-typescript": "7.7.0",
     "@babel/register": "7.7.0",
     "@types/node": "11.13.10",
-    "@types/react-test-renderer": "16.8.1",
+    "@types/react-test-renderer": "16.9.5",
     "antd": "4.0.3",
     "ava": "2.4.0",
     "awesome-typescript-loader": "5.2.1",
