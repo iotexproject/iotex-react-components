@@ -2,7 +2,8 @@
 import Avatar from "antd/lib/avatar";
 import notification from "antd/lib/notification";
 import Popover from "antd/lib/popover";
-import Table from "antd/lib/table";
+import Table, { ColumnProps } from "antd/lib/table";
+import Column from "antd/lib/table/Column";
 import { ApolloClient } from "apollo-client";
 import gql from "graphql-tag";
 // @ts-ignore
@@ -110,6 +111,15 @@ const Div: React.FunctionComponent<IProps> = ({ classes, children }) => (
 
 const BpTableContainer = withStyles(styles)(Div);
 
+interface ColumnMapItem extends ColumnProps<any> {
+  wrapRender?: (
+    renderRes: any,
+    text: any,
+    record: any,
+    index: number
+  ) => JSX.Element;
+}
+
 type Props = {
   extraColumns?: Array<object>;
   extraMobileComponents?: Array<RenderDelegateComponent>;
@@ -117,6 +127,7 @@ type Props = {
   badgeImg: string;
   height?: string;
   columnsTitleReplace?: Array<{ key: string; title: string }>;
+  columnsMap?: Record<string, ColumnMapItem>;
 };
 
 type State = {
@@ -161,7 +172,12 @@ export class BlockProducers extends Component<Props, State> {
   }
 
   public getColumns(): Array<object> {
-    const { badgeImg, extraColumns = [], columnsTitleReplace } = this.props;
+    const {
+      badgeImg,
+      extraColumns = [],
+      columnsTitleReplace,
+      columnsMap
+    } = this.props;
     const columns: Array<{ [k: string]: any }> = [
       {
         title: t("candidates.rank"),
@@ -241,6 +257,24 @@ export class BlockProducers extends Component<Props, State> {
         const item = columns.find(defaultCol => defaultCol.key === col.key);
         if (item) {
           item.title = col.title;
+        }
+      });
+    }
+    if (columnsMap) {
+      columns.forEach(column => {
+        if (columnsMap[column.dataIndex]) {
+          Object.assign(column, columnsMap[column.dataIndex]);
+          if (column.wrapRender) {
+            const render = column.render;
+            column.render = (text: any, record: any, index: number) => {
+              return column.wrapRender(
+                render && render(text, record, index),
+                text,
+                record,
+                index
+              );
+            };
+          }
         }
       });
     }
