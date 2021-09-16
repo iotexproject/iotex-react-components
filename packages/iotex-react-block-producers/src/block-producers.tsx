@@ -112,7 +112,12 @@ const Div: React.FunctionComponent<IProps> = ({ classes, children }) => (
 const BpTableContainer = withStyles(styles)(Div);
 
 interface ColumnMapItem extends ColumnProps<any> {
-  wrapRender?: (renderRes: any) => JSX.Element;
+  wrapRender?: (
+    renderRes: any,
+    text: any,
+    record: any,
+    index: number
+  ) => JSX.Element;
 }
 
 type Props = {
@@ -262,7 +267,12 @@ export class BlockProducers extends Component<Props, State> {
           if (column.wrapRender) {
             const render = column.render;
             column.render = (text: any, record: any, index: number) => {
-              return column.wrapRender(render && render(text, record, index));
+              return column.wrapRender(
+                render && render(text, record, index),
+                text,
+                record,
+                index
+              );
             };
           }
         }
