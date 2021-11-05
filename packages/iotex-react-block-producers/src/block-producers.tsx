@@ -369,7 +369,7 @@ export class BlockProducers extends Component<Props, State> {
                     data
                   }: QueryResult<{ adminSetting: DelegatesOfMonth }>) => {
                     if (!loading && error) {
-                      return null;
+                      return this.getList(dataSource, sectionRow);
                     }
 
                     const { delegates } = (data && data.adminSetting) || {
