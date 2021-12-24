@@ -329,9 +329,7 @@ export class BlockProducers extends Component<Props, State> {
               description: `failed to get block producers: ${error.message}`,
               duration: 3
             });
-            return null;
           }
-
           const dataSource = getClassifyDelegate(
             (data && data.bpCandidates) || [],
             false
